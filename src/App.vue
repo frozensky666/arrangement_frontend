@@ -9,13 +9,13 @@
 
   export default {
     mounted() {
-      if(this.$route.path === "/" || this.$route.path === "/pc" || this.$route.path === "/m") {
-        if (_isMobile()) {
-          this.$router.replace('/m');
-        } else {
-          this.$router.replace('/pc');
-        }
-      }
+      // if(this.$route.path === "/" || this.$route.path === "/pc" || this.$route.path === "/m") {
+      //   if (_isMobile()) {
+      //     this.$router.replace('/m');
+      //   } else {
+      //     this.$router.replace('/pc');
+      //   }
+      // }
     }
   }
 </script>
