@@ -18,16 +18,11 @@
                 </el-date-picker>
             </div>
             <div class="time-selector-right">
-                <div class="time-left" @click="scroll(blocks,dateType==='month'?getDaysOfMonth(date):12)">
+                <div class="time-left" @click="scroll(Math.ceil(blocks*0.75),dateType==='month'?getDaysOfMonth(date):12)">
                     <div class="time-l-arrow"></div>
                 </div>
                 <div class="time-middle" :style="{'width': blocks*block_scale+'px'}">
                     <div class="time-middle-wrap" :style="{'left':bias+'px'}">
-                        <!--                    <div v-for="i in 21"-->
-                        <!--                         :key="i"-->
-                        <!--                         class="time-middle-wrap-content">-->
-                        <!--                        {{i}}-->
-                        <!--                    </div>-->
                         <div v-if="dateType==='date'">
                             <div v-for="title in title_hour"
                                  :key="title"
@@ -46,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="time-right" @click="scroll(-blocks,dateType==='month'?getDaysOfMonth(date):12)">
+                <div class="time-right" @click="scroll(-Math.ceil(blocks*0.75),dateType==='month'?getDaysOfMonth(date):12)">
                     <div class="time-r-arrow"></div>
                 </div>
             </div>
@@ -115,14 +110,14 @@
                 if(this.bias<=-Math.floor((len-1)/this.blocks)*this.block_scale*this.blocks && n<0) return;
                 else if(this.bias>=0 && n>0) return;
                 this.timer = setInterval(()=> {
-                    this.bias += n*5;
+                    this.bias += n;
                     times += 1;
-                    if(times === this.block_scale/5){
+                    if(times === this.block_scale){
                         clearInterval(this.timer);
                         this.timer = null;
                         console.log(-this.bias/this.block_scale);
                     }
-                },10);
+                },5);
 
             },
             getData() { //TODO
