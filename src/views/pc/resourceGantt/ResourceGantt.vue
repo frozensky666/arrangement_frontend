@@ -21,7 +21,7 @@
                 <div class="time-left" @click="scroll(blocks,dateType==='month'?getDaysOfMonth(date):12)">
                     <div class="time-l-arrow"></div>
                 </div>
-                <div class="time-middle" :style="{'width': blocks*100+'px'}">
+                <div class="time-middle" :style="{'width': blocks*block_scale+'px'}">
                     <div class="time-middle-wrap" :style="{'left':bias+'px'}">
                         <!--                    <div v-for="i in 21"-->
                         <!--                         :key="i"-->
@@ -31,14 +31,16 @@
                         <div v-if="dateType==='date'">
                             <div v-for="title in title_hour"
                                  :key="title"
-                                 class="time-middle-wrap-content">
+                                 class="time-middle-wrap-content"
+                            :style="{'width': block_scale-1+'px'}">
                                 {{title}}
                             </div>
                         </div>
                         <div v-if="dateType==='month'">
                             <div v-for="i in getDaysOfMonth(date)"
                                  :key="i"
-                                 class="time-middle-wrap-content">
+                                 class="time-middle-wrap-content"
+                                 :style="{'width': block_scale-1+'px'}">
                                 {{i}}
                             </div>
                         </div>
@@ -50,14 +52,16 @@
             </div>
         </div>
         <div class="table">
-            <div class="row" v-for="item in demoData0" :key="item.role">
+            <div class="row" v-for="item in demoData0" :key="item.role" :style="{'width':block_scale*blocks+300+'px'}">
                 <div class="row-label">
                     {{item.role}}
                 </div>
-                <div class="row-content">
-                    <div class="row-item" v-for="block in item.plan" :key="block.start+block.end+block.value"
-                         :style="{'background-color': block.bg,'width': 100+'px','left': getPosition(block.start)+'px'}">
-                        {{block.value}}
+                <div class="row-content" :style="{'width':block_scale*blocks+'px'}">
+                    <div class="row-content-wrap" :style="{'left':bias+'px'}">
+                        <div class="row-item" v-for="block in item.plan" :key="block.start+block.end+block.value"
+                             :style="{'background-color': block.bg,'width': getWidth(block.start,block.end)+'px','left': getPosition(block.start)+'px'}">
+                            {{getWidth(block.start,block.end)>50 ?block.value:""}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,6 +88,7 @@
 
                 ],
                 blocks: 12,
+                block_scale: 80,
                 bias: 0,
                 timer: null,
                 title_hour: [
@@ -100,99 +105,164 @@
                     "次日3:00-次日5:00",
                     "次日5:00-次日7:00",
                 ],
-                demoData0: [
-                    {
-                        role: "小明",
-                        plan: [
-                            {
-                                start: '2019/1/21 7:23',
-                                end: '2019/1/21 8:45',
-                                value: '产品1',
-                                bg: 'green'
-                            },
-                            {
-                                start: '2019/1/21 12:23',
-                                end: '2019/1/21 18:45',
-                                value: '产品2',
-                                bg: 'blue'
-                            },
-                            {
-                                start: '2019/1/21 19:55',
-                                end: '2019/1/22 0:45',
-                                value: '产品3',
-                                bg: 'yellow'
-                            },
-                            {
-                                start: '2019/1/21 1:28',
-                                end: '2019/1/22 6:59',
-                                value: '产品4',
-                                bg: 'red'
-                            },
-                        ]
-                    },
-                    {
-                        role: "小红",
-                        plan: [
-                            {
-                                start: '2019/1/21 7:00',
-                                end: '2019/1/21 9:00',
-                                value: '产品4',
-                                bg: 'green'
-                            },
-                            {
-                                start: '2019/1/21 11:23',
-                                end: '2019/1/21 19:45',
-                                value: '产品3',
-                                bg: 'blue'
-                            },
-                            {
-                                start: '2019/1/21 19:55',
-                                end: '2019/1/22 0:45',
-                                value: '产品2',
-                                bg: 'yellow'
-                            },
-                            {
-                                start: '2019/1/21 0:28',
-                                end: '2019/1/22 4:30',
-                                value: '产品1',
-                                bg: 'red'
-                            },
-                        ]
-                    },
-                ],
+                demoData0: null,
             }
         },
         methods: {
             scroll(n,len) {
                 if(this.timer)return;
                 let times = 0;
-                if(this.bias<=-Math.floor((len-1)/this.blocks)*100*this.blocks && n<0) return;
+                if(this.bias<=-Math.floor((len-1)/this.blocks)*this.block_scale*this.blocks && n<0) return;
                 else if(this.bias>=0 && n>0) return;
                 this.timer = setInterval(()=> {
                     this.bias += n*5;
                     times += 1;
-                    if(times === 20){
+                    if(times === this.block_scale/5){
                         clearInterval(this.timer);
                         this.timer = null;
-                        console.log(-this.bias/100);
+                        console.log(-this.bias/this.block_scale);
                     }
                 },10);
 
             },
-            timeSelectChange() {
-              this.bias = 0;
+            getData() { //TODO
+                if(this.dateType === "date") {
+                    this.demoData0 =  [
+                        {
+                            role: "小明",
+                            plan: [
+                                {
+                                    start: '2018/11/09 7:23',
+                                    end: '2018/11/09 8:45',
+                                    value: '产品1',
+                                    bg: 'green'
+                                },
+                                {
+                                    start: '2018/11/09 12:23',
+                                    end: '2018/11/09 18:45',
+                                    value: '产品2',
+                                    bg: 'blue'
+                                },
+                                {
+                                    start: '2018/11/09 19:55',
+                                    end: '2018/11/10 0:45',
+                                    value: '产品3',
+                                    bg: 'yellow'
+                                },
+                                {
+                                    start: '2018/11/10 1:28',
+                                    end: '2018/11/10 6:59',
+                                    value: '产品4',
+                                    bg: 'red'
+                                },
+                            ]
+                        },
+                        {
+                            role: "小红",
+                            plan: [
+                                {
+                                    start: '2018/11/09 7:00',
+                                    end: '2018/11/09 9:00',
+                                    value: '产品4',
+                                    bg: 'red'
+                                },
+                                {
+                                    start: '2018/11/09 11:23',
+                                    end: '2018/11/09 19:45',
+                                    value: '产品3',
+                                    bg: 'yellow'
+                                },
+                                {
+                                    start: '2018/11/09 19:55',
+                                    end: '2018/11/10 0:45',
+                                    value: '产品2',
+                                    bg: 'blue'
+                                },
+                                {
+                                    start: '2018/11/10 0:28',
+                                    end: '2018/11/10 4:30',
+                                    value: '产品1',
+                                    bg: 'green'
+                                },
+                            ]
+                        },
+                    ];
+                } else if(this.dateType === "month") {
+                    this.demoData0 = [
+                        {
+                            role: "小明",
+                            plan: [
+                                {
+                                    start: '2018/11/09 7:23',
+                                    end: '2018/11/09 8:45',
+                                    value: '产品1',
+                                    bg: 'green'
+                                },
+                                {
+                                    start: '2018/11/09 12:23',
+                                    end: '2018/11/09 18:45',
+                                    value: '产品2',
+                                    bg: 'blue'
+                                },
+                                {
+                                    start: '2018/11/09 19:55',
+                                    end: '2018/11/10 0:45',
+                                    value: '产品3',
+                                    bg: 'yellow'
+                                },
+                                {
+                                    start: '2018/11/10 1:28',
+                                    end: '2018/11/10 6:59',
+                                    value: '产品4',
+                                    bg: 'red'
+                                },
+                            ]
+                        },
+                        {
+                            role: "小红",
+                            plan: [
+                                {
+                                    start: '2018/11/09 7:00',
+                                    end: '2018/11/09 9:00',
+                                    value: '产品4',
+                                    bg: 'red'
+                                },
+                                {
+                                    start: '2018/11/09 11:23',
+                                    end: '2018/11/09 19:45',
+                                    value: '产品3',
+                                    bg: 'yellow'
+                                },
+                                {
+                                    start: '2018/11/09 19:55',
+                                    end: '2018/11/10 0:45',
+                                    value: '产品2',
+                                    bg: 'blue'
+                                },
+                                {
+                                    start: '2018/11/10 0:28',
+                                    end: '2018/11/10 4:30',
+                                    value: '产品1',
+                                    bg: 'green'
+                                },
+                                {
+                                    start: '2018/11/10 7:28',
+                                    end: '2018/11/11 4:30',
+                                    value: '产品2',
+                                    bg: 'blue'
+                                },
+                            ]
+                        },
+                    ]
+                }
             },
-            timeChange(time) {
+            timeSelectChange() { //按小时、按日转换
                 this.bias = 0;
-                // if(this.dateType === "date") { //按小时
-                //
-                // } else if(this.dateType === "month") { //按日
-                //     //请求当月1-blocks号的内容并显示
-                // }
+                this.getData();
             },
-            searchByDate(startDate,endDate) {
-                console.log(startDate,endDate);
-
+            timeChange(time) { //日期改变
+                this.bias = 0;
+                this.getData();
             },
             getDaysOfMonth(time) {
                 let d = new Date(time);
@@ -200,21 +270,27 @@
             },
             getPosition(start) {
                 if(this.dateType === "date") { //按小时
+                    let begin = new Date(this.date);
+                    begin.setHours(7);
                     let d = new Date(start);
-                    d.setTime(d.getTime()-7*60*60*1000);
-                    let today = new Date(d.getFullYear(),d.getMonth(),d.getDate(),7);
-                    d = new Date(start);
-                    // console.log(d,today);
-                    return (d.getTime()-today.getTime())/(24*60*60*1000)*12*100;
+                    return (d.getTime()-begin.getTime())/(24*60*60*1000)*12*this.block_scale;
                 } else if(this.dateType === "month") { //按日
-                    //TODO
+                    let begin = new Date(this.date);
+                    begin.setHours(7);
+                    begin.setDate(1);
+                    let d = new Date(start);
+                    return (d.getTime()-begin.getTime())/(24*60*60*1000)*this.block_scale;
                 }
             },
             getWidth(start,end) {
                 if(this.dateType === "date") { //按小时
-
+                    let s = new Date(start);
+                    let e = new Date(end);
+                    return (e.getTime()-s.getTime())/(24*60*60*1000)*12*this.block_scale;
                 } else if(this.dateType === "month") { //按日
-                    //TODO
+                    let s = new Date(start);
+                    let e = new Date(end);
+                    return (e.getTime()-s.getTime())/(24*60*60*1000)*this.block_scale;
                 }
             }
         },
@@ -277,7 +353,7 @@
         z-index: 1;
     }
     .time-middle-wrap-content {
-        width: 99px;
+        /*width: 99px;*/
         height: 78px;
         border: solid 1px #888888;
         margin-left: -1px;
@@ -285,36 +361,36 @@
         white-space: normal;
         float: left;
     }
-    .table {
-        width: 1500px;
-    }
     .table .row {
-        position: relative;
         background-color: #6c81eb;
         height: 40px;
-        width: 1500px;
+        border-top: 1px solid #fff;
     }
     .table .row .row-label {
         width: 250px;
-        position: absolute;
-        left: 0;
-        bottom: 0;
         background-color: #818181;
         height: 40px;
         display: inline-block;
+        float: left;
     }
     .table .row .row-content {
         display: inline-block;
-        position: absolute;
-        left: 275px;
+        position: relative;
+        margin-left: 25px;
         height: 40px;
-        width: 1200px;
         background-color: #abc;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .table .row .row-content-wrap {
+        position: absolute;
+        height: 80px;
+        z-index: 1;
     }
     .table .row .row-content .row-item{
         position: absolute;
         height: 40px;
-        top: 0;
+        display: inline-block;
     }
 
 </style>
