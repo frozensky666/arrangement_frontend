@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 
 const Home = () => import("@/views/pc/home/Home");
 const M_Home = () => import("@/views/mobile/home/M_Home");
-const ResourceGantt = () => import("@/views/pc/resourceGantt/ResourceGantt")
+const ResourceGantt = () => import("@/views/pc/resourceGantt/ResourceGantt_v2");
 
 Vue.use(VueRouter);
 

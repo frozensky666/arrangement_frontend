@@ -18,7 +18,7 @@
                 </el-date-picker>
             </div>
             <div class="time-selector-right">
-                <div class="time-left" @click="scroll(Math.ceil(blocks*0.75),dateType==='month'?getDaysOfMonth(date):12)">
+                <div class="time-left" @click="scroll(1,dateType==='month'?getDaysOfMonth(date):12)">
                     <div class="time-l-arrow"></div>
                 </div>
                 <div class="time-middle" :style="{'width': blocks*block_scale+'px'}">
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="time-right" @click="scroll(-Math.ceil(blocks*0.75),dateType==='month'?getDaysOfMonth(date):12)">
+                <div class="time-right" @click="scroll(-1,dateType==='month'?getDaysOfMonth(date):12)">
                     <div class="time-r-arrow"></div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                     }
 
                 ],
-                blocks: 12,
+                blocks: 7,
                 block_scale: 80,
                 bias: 0,
                 timer: null,
@@ -100,24 +100,84 @@
                     "次日3:00-次日5:00",
                     "次日5:00-次日7:00",
                 ],
-                demoData0: null,
+                demoData0: [
+                    {
+                        role: "小明",
+                        plan: [
+                            {
+                                start: '2018/11/09 7:23',
+                                end: '2018/11/09 8:45',
+                                value: '产品1',
+                                bg: 'green'
+                            },
+                            {
+                                start: '2018/11/09 12:23',
+                                end: '2018/11/09 18:45',
+                                value: '产品2',
+                                bg: 'blue'
+                            },
+                            {
+                                start: '2018/11/09 19:55',
+                                end: '2018/11/10 0:45',
+                                value: '产品3',
+                                bg: 'yellow'
+                            },
+                            {
+                                start: '2018/11/10 1:28',
+                                end: '2018/11/10 6:59',
+                                value: '产品4',
+                                bg: 'red'
+                            },
+                        ]
+                    },
+                    {
+                        role: "小红",
+                        plan: [
+                            {
+                                start: '2018/11/09 7:00',
+                                end: '2018/11/09 9:00',
+                                value: '产品4',
+                                bg: 'red'
+                            },
+                            {
+                                start: '2018/11/09 11:23',
+                                end: '2018/11/09 19:45',
+                                value: '产品3',
+                                bg: 'yellow'
+                            },
+                            {
+                                start: '2018/11/09 19:55',
+                                end: '2018/11/10 0:45',
+                                value: '产品2',
+                                bg: 'blue'
+                            },
+                            {
+                                start: '2018/11/10 0:28',
+                                end: '2018/11/10 4:30',
+                                value: '产品1',
+                                bg: 'green'
+                            },
+                        ]
+                    },
+                ],
             }
         },
         methods: {
             scroll(n,len) {
-                if(this.timer)return;
-                let times = 0;
-                if(this.bias<=-Math.floor((len-1)/this.blocks)*this.block_scale*this.blocks && n<0) return;
-                else if(this.bias>=0 && n>0) return;
-                this.timer = setInterval(()=> {
-                    this.bias += n;
-                    times += 1;
-                    if(times === this.block_scale){
-                        clearInterval(this.timer);
-                        this.timer = null;
-                        console.log(-this.bias/this.block_scale);
-                    }
-                },5);
+                // if(this.timer)return;
+                // let times = 0;
+                if(n<0 && -this.bias+this.blocks*this.block_scale>=len*this.block_scale) return;
+                else if(n>0 && this.bias>=0) return;
+                // this.timer = setInterval(()=> {
+                //     this.bias += n;
+                //     times += 1;
+                //     if(times === this.block_scale){
+                //         clearInterval(this.timer);
+                //         this.timer = null;
+                //         // console.log(-this.bias/this.block_scale);
+                //     }
+                // },5);
+                this.bias += n*this.block_scale;
 
             },
             getData() { //TODO
@@ -254,6 +314,11 @@
             timeSelectChange() { //按小时、按日转换
                 this.bias = 0;
                 this.getData();
+                if(this.dateType === "date") {
+                    this.blocks = 12;
+                }else {
+                    this.blocks = 7;
+                }
             },
             timeChange(time) { //日期改变
                 this.bias = 0;
