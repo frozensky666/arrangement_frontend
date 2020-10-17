@@ -5,7 +5,7 @@
                 <div class="gantt-title">资源甘特图</div>
             </div>
             <div class="gantt-header-middle">
-                <div class="gantt-tips1">双击产品可显示路线图</div>
+                <div class="gantt-tips1">单击产品可切换产品路线图和资源甘特图</div>
             </div>
             <div class="gantt-header-right">
                 <div class="gantt-tips2">红色表示延期订单</div>
@@ -73,12 +73,16 @@
                                 v-for="block in item.plan" :key="block.start+block.end+block.value"
                                 effect="dark" :content="block.value" placement="top">
                             <div class="row-item"
-                                 :style="{'background-color': block.bg,'width': getWidth(block.start,block.end)+'px','left': getPosition(block.start)+'px'}">
-                                {{getWidth(block.start,block.end)>50 ?block.value:""}}
+                                 @click="showRoutes(block.value)"
+                                 :style="{'background-color': block.bg,'width': getWidth(block.start,block.end)+'px','left': getPosition(block.start)+'px','z-index': block.bg===block.oriBg?1:0}">
+                                {{block.value}}
                             </div>
                         </el-tooltip>
                     </div>
                 </div>
+            </div>
+            <div class="canvas-wrap" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px','height':demoData0.length*40+'px'}">
+                <canvas class="canvas" height="3000" width="3000" ref="canvas" :style="{'left':bias+'px'}"></canvas>
             </div>
         </div>
     </div>
@@ -93,6 +97,7 @@
         mixins: [bodyWidthMixin],
         data() {
             return {
+                mode: "gantt", // "gantt" / "route"
                 screenWidth: document.body.clientWidth,
                 dateType: "date",
                 date: "2018/11/9",
@@ -131,28 +136,52 @@
                             {
                                 start: '2018/11/09 7:23',
                                 end: '2018/11/09 8:45',
-                                value: '1',
+                                value: '125678912',
                                 delay :true
                                 // bg: 'green'
                             },
                             {
                                 start: '2018/11/09 12:23',
                                 end: '2018/11/09 18:45',
-                                value: '2',
+                                value: '755529799',
                                 delay :false
                                 // bg: 'blue'
                             },
                             {
                                 start: '2018/11/09 19:55',
                                 end: '2018/11/10 0:45',
-                                value: '3',
-                                delay :false
+                                value: '125678912',
+                                delay :true
                                 // bg: 'yellow'
                             },
                             {
                                 start: '2018/11/10 1:28',
                                 end: '2018/11/10 7:00',
-                                value: '4',
+                                value: '413131313',
+                                delay :false
+                                // bg: 'red'
+                            },
+                        ]
+                    },
+                    {
+                        role: "小芳",
+                        plan: [
+                            {
+                                start: '2018/11/09 7:00',
+                                end: '2018/11/09 16:00',
+                                value: '554979844',
+                                delay :false
+                                // bg: 'red'
+                            },
+                        ]
+                    },
+                    {
+                        role: "小王",
+                        plan: [
+                            {
+                                start: '2018/11/09 15:00',
+                                end: '2018/11/09 16:00',
+                                value: '554979844',
                                 delay :false
                                 // bg: 'red'
                             },
@@ -164,50 +193,87 @@
                             {
                                 start: '2018/11/09 7:00',
                                 end: '2018/11/09 9:00',
-                                value: '5',
+                                value: '554979844',
                                 delay :false
                                 // bg: 'red'
                             },
                             {
                                 start: '2018/11/09 11:23',
-                                end: '2018/11/09 19:45',
-                                value: '6',
+                                end: '2018/11/09 15:45',
+                                value: '755529799',
                                 delay :false
                                 // bg: 'yellow'
                             },
                             {
                                 start: '2018/11/09 19:55',
                                 end: '2018/11/10 0:00',
-                                value: '7',
+                                value: '755529799',
                                 delay :false
                                 // bg: 'blue'
                             },
                             {
                                 start: '2018/11/10 0:28',
                                 end: '2018/11/10 4:30',
-                                value: '1',
+                                value: '125678912',
                                 delay :true
                                 // bg: 'green'
                             },
                         ]
                     },
                 ],
+                demoData1: null,
+                currentProduct: null
             }
         },
         beforeMount() {
-          this.demoData0.forEach(obj => {
+            this.demoData1 = {};
+            this.demoData0.forEach((obj,idx) => {
               obj.plan.forEach(p => {
-                  // p.bg = colorFaded(p.delay?"hsl(0,100%,50%)":generateRandomColor(p.value)); //faded
-                  p.bg = p.delay?"hsl(0,100%,50%)":generateRandomColor(p.value); //正常颜色
+                  if(p.delay) {
+                      this.$set(p,"bg","hsl(0,100%,50%)");
+                  }else {
+                      this.$set(p,"bg",generateRandomColor(p.value));
+                  }
+                  p.oriBg = p.bg; //本来的颜色/显示的颜色（是否淡化处理）
+                  p.index = idx; //用于路线图定位
+                  if(Object.prototype.hasOwnProperty.call(this.demoData1,p.value)) {
+                      this.demoData1[p.value].push(p);
+                  } else {
+                      Object.defineProperty(this.demoData1,p.value,{
+                          value: [p],
+                          configurable:true,
+                          writable:true,
+                          enumerable:true
+                      });
+                  }
               });
-          });
+            });
+            for(let product in this.demoData1) {
+                if(Object.prototype.hasOwnProperty.call(this.demoData1,product)) {
+                    this.demoData1[product].sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+                    let tmpObj = {};
+                    this.demoData1[product].forEach(plan => {
+                        let st = new Date(plan.start).toString();
+                        if(Object.prototype.hasOwnProperty.call(tmpObj,st)) {
+                            tmpObj[st].push(plan);
+                        } else {
+                            Object.defineProperty(tmpObj,st,{
+                                value: [plan],
+                                configurable:true,
+                                writable:true,
+                                enumerable:true
+                            });
+                        }
+                    });
+                    this.demoData1[product] = tmpObj;
+                }
+            }
         },
         mounted() {
           this.timeChange(this.date);
         },
         methods: {
             timeSelectChange(timeSelect) {
-                console.log(timeSelect);
                 if(timeSelect === "date") {
                     this.blocks = 12;
                     this.blockSize = 100;
@@ -219,7 +285,9 @@
                 }
             },
             timeChange(time) {
-                console.log(time);
+                this.clearCanvas();
+                if(this.mode === "route")
+                    this.drawLines(this.currentProduct);
             },
             scroll(pages) {
                 let d = new Date(this.date);
@@ -263,8 +331,84 @@
             },
             drag(event) {
                 this.bias = -event.target.scrollLeft;
-
-                console.log('scroll', event.target.scrollLeft);
+            },
+            clearCanvas() {
+                let c=this.$refs.canvas;
+                let ctx=c.getContext("2d");
+                ctx.clearRect(0,0,c.width,c.height);
+            },
+            drawLines(p) { //产品
+                //TODO
+                let c=this.$refs.canvas;
+                let ctx=c.getContext("2d");
+                let tmpArr = [];
+                if(Object.prototype.hasOwnProperty.call(this.demoData1,p)) {
+                    for(let i in this.demoData1[p]) {
+                        if(Object.prototype.hasOwnProperty.call(this.demoData1[p],i))
+                            tmpArr.push(this.demoData1[p][i]);
+                    }
+                }
+                if(tmpArr.length > 1) { //全在同一时刻的情况排除
+                    for(let i=0;i<tmpArr.length-1;i++) {
+                        for(let j=0;j<tmpArr[i].length;j++) {
+                            for(let k=0;k<tmpArr[i+1].length;k++) {
+                                let end1 = this.getPosition(tmpArr[i][j].end);
+                                let start2 = this.getPosition(tmpArr[i+1][k].start);
+                                if(tmpArr[i][j].index === tmpArr[i+1][k].index) {//画横线
+                                    let y = 20+40*tmpArr[i][j].index; //40为一行的高度
+                                    ctx.beginPath();
+                                    ctx.moveTo(end1,y);
+                                    ctx.lineTo(start2,y);
+                                    ctx.strokeStyle="rgb(229, 80, 57)";
+                                    ctx.stroke();
+                                }else {
+                                    let shortLine = 5;
+                                    let y1 = 20+40*tmpArr[i][j].index;
+                                    let y2 = 20+40*tmpArr[i+1][k].index;
+                                    let e2x = end1+shortLine;
+                                    let s2x = start2-shortLine;
+                                    let p1y = y1+(tmpArr[i][j].index > tmpArr[i+1][k].index ? -1:1)*18;
+                                    ctx.beginPath();
+                                    ctx.moveTo(end1,y1);
+                                    ctx.lineTo(e2x,y1);
+                                    ctx.lineTo(e2x,p1y);
+                                    ctx.lineTo(s2x,p1y);
+                                    ctx.lineTo(s2x,y2);
+                                    ctx.lineTo(start2,y2);
+                                    ctx.strokeStyle="rgb(229, 80, 57)";
+                                    ctx.stroke();
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            changeColor(mode,p) { //当前模式/点击的产品
+                let flag = mode==="route";
+                for(let product in this.demoData1) {
+                    if(Object.prototype.hasOwnProperty.call(this.demoData1,product)) {
+                        for(let i in this.demoData1[product]) {
+                            if(Object.prototype.hasOwnProperty.call(this.demoData1[product],i)) {
+                                this.demoData1[product][i].forEach(p2 => {
+                                    p2.bg = flag && (product!==p) ? colorFaded(p2.bg) : p2.oriBg;
+                                });
+                            }
+                        }
+                    }
+                }
+            },
+            showRoutes(p) {
+                this.currentProduct = p;
+                this.mode = this.mode === "gantt"?"route":"gantt";
+                //change color
+                this.changeColor(this.mode,p);
+                //draw line
+                if(this.mode === "route") {
+                    this.clearCanvas();
+                    this.drawLines(p)
+                } else {
+                    this.clearCanvas();
+                }
             }
         }
     }
@@ -276,6 +420,11 @@
         width: 80%;
         min-width: 600px;
         margin-left: 10%;
+
+        -webkit-user-select:none;
+        -moz-user-select:none;
+        -ms-user-select:none;
+        user-select:none;
     }
 
     /* gantt header */
@@ -347,7 +496,8 @@
     }
     .time-middle-content {
         height: 78px;
-        line-height: 39px;
+        line-height: 30px;
+        text-align: center;
         border: solid 1px #888888;
         margin-left: -1px;
         display: inline-block;
@@ -356,6 +506,9 @@
     }
 
     /* table */
+    .table {
+        position: relative;
+    }
     .table .row {
         /*background-color: #6c81eb;*/
         height: 40px;
@@ -403,5 +556,20 @@
         color: #fff;
         text-shadow: 2px 2px 2px #000;
         cursor: pointer;
+
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
+    .canvas {
+        position: absolute;
+        top: 0;
+    }
+    .canvas-wrap {
+        left: 206px;
+        position: absolute;
+        top: 0;
+        overflow: hidden;
+        white-space: nowrap;
     }
 </style>
