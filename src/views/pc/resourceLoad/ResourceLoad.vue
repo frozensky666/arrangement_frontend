@@ -1,0 +1,536 @@
+<template>
+	<div class="gantt-wrap">
+		<div class="gantt-header">
+		    <div class="gantt-header-left">
+		        <div class="gantt-title">资源负载图</div>
+		    </div>
+		    <div class="gantt-header-middle">
+		        <div class="grid-content bg-purple">
+		        	<p class="fontofname">设备总负载</p>
+		        	<p class="fontofdate">2017年10月1-7日</p>
+		        	<el-progress type="circle" :percentage="90"></el-progress>
+		        </div>
+				<div class="grid-content bg-purple">
+					<p class="fontofname">人员总负载</p>
+					<p class="fontofdate">2017年10月1-7日</p>
+					<el-progress type="circle" :percentage="70"></el-progress>
+				</div>
+		    </div>
+
+			<div class="gantt-header-right">
+			    <div class="fontofright">图例</div>
+				<div>
+					<div class="fontofrightson1">0~20%</div>
+					<div class="fontofrightson2">20%~40%</div>
+					<div class="fontofrightson3">40%~60%</div>
+				</div>
+				<div>
+					<div class="fontofrightson4">60%~80%</div>
+					<div class="fontofrightson5">80%~100%</div>
+					<div class="fontofrightson6">>100%</div>
+				</div>
+				
+			</div>
+		</div>
+				<div class="time-selector">
+				    <div class="time-selector-left">
+				        <el-select v-model="dateType" style="width: 160px" @change="timeSelectChange">
+				            <el-option
+				                    v-for="item in dateTypeOptions"
+				                    :key="item.value"
+				                    :label="item.label"
+				                    :value="item.value">
+				            </el-option>
+				        </el-select>
+				    </div>
+						<div class="time-selector-right">
+							<div class="time-left" @click="scroll(-1)">
+								<div class="time-l-arrow"></div>
+							</div>
+							<div class="time-middle"
+								 :style="{'max-width':blocks*blockSize+'px','flex':'0 0 '+(bodyWidth*0.8-180-2*26)+'px'}"
+								 @scroll="drag"
+							> <!--  【 总宽*0.8 - selector宽度 - 左右箭头宽度 = 可视窗口宽度 】-->
+								<div v-if="dateType==='day'"
+									 :style="{'width':blocks*blockSize+'px'}">
+									<div v-for="title in timeDivision"
+										 :key="title"
+										 class="time-middle-content"
+										 :style="{'width': blockSize-1+'px'}">
+										{{title}}
+									</div>
+								</div>
+								<div v-if="dateType==='date'"
+									 :style="{'width':blocks*blockSize+'px'}">
+									<div v-for="i in getDays(date,blocks)"
+										 :key="'month'+i"
+										 class="time-middle-content"
+										 :style="{'width': blockSize-1+'px'}">
+										{{i}}
+									</div>
+								</div>
+						
+							</div>
+							<div class="time-right" @click="scroll(1)">
+								<div class="time-r-arrow"></div>
+							</div>
+						</div>
+						
+						
+				</div>
+				<div class="table">
+				    <div class="row" v-for="item in demoData1" :key="item.role">
+				        <div class="row-label">
+				            {{item.role}}
+				        </div>
+				        <div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
+							<div class="row-content-wrap" :style="{'left':bias+'px'}">
+								<el-tooltip
+								        v-for="(block,index) in item.load" :key="block.data+block.percent"
+								        effect="dark" :content="block.percent" placement="top">
+								    
+									<div class="row-item"
+									:style="{'left': getPosition(index)+'px'}">
+										<div class="row-colorbox"
+										     :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}">
+										    {{getPercentage(block.percent)}}
+										</div>
+									</div>
+									
+								</el-tooltip>
+							</div>
+						</div>
+				    </div>
+				</div>
+				
+				
+
+	</div>
+</template>
+
+<script>
+	import {bodyWidthMixin} from "@/common/mixin";
+	import {generateRandomColor,colorFaded} from "@/common/utils";
+	
+				  export default {
+					mixins: [bodyWidthMixin],
+				    data() {
+				      return {
+						screenWidth: document.body.clientWidth,
+						dateType: "day",
+						date: "2018/11/9",
+				        dateTypeOptions: [
+				            {
+				                value: "day",
+				                label: '按天显示'
+				            },
+				            {
+				                value: "date",
+				                label: '按周显示'
+				            }
+				        
+				        ],
+						
+						blocks: 7,
+						blockSize: 170,
+						height:80,
+						timeDivision: [
+						    '2018/11/09',
+						    '2018/11/10',
+						    '2018/11/11',
+						    '2018/11/12',
+						    '2018/11/13',
+						    '2018/11/14',
+						    '2018/11/15',
+						],
+						bias: 0,
+						demoData1: [
+						    {
+						        role: "小明",
+						        load: [
+						            {
+						                date:'2018/11/09',
+										percent:'0.6'
+						            },
+						            {
+						                date:'2018/11/10',
+						                percent:'0.7'
+						            },
+						            {
+						                date:'2018/11/11',
+						                percent:'0.8'
+						            },
+						            {
+						                date:'2018/11/12',
+						                percent:'0.9'
+						            },
+									{
+									    date:'2018/11/13',
+									    percent:'1'
+									},
+									{
+									    date:'2018/11/14',
+									    percent:'0.4'
+									},
+									{
+									    date:'2018/11/15',
+									    percent:'0.5'
+									},
+						        ]
+						    },
+						    {
+						        role: "小红",
+						        load: [
+						           {
+						               date:'2018/11/09',
+						           	percent:'0.2'
+						           },
+						           {
+						               date:'2018/11/10',
+						               percent:'0.1'
+						           },
+						           {
+						               date:'2018/11/11',
+						               percent:'0.3'
+						           },
+						           {
+						               date:'2018/11/12',
+						               percent:'0.4'
+						           },
+						           {
+						               date:'2018/11/13',
+						               percent:'0.5'
+						           },
+						           {
+						               date:'2018/11/14',
+						               percent:'1'
+						           },
+						           {
+						               date:'2018/11/15',
+						               percent:'1'
+						           },
+						        ]
+						    },
+						],
+				      }
+				    
+				  },
+				  
+				  methods: {
+					  timeSelectChange(timeSelect) {
+					      console.log(timeSelect);
+					      if(timeSelect === "day") {
+					          this.blocks = 7;
+					          this.blockSize = 170;
+					          this.timeChange(this.date);
+					      } else if (timeSelect === "date") {
+					          this.blocks = 7;
+					          this.blockSize = 170;
+					          this.timeChange(this.date);
+					      }
+					  },
+					  timeChange(time) {
+					      console.log(time);
+					  },
+					  scroll(pages) {
+					      let d = new Date(this.date);
+					      d.setDate(d.getDate()+pages);
+					      this.date = d;
+					      this.timeChange(this.date);
+					  },
+					  drag(event) {
+					      this.bias = -event.target.scrollLeft;
+					  
+					      console.log('scroll', event.target.scrollLeft);
+					  },
+					  getColor(percent){
+						 
+						  if (percent < 0.2) {
+						            return '#08FFFF';
+						          } else if (percent < 0.4) {
+						            return '#4EA4CB';
+						          } else if (percent < 0.6) {
+						            return '#98F20c';
+						          } else if (percent < 0.8) {
+						            return '#F59D2A';
+						          } else if (percent < 1) {
+						            return '#E4C7FF';
+						          } else {
+						            return '#E02E44';
+						          }
+					  },
+					  getPosition(theindex) {
+					  					  return theindex*this.blockSize+30;
+					      
+					  },
+					  gettop(percent) {
+					  					  return this.height*(1-percent);
+					      
+					  },
+					  getHeight(percent) {
+					  					  return percent*this.height;
+					      
+					  },
+					  getPercentage(percent) {
+					  					  return (percent*100)+"%";
+					      
+					  }
+				  },
+				  
+				  }
+</script>
+
+<style>
+	.gantt-wrap {
+	    width: 80%;
+	    min-width: 600px;
+	    margin-left: 10%;
+	}
+/* gantt header */
+    .gantt-header {
+        margin-top: 50px;
+        margin-bottom: 50px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .gantt-title {
+        padding: 20px;
+        border: 1px solid #1f94ff;
+    }
+    .gantt-header-middle {
+	
+    }
+    .gantt-header-right {
+	margin-top: 170px;
+	
+    }
+	.fontofright{
+		border: 1px solid #1f94ff;
+		text-align: center;
+		width: 100px;
+	}
+	.fontofrightson1{
+
+		float:left;
+		background-color: #08FFFF;
+		border: 1px solid #1f94ff;
+		text-align: center;
+		width: 100px;
+	}
+	.fontofrightson2{
+
+		float:left;
+		background-color: #4EA4CB;
+		border: 1px solid #1f94ff;
+		text-align: center;
+		width: 100px;
+	}
+	.fontofrightson3{
+
+		float:left;
+		background-color: #98F20c;
+		border: 1px solid #1f94ff;
+		text-align: center;
+		width: 100px;
+	}
+	.fontofrightson4{
+
+		float:left;
+		background-color: #F59D2A;
+		border: 1px solid #1f94ff;
+		text-align: center;
+		width: 100px;
+	}
+	.fontofrightson5{
+
+		float:left;
+		background-color: #E4C7FF;
+		border: 1px solid #1f94ff;
+		text-align: center;
+		width: 100px;
+	}
+	.fontofrightson6{
+
+		float:left;
+		background-color: #E02E44;
+		border: 1px solid #1f94ff;
+		text-align: center;
+		width: 100px;
+	}
+	.el-row {
+		margin-bottom: 20px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.el-col {
+		border-radius: 4px;
+	}
+
+	.bg-purple-dark {
+		background: #99a9bf;
+	}
+
+	.bg-purple {
+		border: 1px solid #1f94ff;
+		text-align: center;
+		padding-bottom: 10px;
+	}
+
+	.bg-purple-light {
+		background: #e5e9f2;
+	}
+
+	.grid-content {
+		float:left;
+		padding-left: 30px;
+		padding-right: 30px;
+		border-radius: 4px;
+		min-height: 36px;
+	}
+
+	.row-bg {
+		background-color: #f9fafc;
+	}
+
+	.fontofname {
+		padding-top: 10px;
+		font-family: "PingFang SC";
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.fontofdate {
+		font-family: "PingFang SC";
+		font-size: 12px;
+	}
+	.fontoftitle {
+		font-family: "PingFang SC";
+		font-size: 25px;
+		font-weight: bold;
+		padding-top: 20px;
+		margin-bottom: 50px;
+	}
+	.grid-title {
+		border-radius: 4px;
+		min-height: 36px;
+		margin-left: 20px;
+	}
+	
+	
+	    /* time selector */
+	.time-selector{
+	    display: flex;
+	    justify-content: left;
+	}
+	.time-selector-left {
+	    flex: 0 0 160px;
+	}
+	
+	 .time-selector-right {
+	        display: flex;
+	        height: 80px;
+	        margin-left: 20px;
+	        /*position: relative;*/
+	    }
+	
+	.time-l-arrow, .time-r-arrow{
+	    width: 8px;
+	    height: 8px;
+	    border-top: 2px solid #fff;
+	    border-right: 2px solid #fff;
+	    margin-top: 36px;
+	}
+	.time-l-arrow {
+	    transform: rotate(225deg);
+	}
+	.time-r-arrow {
+	    transform: rotate(45deg);
+	}
+	.time-middle {
+	    height: 80px;
+	    overflow-x: auto;
+	    overflow-y: hidden;
+	    white-space: nowrap;
+	}
+	.time-middle-content {
+	    height: 78px;
+	    line-height: 39px;
+	    border: solid 1px #888888;
+	    margin-left: -1px;
+	    display: inline-block;
+	    white-space: normal;
+	    float: left;
+	}
+	.time-left,.time-right{
+	    flex: 0 0 10px;
+	    padding: 0 8px 0 8px;
+	    background-color: #bcbec1;
+	    border-radius: 4px;
+	}
+	.time-left:hover,.time-right:hover{
+	    background-color: #dcdcdc;
+	    cursor: pointer;
+	}
+	.time-left:active,.time-right:active {
+	    background-color: #b4b4b4;
+	}
+	
+	  /* table */
+	.table .row {
+	    /*background-color: #6c81eb;*/
+	    height: 100px;
+	    border-top: 1px solid #fff;
+	    /*display: flex;*/
+	    /*justify-content: left;*/
+	    position: relative;
+	}
+	.table .row .row-label {
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	    width: 160px;
+	    /*flex: 0 0 160px;*/
+	    background-color: #f1f1f1;
+	    border-radius: 10px;
+	    text-align: center;
+	    line-height: 80px;
+	    height: 80px;
+	    font-size: large;
+	
+	}
+	.table .row .row-content {
+	    /*display: inline-block;*/
+	    position: absolute;
+	    left: 206px;
+	    top: 0;
+	    /*margin-left: 46px;*/
+	    height: 100px;
+
+	    overflow-x: hidden;
+	    overflow-y: hidden;
+	    white-space: nowrap;
+	}
+	.table .row .row-content-wrap {
+	    position: absolute;
+	}
+	.table .row .row-content .row-item{
+	    position: absolute;
+	    height: 80px;
+		width: 120px;
+	    top: 7px;
+	    display: inline-block;
+	    border-radius: 10px;
+		border: 1px solid #1f94ff;
+	    cursor: pointer;
+	}
+	.table .row .row-content .row-item .row-colorbox{
+	    position: absolute;
+		width: 120px;
+	    display: inline-block;
+	    border-radius: 10px;
+	    text-align: center;
+	    cursor: pointer;
+	}
+</style>
