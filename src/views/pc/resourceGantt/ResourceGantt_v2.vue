@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            <div class="canvas-wrap" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px','height':demoData0.length*40+'px'}">
+            <div class="canvas-wrap" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px','height':demoData0.length*41+'px'}">
                 <canvas class="canvas" height="3000" width="3000" ref="canvas" :style="{'left':bias+'px'}"></canvas>
             </div>
         </div>
@@ -226,6 +226,7 @@
             }
         },
         beforeMount() {
+            //进行数据结构转换，方便后续的渲染
             this.demoData1 = {};
             this.demoData0.forEach((obj,idx) => {
               obj.plan.forEach(p => {
@@ -285,6 +286,8 @@
                 }
             },
             timeChange(time) {
+                // TODO
+                // 请求数据
                 this.clearCanvas();
                 if(this.mode === "route")
                     this.drawLines(this.currentProduct);
@@ -338,7 +341,6 @@
                 ctx.clearRect(0,0,c.width,c.height);
             },
             drawLines(p) { //产品
-                //TODO
                 let c=this.$refs.canvas;
                 let ctx=c.getContext("2d");
                 let tmpArr = [];
@@ -355,7 +357,7 @@
                                 let end1 = this.getPosition(tmpArr[i][j].end);
                                 let start2 = this.getPosition(tmpArr[i+1][k].start);
                                 if(tmpArr[i][j].index === tmpArr[i+1][k].index) {//画横线
-                                    let y = 20+40*tmpArr[i][j].index; //40为一行的高度
+                                    let y = 20+41*tmpArr[i][j].index; //41为一行的高度
                                     ctx.beginPath();
                                     ctx.moveTo(end1,y);
                                     ctx.lineTo(start2,y);
@@ -363,8 +365,8 @@
                                     ctx.stroke();
                                 }else {
                                     let shortLine = 5;
-                                    let y1 = 20+40*tmpArr[i][j].index;
-                                    let y2 = 20+40*tmpArr[i+1][k].index;
+                                    let y1 = 20+41*tmpArr[i][j].index;
+                                    let y2 = 20+41*tmpArr[i+1][k].index;
                                     let e2x = end1+shortLine;
                                     let s2x = start2-shortLine;
                                     let p1y = y1+(tmpArr[i][j].index > tmpArr[i+1][k].index ? -1:1)*18;
