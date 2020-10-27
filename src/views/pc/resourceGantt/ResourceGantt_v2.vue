@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="table">
-            <div class="row" v-for="item in demoData0" :key="item.role">
+            <div class="row" v-for="item in queryData" :key="item.role">
                 <div class="row-label">
                     {{item.role}}
                 </div>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            <div class="canvas-wrap" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px','height':demoData0.length*41+'px'}">
+            <div class="canvas-wrap" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px','height':queryData.length*41+'px'}">
                 <canvas class="canvas" height="3000" width="3000" ref="canvas" :style="{'left':bias+'px'}"></canvas>
             </div>
         </div>
@@ -91,6 +91,7 @@
 <script>
     import {bodyWidthMixin} from "@/common/mixin";
     import {generateRandomColor,colorFaded} from "@/common/utils";
+    import {resourceGanttDate,resourceGanttHour} from "@/network/resourceGantt";
 
     export default {
         name: "ResourceGantt_v2",
@@ -129,151 +130,90 @@
                     "次日5:00-次日7:00",
                 ],
                 bias: 0,
-                demoData0: [
-                    {
-                        role: "小明",
-                        plan: [
-                            {
-                                start: '2018/11/09 7:23',
-                                end: '2018/11/09 8:45',
-                                value: '125678912',
-                                delay :true
-                                // bg: 'green'
-                            },
-                            {
-                                start: '2018/11/09 12:23',
-                                end: '2018/11/09 18:45',
-                                value: '755529799',
-                                delay :false
-                                // bg: 'blue'
-                            },
-                            {
-                                start: '2018/11/09 19:55',
-                                end: '2018/11/10 0:45',
-                                value: '125678912',
-                                delay :true
-                                // bg: 'yellow'
-                            },
-                            {
-                                start: '2018/11/10 1:28',
-                                end: '2018/11/10 7:00',
-                                value: '413131313',
-                                delay :false
-                                // bg: 'red'
-                            },
-                        ]
-                    },
-                    {
-                        role: "小芳",
-                        plan: [
-                            {
-                                start: '2018/11/09 7:00',
-                                end: '2018/11/09 16:00',
-                                value: '554979844',
-                                delay :false
-                                // bg: 'red'
-                            },
-                        ]
-                    },
-                    {
-                        role: "小王",
-                        plan: [
-                            {
-                                start: '2018/11/09 15:00',
-                                end: '2018/11/09 16:00',
-                                value: '554979844',
-                                delay :false
-                                // bg: 'red'
-                            },
-                        ]
-                    },
-                    {
-                        role: "小红",
-                        plan: [
-                            {
-                                start: '2018/11/09 7:00',
-                                end: '2018/11/09 9:00',
-                                value: '554979844',
-                                delay :false
-                                // bg: 'red'
-                            },
-                            {
-                                start: '2018/11/09 11:23',
-                                end: '2018/11/09 15:45',
-                                value: '755529799',
-                                delay :false
-                                // bg: 'yellow'
-                            },
-                            {
-                                start: '2018/11/09 19:55',
-                                end: '2018/11/10 0:00',
-                                value: '755529799',
-                                delay :false
-                                // bg: 'blue'
-                            },
-                            {
-                                start: '2018/11/10 0:28',
-                                end: '2018/11/10 4:30',
-                                value: '125678912',
-                                delay :true
-                                // bg: 'green'
-                            },
-                        ]
-                    },
-                ],
-                demoData1: null,
+                queryData: [],
+                transformedData: null,
                 currentProduct: null
             }
         },
         beforeMount() {
-            //进行数据结构转换，方便后续的渲染
-            this.demoData1 = {};
-            this.demoData0.forEach((obj,idx) => {
-              obj.plan.forEach(p => {
-                  if(p.delay) {
-                      this.$set(p,"bg","hsl(0,100%,50%)");
-                  }else {
-                      this.$set(p,"bg",generateRandomColor(p.value));
-                  }
-                  p.oriBg = p.bg; //本来的颜色/显示的颜色（是否淡化处理）
-                  p.index = idx; //用于路线图定位
-                  if(Object.prototype.hasOwnProperty.call(this.demoData1,p.value)) {
-                      this.demoData1[p.value].push(p);
-                  } else {
-                      Object.defineProperty(this.demoData1,p.value,{
-                          value: [p],
-                          configurable:true,
-                          writable:true,
-                          enumerable:true
-                      });
-                  }
-              });
-            });
-            for(let product in this.demoData1) {
-                if(Object.prototype.hasOwnProperty.call(this.demoData1,product)) {
-                    this.demoData1[product].sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
-                    let tmpObj = {};
-                    this.demoData1[product].forEach(plan => {
-                        let st = new Date(plan.start).toString();
-                        if(Object.prototype.hasOwnProperty.call(tmpObj,st)) {
-                            tmpObj[st].push(plan);
+
+        },
+        mounted() {
+          this.timeChange(this.date);
+        },
+        methods: {
+            getData() {
+                let reqFunc;
+                if(this.dateType === "date") {
+                    reqFunc = resourceGanttHour;
+                }else {
+                    reqFunc = resourceGanttDate;
+                }
+                let tmpDate = new Date(this.date);
+                tmpDate.setDate(tmpDate.getDate() + 6);
+                // console.log("妙啊");
+                return reqFunc({
+                    params: this.dateType === "date"?
+                        {
+                            date: this.date
+                        }:
+                        {
+                            start: this.date,
+                            end: tmpDate
+                        }
+                }).then(res => {
+                    if(res.code === 200) {
+                        this.queryData = res.data;
+                        this.dataTransform();
+                    }
+                    else alert("Some Error Occured!")
+                });
+            },
+            dataTransform() {
+                //进行数据结构转换，方便后续的渲染
+                this.transformedData = {};
+                this.queryData.forEach((obj,idx) => {
+                    obj.plan.forEach(p => {
+                        if(p.delay) {
+                            this.$set(p,"bg","hsl(0,100%,50%)");
+                        }else {
+                            this.$set(p,"bg",generateRandomColor(p.value));
+                        }
+                        p.oriBg = p.bg; //本来的颜色/显示的颜色（是否淡化处理）
+                        p.index = idx; //用于路线图定位
+                        if(Object.prototype.hasOwnProperty.call(this.transformedData,p.value)) {
+                            this.transformedData[p.value].push(p);
                         } else {
-                            Object.defineProperty(tmpObj,st,{
-                                value: [plan],
+                            Object.defineProperty(this.transformedData,p.value,{
+                                value: [p],
                                 configurable:true,
                                 writable:true,
                                 enumerable:true
                             });
                         }
                     });
-                    this.demoData1[product] = tmpObj;
+                });
+                for(let product in this.transformedData) {
+                    if(Object.prototype.hasOwnProperty.call(this.transformedData,product)) {
+                        this.transformedData[product].sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+                        let tmpObj = {};
+                        this.transformedData[product].forEach(plan => {
+                            let st = new Date(plan.start).toString();
+                            if(Object.prototype.hasOwnProperty.call(tmpObj,st)) {
+                                tmpObj[st].push(plan);
+                            } else {
+                                Object.defineProperty(tmpObj,st,{
+                                    value: [plan],
+                                    configurable:true,
+                                    writable:true,
+                                    enumerable:true
+                                });
+                            }
+                        });
+                        this.transformedData[product] = tmpObj;
+                    }
                 }
-            }
-        },
-        mounted() {
-          this.timeChange(this.date);
-        },
-        methods: {
+            },
             timeSelectChange(timeSelect) {
                 if(timeSelect === "date") {
                     this.blocks = 12;
@@ -289,8 +229,12 @@
                 // TODO
                 // 请求数据
                 this.clearCanvas();
-                if(this.mode === "route")
-                    this.drawLines(this.currentProduct);
+                this.getData().then(()=> {
+                    if(this.mode === "route") {
+                        this.drawLines(this.currentProduct);
+                        this.changeColor(this.mode,this.currentProduct);
+                    }
+                });
             },
             scroll(pages) {
                 let d = new Date(this.date);
@@ -344,10 +288,10 @@
                 let c=this.$refs.canvas;
                 let ctx=c.getContext("2d");
                 let tmpArr = [];
-                if(Object.prototype.hasOwnProperty.call(this.demoData1,p)) {
-                    for(let i in this.demoData1[p]) {
-                        if(Object.prototype.hasOwnProperty.call(this.demoData1[p],i))
-                            tmpArr.push(this.demoData1[p][i]);
+                if(Object.prototype.hasOwnProperty.call(this.transformedData,p)) {
+                    for(let i in this.transformedData[p]) {
+                        if(Object.prototype.hasOwnProperty.call(this.transformedData[p],i))
+                            tmpArr.push(this.transformedData[p][i]);
                     }
                 }
                 if(tmpArr.length > 1) { //全在同一时刻的情况排除
@@ -387,11 +331,11 @@
             },
             changeColor(mode,p) { //当前模式/点击的产品
                 let flag = mode==="route";
-                for(let product in this.demoData1) {
-                    if(Object.prototype.hasOwnProperty.call(this.demoData1,product)) {
-                        for(let i in this.demoData1[product]) {
-                            if(Object.prototype.hasOwnProperty.call(this.demoData1[product],i)) {
-                                this.demoData1[product][i].forEach(p2 => {
+                for(let product in this.transformedData) {
+                    if(Object.prototype.hasOwnProperty.call(this.transformedData,product)) {
+                        for(let i in this.transformedData[product]) {
+                            if(Object.prototype.hasOwnProperty.call(this.transformedData[product],i)) {
+                                this.transformedData[product][i].forEach(p2 => {
                                     p2.bg = flag && (product!==p) ? colorFaded(p2.bg) : p2.oriBg;
                                 });
                             }

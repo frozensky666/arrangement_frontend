@@ -9,12 +9,14 @@ const reqInterceptor = (app, url, type, ret) => {
 const _get = (app, url, ret) => {
   app.get(url, (req, resp) => {
     resp.json(Mock.mock(ret));
+    console.log(req.body, req.query);
   });
 };
 
 const _post = (app, url, ret) => {
   app.post(url, (req, resp) => {
     resp.json(Mock.mock(ret));
+    console.log(req.body, req.query);
   });
 };
 
