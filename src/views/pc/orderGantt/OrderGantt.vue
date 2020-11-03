@@ -118,7 +118,7 @@
 						            {
 						                name:'装配',
 										percent:'0.6',
-										deadline:'2018/11/09',
+										
 										isdelayed:'1'
 						            }
 									
@@ -131,7 +131,7 @@
 							        {
 							            name:'装配',
 										percent:'1',
-										deadline:'2018/11/08',
+										
 										isdelayed:'0'
 							        }
 									
@@ -144,7 +144,7 @@
 							        {
 							            name:'装配',
 										percent:'1',
-										deadline:'2018/11/08',
+										
 										isdelayed:'1'
 							        }
 									
@@ -157,13 +157,13 @@
 							        {
 							            name:'装配',
 										percent:'0.53',
-										deadline:'2018/11/08',
+										
 										isdelayed:'0'
 							        },
 									{
 									    name:'测试',
 										percent:'0.33',
-										deadline:'2018/11/08',
+										
 										isdelayed:'0'
 									}
 									
@@ -176,13 +176,13 @@
 							        {
 							            name:'装配',
 										percent:'0.53',
-										deadline:'2018/11/08',
+										
 										isdelayed:'0'
 							        },
 									{
 									    name:'测试',
 										percent:'0',
-										deadline:'2018/11/08',
+										
 										isdelayed:'0'
 									}
 									
