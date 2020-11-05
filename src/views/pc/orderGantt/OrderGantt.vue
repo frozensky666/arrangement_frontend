@@ -7,8 +7,8 @@
 		    <div class="gantt-header-middle">
 		        <div class="grid-content bg-purple">
 		        	<p class="fontofname">按期交货率</p>
-		        	<p class="fontofdate">2017年10月1日之前</p>
-		        	<el-progress type="circle" stroke-linecap="butt" :stroke-width="20"   :percentage="90"></el-progress>
+		        	<p class="fontofdate">{{getcompleteDate(date)}}之前</p>
+		        	<el-progress type="circle" stroke-linecap="butt" :stroke-width="20"   :percentage="orderdata.complete*100"></el-progress>
 		        </div>
 				
 		    </div>
@@ -41,7 +41,7 @@
 				</div>
 				
 				<div class="table">
-				    <div class="row" v-for="item in demoData2" :key="item.orderId">
+				    <div class="row" v-for="item in orderdata.orderList" :key="item.orderId">
 				        <div class="row-label">
 				            {{item.orderId}}
 				        </div>
@@ -52,13 +52,13 @@
 				        		        effect="dark" :content="getPercentage(block.percent)" placement="top">
 				        		    
 				        			<div class="row-item"
-				        			:style="{'left': getPosition(item.num,index)+'px','width':getWidthOfBox(item.num)+'px'}">
+				        			:style="{'left': getPosition(item.process.length,index)+'px','width':getWidthOfBox(item.process.length)+'px'}">
 				        				<div class="row-percentbox"
-				        				     :style="{'background-color': getColor(block.percent,block.isdelayed),'width':getWidthOfPercent(item.num,block.percent)+'px'}">
+				        				     :style="{'background-color': getColor(block.percent,block.isdelayed),'width':getWidthOfPercent(item.process.length,block.percent)+'px'}">
 				        				    {{block.name}}   {{getPercentage(block.percent)}}
 				        				</div>
 										<div class="row-percentbox" v-if="block.isdelayed==1"
-										     :style="{'left': getPosition2(item.num,block.percent)+'px','background-color': getColorAfter(block.percent,block.isdelayed),'width':getWidthOfPercentAfter(item.num,block.percent)+'px'}">
+										     :style="{'left': getPosition2(item.process.length,block.percent)+'px','background-color': getColorAfter(block.percent,block.isdelayed),'width':getWidthOfPercentAfter(item.num,block.percent)+'px'}">
 										 
 										</div>
 				        			</div>
@@ -85,111 +85,92 @@
 						screenWidth: document.body.clientWidth,
 						dateType: "day",
 						date: "2018/11/9",
-				        dateTypeOptions: [
-				            {
-				                value: "day",
-				                label: '按天显示'
-				            },
-				            {
-				                value: "date",
-				                label: '按周显示'
-				            }
-				        
-				        ],
-						
-						blocks: 7,
-						blockSize: 170,
 						height:80,
-						timeDivision: [
-						    '2018/11/09',
-						    '2018/11/10',
-						    '2018/11/11',
-						    '2018/11/12',
-						    '2018/11/13',
-						    '2018/11/14',
-						    '2018/11/15',
-						],
 						bias: 0,
-						demoData2: [
-						    {
-						        orderId: "418575",
-								num:"1",
-						        process: [
-						            {
-						                name:'装配',
-										percent:'0.6',
+						orderdata:{
+							complete:'0.79',
+							orderList: [
+							    {
+							        orderId: "418575",
+									num:"1",
+							        process: [
+							            {
+							                name:'装配',
+											percent:'0.6',
+											
+											isdelayed:'1'
+							            }
 										
-										isdelayed:'1'
-						            }
-									
-						        ]
-						    },
-							{
-							    orderId: "418577",
-								num:"1",
-							    process: [
-							        {
-							            name:'装配',
-										percent:'1',
+							        ]
+							    },
+								{
+								    orderId: "418577",
+									num:"1",
+								    process: [
+								        {
+								            name:'装配',
+											percent:'1',
+											
+											isdelayed:'0'
+								        }
 										
-										isdelayed:'0'
-							        }
-									
-							    ]
-							},
-							{
-							    orderId: "764486",
-								num:"1",
-							    process: [
-							        {
-							            name:'装配',
-										percent:'1',
+								    ]
+								},
+								{
+								    orderId: "764486",
+									num:"1",
+								    process: [
+								        {
+								            name:'装配',
+											percent:'1',
+											
+											isdelayed:'1'
+								        }
 										
-										isdelayed:'1'
-							        }
-									
-							    ]
-							},
-							{
-							    orderId: "762904",
-								num:"2",
-							    process: [
-							        {
-							            name:'装配',
-										percent:'0.53',
+								    ]
+								},
+								{
+								    orderId: "762904",
+									num:"2",
+								    process: [
+								        {
+								            name:'装配',
+											percent:'0.53',
+											
+											isdelayed:'0'
+								        },
+										{
+										    name:'测试',
+											percent:'0.33',
+											
+											isdelayed:'0'
+										}
 										
-										isdelayed:'0'
-							        },
-									{
-									    name:'测试',
-										percent:'0.33',
+								    ]
+								},
+								{
+								    orderId: "762345",
+									num:"2",
+								    process: [
+								        {
+								            name:'装配',
+											percent:'0.53',
+											
+											isdelayed:'0'
+								        },
+										{
+										    name:'测试',
+											percent:'0',
+											
+											isdelayed:'0'
+										}
 										
-										isdelayed:'0'
-									}
-									
-							    ]
-							},
-							{
-							    orderId: "762345",
-								num:"2",
-							    process: [
-							        {
-							            name:'装配',
-										percent:'0.53',
-										
-										isdelayed:'0'
-							        },
-									{
-									    name:'测试',
-										percent:'0',
-										
-										isdelayed:'0'
-									}
-									
-							    ]
-							}
-						    
-						],
+								    ]
+								}
+							    
+							]
+						},
+						
 						
 						
 				      }
@@ -270,6 +251,12 @@
 					  getWidthOfPercent(num,percent) {
 					  					  return 1150/num*percent;
 					      
+					  },
+					  getcompleteDate(date){
+							  let d =new Date(date);
+							  let out ='';
+							  out=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
+							  return out;
 					  },
 					  getPercentage(percent) {
 						  if(percent!=1){

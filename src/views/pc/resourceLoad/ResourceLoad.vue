@@ -5,15 +5,25 @@
 		        <div class="gantt-title">资源负载图</div>
 		    </div>
 		    <div class="gantt-header-middle">
-		        <div class="grid-content bg-purple">
+		        <div class="grid-content bg-purple" v-if="dateType==='day'">
 		        	<p class="fontofname">设备总负载</p>
-		        	<p class="fontofdate">2017年10月1-7日</p>
-		        	<el-progress type="circle" :percentage="90"></el-progress>
+		        	<p class="fontofdate">{{getdaydate(date)}}</p>
+		        	<el-progress type="circle" :percentage="Loaddata.deviceSumLoad*100"></el-progress>
 		        </div>
-				<div class="grid-content bg-purple">
+				<div class="grid-content bg-purple" v-if="dateType==='day'">
 					<p class="fontofname">人员总负载</p>
-					<p class="fontofdate">2017年10月1-7日</p>
-					<el-progress type="circle" :percentage="70"></el-progress>
+					<p class="fontofdate">{{getdaydate(date)}}</p>
+					<el-progress type="circle" :percentage="Loaddata.personnelSumLoad*100"></el-progress>
+				</div>
+				<div class="grid-content bg-purple" v-if="dateType==='date'">
+					<p class="fontofname">设备总负载</p>
+					<p class="fontofdate">{{getweekdate(date)}}</p>
+					<el-progress type="circle" :percentage="Loaddata.deviceSumLoad*100"></el-progress>
+				</div>
+				<div class="grid-content bg-purple" v-if="dateType==='date'">
+					<p class="fontofname">人员总负载</p>
+					<p class="fontofdate">{{getweekdate(date)}}</p>
+					<el-progress type="circle" :percentage="Loaddata.personnelSumLoad*100"></el-progress>
 				</div>
 		    </div>
 
@@ -53,16 +63,16 @@
 							> <!--  【 总宽*0.8 - selector宽度 - 左右箭头宽度 = 可视窗口宽度 】-->
 								<div v-if="dateType==='day'"
 									 :style="{'width':blocks*blockSize+'px'}">
-									<div v-for="title in timeDivision"
-										 :key="title"
+									<div v-for="i in getDays(date,blocks)"
+										 :key="'month'+i"
 										 class="time-middle-content"
 										 :style="{'width': blockSize-1+'px'}">
-										{{title}}
+										{{i}}
 									</div>
 								</div>
 								<div v-if="dateType==='date'"
 									 :style="{'width':blocks*blockSize+'px'}">
-									<div v-for="i in getDays(date,blocks)"
+									<div v-for="i in getWeeks(date,blocks)"
 										 :key="'month'+i"
 										 class="time-middle-content"
 										 :style="{'width': blockSize-1+'px'}">
@@ -78,8 +88,8 @@
 						
 						
 				</div>
-				<div class="table">
-				    <div class="row" v-for="item in demoData1" :key="item.role">
+				<div class="table" >
+				    <div class="row" v-for="item in Loaddata.personnelLoad" :key="item.role">
 				        <div class="row-label">
 				            {{item.role}}
 				        </div>
@@ -101,6 +111,28 @@
 							</div>
 						</div>
 				    </div>
+					<div class="row" v-for="item in Loaddata.deviceLoad" :key="item.role">
+					    <div class="row-label">
+					        {{item.role}}
+					    </div>
+					    <div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
+							<div class="row-content-wrap" :style="{'left':bias+'px'}">
+								<el-tooltip
+								        v-for="(block,index) in item.load" :key="block.data+block.percent"
+								        effect="dark" :content="block.percent" placement="top">
+								    
+									<div class="row-item"
+									:style="{'left': getPosition(index)+'px'}">
+										<div class="row-colorbox"
+										     :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}">
+										    {{getPercentage(block.percent)}}
+										</div>
+									</div>
+									
+								</el-tooltip>
+							</div>
+						</div>
+					</div>
 				</div>
 				
 				
@@ -118,7 +150,7 @@
 				      return {
 						screenWidth: document.body.clientWidth,
 						dateType: "day",
-						date: "2018/11/9",
+						date: "2018/11/1",
 				        dateTypeOptions: [
 				            {
 				                value: "day",
@@ -144,74 +176,147 @@
 						    '2018/11/15',
 						],
 						bias: 0,
-						demoData1: [
-						    {
-						        role: "小明",
-						        load: [
-						            {
-						                date:'2018/11/09',
-										percent:'0.6'
-						            },
-						            {
-						                date:'2018/11/10',
-						                percent:'0.7'
-						            },
-						            {
-						                date:'2018/11/11',
-						                percent:'0.8'
-						            },
-						            {
-						                date:'2018/11/12',
-						                percent:'0.9'
-						            },
-									{
-									    date:'2018/11/13',
-									    percent:'1'
-									},
-									{
-									    date:'2018/11/14',
-									    percent:'0.4'
-									},
-									{
-									    date:'2018/11/15',
-									    percent:'0.5'
-									},
-						        ]
-						    },
-						    {
-						        role: "小红",
-						        load: [
-						           {
-						               date:'2018/11/09',
-						           	percent:'0.2'
-						           },
-						           {
-						               date:'2018/11/10',
-						               percent:'0.1'
-						           },
-						           {
-						               date:'2018/11/11',
-						               percent:'0.3'
-						           },
-						           {
-						               date:'2018/11/12',
-						               percent:'0.4'
-						           },
-						           {
-						               date:'2018/11/13',
-						               percent:'0.5'
-						           },
-						           {
-						               date:'2018/11/14',
-						               percent:'1'
-						           },
-						           {
-						               date:'2018/11/15',
-						               percent:'1'
-						           },
-						        ]
-						    },
-						],
+						Loaddata:{
+							personnelSumLoad:'0.70',
+							deviceSumLoad:'0.80',
+							personnelLoad: [
+							    {
+							        role: "小明",
+							        load: [
+							            {
+							                date:'2018/11/09',
+											percent:'0.5'
+							            },
+							            {
+							                date:'2018/11/10',
+							                percent:'0.7'
+							            },
+							            {
+							                date:'2018/11/11',
+							                percent:'0.8'
+							            },
+							            {
+							                date:'2018/11/12',
+							                percent:'0.9'
+							            },
+										{
+										    date:'2018/11/13',
+										    percent:'1'
+										},
+										{
+										    date:'2018/11/14',
+										    percent:'0.4'
+										},
+										{
+										    date:'2018/11/15',
+										    percent:'0.5'
+										},
+							        ]
+							    },
+							    {
+							        role: "小红",
+							        load: [
+							           {
+							               date:'2018/11/09',
+							           	percent:'0.2'
+							           },
+							           {
+							               date:'2018/11/10',
+							               percent:'0.1'
+							           },
+							           {
+							               date:'2018/11/11',
+							               percent:'0.3'
+							           },
+							           {
+							               date:'2018/11/12',
+							               percent:'0.4'
+							           },
+							           {
+							               date:'2018/11/13',
+							               percent:'0.5'
+							           },
+							           {
+							               date:'2018/11/14',
+							               percent:'1'
+							           },
+							           {
+							               date:'2018/11/15',
+							               percent:'1'
+							           },
+							        ]
+							    },
+							],
+							deviceLoad: [
+							    {
+							        role: "设备1",
+							        load: [
+							            {
+							                date:'2018/11/09',
+											percent:'0.6'
+							            },
+							            {
+							                date:'2018/11/10',
+							                percent:'0.7'
+							            },
+							            {
+							                date:'2018/11/11',
+							                percent:'0.8'
+							            },
+							            {
+							                date:'2018/11/12',
+							                percent:'0.9'
+							            },
+										{
+										    date:'2018/11/13',
+										    percent:'1'
+										},
+										{
+										    date:'2018/11/14',
+										    percent:'0.4'
+										},
+										{
+										    date:'2018/11/15',
+										    percent:'0.5'
+										},
+							        ]
+							    },
+							    {
+							        role: "设备2",
+							        load: [
+							           {
+							               date:'2018/11/09',
+							           	percent:'0.2'
+							           },
+							           {
+							               date:'2018/11/10',
+							               percent:'0.1'
+							           },
+							           {
+							               date:'2018/11/11',
+							               percent:'0.3'
+							           },
+							           {
+							               date:'2018/11/12',
+							               percent:'0.4'
+							           },
+							           {
+							               date:'2018/11/13',
+							               percent:'0.5'
+							           },
+							           {
+							               date:'2018/11/14',
+							               percent:'1'
+							           },
+							           {
+							               date:'2018/11/15',
+							               percent:'1'
+							           },
+							        ]
+							    },
+							]
+						},
+						
 				      }
 				    
 				  },
@@ -270,6 +375,42 @@
 					  getHeight(percent) {
 					  					  return percent*this.height;
 					      
+					  },
+					  getDays(date,days) {
+					      let d = new Date(date);
+					      let arr = [];
+					      for (let i = 0; i <days; i++) {
+					          arr[i] = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
+					          d.setDate(d.getDate()+1);
+					      }
+					      return arr;
+					  },
+					  getWeeks(date,days) {
+					      let d = new Date(date);
+					      let arr = [];
+					      for (let i = 0; i <days*7; i++) {
+					          arr[i] = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
+					          d.setDate(d.getDate()+6);
+							  arr[i]=arr[i]+'~'+'\n'+d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
+							  d.setDate(d.getDate()+1);
+					      }
+					      return arr;
+					  },
+					  getdaydate(date){
+						  let d =new Date(date);
+						  let out ='';
+						  out=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
+						  d.setDate(d.getDate()+6);
+						  out=out+'-'+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
+						  return out;
+					  },
+					  getweekdate(date){
+						  let d =new Date(date);
+						  let out ='';
+						  out=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
+						  d.setDate(d.getDate()+48);
+						  out=out+'-'+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
+						  return out;
 					  },
 					  getPercentage(percent) {
 					  					  return (percent*100)+"%";
@@ -456,7 +597,7 @@
 	}
 	.time-middle-content {
 	    height: 78px;
-	    line-height: 39px;
+	    line-height: 30px;
 	    border: solid 1px #888888;
 	    margin-left: -1px;
 	    display: inline-block;
