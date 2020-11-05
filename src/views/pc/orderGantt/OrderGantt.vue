@@ -7,8 +7,7 @@
 		    <div class="gantt-header-middle">
 		        <div class="grid-content bg-purple">
 		        	<p class="fontofname">按期交货率</p>
-		        	<p class="fontofdate">{{getcompleteDate(date)}}之前</p>
-		        	<el-progress type="circle" stroke-linecap="butt" :stroke-width="20"   :percentage="orderdata.complete*100"></el-progress>
+		        	<el-progress type="circle" stroke-linecap="butt" :stroke-width="20"   :percentage="rate*100"></el-progress>
 		        </div>
 				
 		    </div>
@@ -41,7 +40,7 @@
 				</div>
 				
 				<div class="table">
-				    <div class="row" v-for="item in orderdata.orderList" :key="item.orderId">
+				    <div class="row" v-for="item in orderList" :key="item.orderId">
 				        <div class="row-label">
 				            {{item.orderId}}
 				        </div>
@@ -87,8 +86,8 @@
 						date: "2018/11/9",
 						height:80,
 						bias: 0,
-						orderdata:{
-							complete:'0.79',
+						rate:'0.79',
+						
 							orderList: [
 							    {
 							        orderId: "418575",
@@ -169,7 +168,7 @@
 								}
 							    
 							]
-						},
+						
 						
 						
 						
@@ -252,12 +251,7 @@
 					  					  return 1150/num*percent;
 					      
 					  },
-					  getcompleteDate(date){
-							  let d =new Date(date);
-							  let out ='';
-							  out=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
-							  return out;
-					  },
+					  
 					  getPercentage(percent) {
 						  if(percent!=1){
 							  return (percent*100)+"%";
