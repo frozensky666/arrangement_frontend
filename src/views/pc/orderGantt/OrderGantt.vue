@@ -1,84 +1,90 @@
 <template>
-	<div class="gantt-wrap">
-		<div class="gantt-header">
-		    <div class="gantt-header-left">
-		        <div class="gantt-title">订单甘特图</div>
-		    </div>
-		    <div class="gantt-header-middle">
-		        <div class="grid-content bg-purple">
-		        	<p class="fontofname">按期交货率</p>
-		        	<el-progress type="circle" stroke-linecap="butt" :stroke-width="20"   :percentage="rate*100"></el-progress>
-		        </div>
-				
-		    </div>
-
-			<div class="gantt-header-right">
-			</div>
-		</div>
-		<div class="gantt-select">
-		    <div class="gantt-header-left">
-		        <el-date-picker
-		                style="width: 160px"
-		                v-model="date"
-		                type="date"
-		                placeholder="选择日期"
-		                @change="timeChange">
-		        </el-date-picker>
-		    </div>
-		    
-			<div class="gantt-header-right">
-				<div class="gantt-tips2">红色表示延期订单</div>
-			</div>
-		</div>
-				<div class="order-title">
-				   <div class="order-title-left">
-					   <div class="order-text">订单号</div>
-				   </div>
-				   <div class="order-title-right" :style="{'max-width':'1200px','flex':'0 0 '+(bodyWidth*0.8-180)+'px'}"  @scroll="drag">
-					   <div class="order-text2">订单进度</div>
-				   </div>
+	<Layout>
+		<div class="gantt-wrap">
+			<div class="gantt-header">
+				<div class="gantt-header-left">
+					<div class="gantt-title">订单甘特图</div>
 				</div>
-				
-				<div class="table">
-				    <div class="row" v-for="item in orderList" :key="item.orderId">
-				        <div class="row-label">
-				            {{item.orderId}}
-				        </div>
-				        <div class="row-content" :style="{'width':(bodyWidth*0.8-180)+'px','max-width':'1180px'}">
-				        	<div class="row-content-wrap" :style="{'left':bias+'px'}">
-				        		<el-tooltip
-				        		        v-for="(block,index) in item.process" :key="block.name+block.percent"
-				        		        effect="dark" :content="getPercentage(block.percent)" placement="top">
-				        		    
-				        			<div class="row-item"
-				        			:style="{'left': getPosition(item.process.length,index)+'px','width':getWidthOfBox(item.process.length)+'px'}">
-				        				<div class="row-percentbox"
-				        				     :style="{'background-color': getColor(block.percent,block.isdelayed),'width':getWidthOfPercent(item.process.length,block.percent)+'px'}">
-				        				    {{block.name}}   {{getPercentage(block.percent)}}
-				        				</div>
-										<div class="row-percentbox" v-if="block.isdelayed==1"
-										     :style="{'left': getPosition2(item.process.length,block.percent)+'px','background-color': getColorAfter(block.percent,block.isdelayed),'width':getWidthOfPercentAfter(item.num,block.percent)+'px'}">
-										 
-										</div>
-				        			</div>
-				        			
-				        		</el-tooltip>
-				        	</div>
-				        </div>
-				    </div>
-				</div>
-				
-				
+				<div class="gantt-header-middle">
+					<div class="grid-content bg-purple">
+						<p class="fontofname">按期交货率</p>
+						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20"   :percentage="rate*100"></el-progress>
+					</div>
 
-	</div>
+				</div>
+
+				<div class="gantt-header-right">
+				</div>
+			</div>
+			<div class="gantt-select">
+				<div class="gantt-header-left">
+					<el-date-picker
+							style="width: 160px"
+							v-model="date"
+							type="date"
+							placeholder="选择日期"
+							@change="timeChange">
+					</el-date-picker>
+				</div>
+
+				<div class="gantt-header-right">
+					<div class="gantt-tips2">红色表示延期订单</div>
+				</div>
+			</div>
+			<div class="order-title">
+				<div class="order-title-left">
+					<div class="order-text">订单号</div>
+				</div>
+				<div class="order-title-right" :style="{'max-width':'1200px','flex':'0 0 '+(bodyWidth*0.8-180)+'px'}"  @scroll="drag">
+					<div class="order-text2">订单进度</div>
+				</div>
+			</div>
+
+			<div class="table">
+				<div class="row" v-for="item in orderList" :key="item.orderId">
+					<div class="row-label">
+						{{item.orderId}}
+					</div>
+					<div class="row-content" :style="{'width':(bodyWidth*0.8-180)+'px','max-width':'1180px'}">
+						<div class="row-content-wrap" :style="{'left':bias+'px'}">
+							<el-tooltip
+									v-for="(block,index) in item.process" :key="block.name+block.percent"
+									effect="dark" :content="getPercentage(block.percent)" placement="top">
+
+								<div class="row-item"
+									 :style="{'left': getPosition(item.process.length,index)+'px','width':getWidthOfBox(item.process.length)+'px'}">
+									<div class="row-percentbox"
+										 :style="{'background-color': getColor(block.percent,block.isdelayed),'width':getWidthOfPercent(item.process.length,block.percent)+'px'}">
+										{{block.name}}   {{getPercentage(block.percent)}}
+									</div>
+									<div class="row-percentbox" v-if="block.isdelayed==1"
+										 :style="{'left': getPosition2(item.process.length,block.percent)+'px','background-color': getColorAfter(block.percent,block.isdelayed),'width':getWidthOfPercentAfter(item.num,block.percent)+'px'}">
+
+									</div>
+								</div>
+
+							</el-tooltip>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+		</div>
+	</Layout>
 </template>
 
 <script>
 	import {bodyWidthMixin} from "@/common/mixin";
 	import {generateRandomColor,colorFaded} from "@/common/utils";
+	import Layout from "@/components/content/Layout";
 	
 				  export default {
 					mixins: [bodyWidthMixin],
+					  components: {
+						  Layout
+					  },
 				    data() {
 				      return {
 						screenWidth: document.body.clientWidth,

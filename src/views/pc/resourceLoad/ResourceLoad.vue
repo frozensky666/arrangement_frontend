@@ -1,151 +1,157 @@
 <template>
-	<div class="gantt-wrap">
-		<div class="gantt-header">
-		    <div class="gantt-header-left">
-		        <div class="gantt-title">资源负载图</div>
-		    </div>
-		    <div class="gantt-header-middle">
-		        <div class="grid-content bg-purple" v-if="dateType==='day'">
-		        	<p class="fontofname">设备总负载</p>
-		        	<p class="fontofdate">{{getdaydate(date)}}</p>
-		        	<el-progress type="circle" :percentage="Loaddata.deviceSumLoad*100"></el-progress>
-		        </div>
-				<div class="grid-content bg-purple" v-if="dateType==='day'">
-					<p class="fontofname">人员总负载</p>
-					<p class="fontofdate">{{getdaydate(date)}}</p>
-					<el-progress type="circle" :percentage="Loaddata.personnelSumLoad*100"></el-progress>
+	<Layout>
+		<div class="gantt-wrap">
+			<div class="gantt-header">
+				<div class="gantt-header-left">
+					<div class="gantt-title">资源负载图</div>
 				</div>
-				<div class="grid-content bg-purple" v-if="dateType==='date'">
-					<p class="fontofname">设备总负载</p>
-					<p class="fontofdate">{{getweekdate(date)}}</p>
-					<el-progress type="circle" :percentage="Loaddata.deviceSumLoad*100"></el-progress>
+				<div class="gantt-header-middle">
+					<div class="grid-content bg-purple" v-if="dateType==='day'">
+						<p class="fontofname">设备总负载</p>
+						<p class="fontofdate">{{getdaydate(date)}}</p>
+						<el-progress type="circle" :percentage="Loaddata.deviceSumLoad*100"></el-progress>
+					</div>
+					<div class="grid-content bg-purple" v-if="dateType==='day'">
+						<p class="fontofname">人员总负载</p>
+						<p class="fontofdate">{{getdaydate(date)}}</p>
+						<el-progress type="circle" :percentage="Loaddata.personnelSumLoad*100"></el-progress>
+					</div>
+					<div class="grid-content bg-purple" v-if="dateType==='date'">
+						<p class="fontofname">设备总负载</p>
+						<p class="fontofdate">{{getweekdate(date)}}</p>
+						<el-progress type="circle" :percentage="Loaddata.deviceSumLoad*100"></el-progress>
+					</div>
+					<div class="grid-content bg-purple" v-if="dateType==='date'">
+						<p class="fontofname">人员总负载</p>
+						<p class="fontofdate">{{getweekdate(date)}}</p>
+						<el-progress type="circle" :percentage="Loaddata.personnelSumLoad*100"></el-progress>
+					</div>
 				</div>
-				<div class="grid-content bg-purple" v-if="dateType==='date'">
-					<p class="fontofname">人员总负载</p>
-					<p class="fontofdate">{{getweekdate(date)}}</p>
-					<el-progress type="circle" :percentage="Loaddata.personnelSumLoad*100"></el-progress>
-				</div>
-		    </div>
 
-			<div class="gantt-header-right">
-			    <div class="fontofright">图例</div>
-				<div>
-					<div class="fontofrightson1">0~20%</div>
-					<div class="fontofrightson2">20%~40%</div>
-					<div class="fontofrightson3">40%~60%</div>
+				<div class="gantt-header-right">
+					<div class="fontofright">图例</div>
+					<div>
+						<div class="fontofrightson1">0~20%</div>
+						<div class="fontofrightson2">20%~40%</div>
+						<div class="fontofrightson3">40%~60%</div>
+					</div>
+					<div>
+						<div class="fontofrightson4">60%~80%</div>
+						<div class="fontofrightson5">80%~100%</div>
+						<div class="fontofrightson6">>100%</div>
+					</div>
+
 				</div>
-				<div>
-					<div class="fontofrightson4">60%~80%</div>
-					<div class="fontofrightson5">80%~100%</div>
-					<div class="fontofrightson6">>100%</div>
-				</div>
-				
 			</div>
-		</div>
-				<div class="time-selector">
-				    <div class="time-selector-left">
-				        <el-select v-model="dateType" style="width: 160px" @change="timeSelectChange">
-				            <el-option
-				                    v-for="item in dateTypeOptions"
-				                    :key="item.value"
-				                    :label="item.label"
-				                    :value="item.value">
-				            </el-option>
-				        </el-select>
-				    </div>
-						<div class="time-selector-right">
-							<div class="time-left" @click="scroll(-1)">
-								<div class="time-l-arrow"></div>
-							</div>
-							<div class="time-middle"
-								 :style="{'max-width':blocks*blockSize+'px','flex':'0 0 '+(bodyWidth*0.8-180-2*26)+'px'}"
-								 @scroll="drag"
-							> <!--  【 总宽*0.8 - selector宽度 - 左右箭头宽度 = 可视窗口宽度 】-->
-								<div v-if="dateType==='day'"
-									 :style="{'width':blocks*blockSize+'px'}">
-									<div v-for="i in getDays(date,blocks)"
-										 :key="'month'+i"
-										 class="time-middle-content"
-										 :style="{'width': blockSize-1+'px'}">
-										{{i}}
-									</div>
-								</div>
-								<div v-if="dateType==='date'"
-									 :style="{'width':blocks*blockSize+'px'}">
-									<div v-for="i in getWeeks(date,blocks)"
-										 :key="'month'+i"
-										 class="time-middle-content"
-										 :style="{'width': blockSize-1+'px'}">
-										{{i}}
-									</div>
-								</div>
-						
-							</div>
-							<div class="time-right" @click="scroll(1)">
-								<div class="time-r-arrow"></div>
-							</div>
-						</div>
-						
-						
+			<div class="time-selector">
+				<div class="time-selector-left">
+					<el-select v-model="dateType" style="width: 160px" @change="timeSelectChange">
+						<el-option
+								v-for="item in dateTypeOptions"
+								:key="item.value"
+								:label="item.label"
+								:value="item.value">
+						</el-option>
+					</el-select>
 				</div>
-				<div class="table" >
-				    <div class="row" v-for="item in Loaddata.personnelLoad" :key="item.role">
-				        <div class="row-label">
-				            {{item.role}}
-				        </div>
-				        <div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
-							<div class="row-content-wrap" :style="{'left':bias+'px'}">
-								<el-tooltip
-								        v-for="(block,index) in item.load" :key="block.data+block.percent"
-								        effect="dark" :content="block.percent" placement="top">
-								    
-									<div class="row-item"
-									:style="{'left': getPosition(index)+'px'}">
-										<div class="row-colorbox"
-										     :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}">
-										    {{getPercentage(block.percent)}}
-										</div>
-									</div>
-									
-								</el-tooltip>
+				<div class="time-selector-right">
+					<div class="time-left" @click="scroll(-1)">
+						<div class="time-l-arrow"></div>
+					</div>
+					<div class="time-middle"
+						 :style="{'max-width':blocks*blockSize+'px','flex':'0 0 '+(bodyWidth*0.8-180-2*26)+'px'}"
+						 @scroll="drag"
+					> <!--  【 总宽*0.8 - selector宽度 - 左右箭头宽度 = 可视窗口宽度 】-->
+						<div v-if="dateType==='day'"
+							 :style="{'width':blocks*blockSize+'px'}">
+							<div v-for="i in getDays(date,blocks)"
+								 :key="'month'+i"
+								 class="time-middle-content"
+								 :style="{'width': blockSize-1+'px'}">
+								{{i}}
 							</div>
 						</div>
-				    </div>
-					<div class="row" v-for="item in Loaddata.deviceLoad" :key="item.role">
-					    <div class="row-label">
-					        {{item.role}}
-					    </div>
-					    <div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
-							<div class="row-content-wrap" :style="{'left':bias+'px'}">
-								<el-tooltip
-								        v-for="(block,index) in item.load" :key="block.data+block.percent"
-								        effect="dark" :content="block.percent" placement="top">
-								    
-									<div class="row-item"
-									:style="{'left': getPosition(index)+'px'}">
-										<div class="row-colorbox"
-										     :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}">
-										    {{getPercentage(block.percent)}}
-										</div>
-									</div>
-									
-								</el-tooltip>
+						<div v-if="dateType==='date'"
+							 :style="{'width':blocks*blockSize+'px'}">
+							<div v-for="i in getWeeks(date,blocks)"
+								 :key="'month'+i"
+								 class="time-middle-content"
+								 :style="{'width': blockSize-1+'px'}">
+								{{i}}
 							</div>
+						</div>
+
+					</div>
+					<div class="time-right" @click="scroll(1)">
+						<div class="time-r-arrow"></div>
+					</div>
+				</div>
+
+
+			</div>
+			<div class="table" >
+				<div class="row" v-for="item in Loaddata.personnelLoad" :key="item.role">
+					<div class="row-label">
+						{{item.role}}
+					</div>
+					<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
+						<div class="row-content-wrap" :style="{'left':bias+'px'}">
+							<el-tooltip
+									v-for="(block,index) in item.load" :key="block.data+block.percent"
+									effect="dark" :content="block.percent" placement="top">
+
+								<div class="row-item"
+									 :style="{'left': getPosition(index)+'px'}">
+									<div class="row-colorbox"
+										 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}">
+										{{getPercentage(block.percent)}}
+									</div>
+								</div>
+
+							</el-tooltip>
 						</div>
 					</div>
 				</div>
-				
-				
+				<div class="row" v-for="item in Loaddata.deviceLoad" :key="item.role">
+					<div class="row-label">
+						{{item.role}}
+					</div>
+					<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
+						<div class="row-content-wrap" :style="{'left':bias+'px'}">
+							<el-tooltip
+									v-for="(block,index) in item.load" :key="block.data+block.percent"
+									effect="dark" :content="block.percent" placement="top">
 
-	</div>
+								<div class="row-item"
+									 :style="{'left': getPosition(index)+'px'}">
+									<div class="row-colorbox"
+										 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}">
+										{{getPercentage(block.percent)}}
+									</div>
+								</div>
+
+							</el-tooltip>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+		</div>
+	</Layout>
 </template>
 
 <script>
 	import {bodyWidthMixin} from "@/common/mixin";
 	import {generateRandomColor,colorFaded} from "@/common/utils";
+	import Layout from "@/components/content/Layout";
 	
 				  export default {
 					mixins: [bodyWidthMixin],
+					  components: {
+						Layout
+					  },
 				    data() {
 				      return {
 						screenWidth: document.body.clientWidth,

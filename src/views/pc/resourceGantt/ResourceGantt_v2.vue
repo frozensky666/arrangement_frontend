@@ -1,101 +1,107 @@
 <template>
-    <div class="gantt-wrap">
-        <div class="gantt-header">
-            <div class="gantt-header-left">
-                <div class="gantt-title">资源甘特图</div>
-            </div>
-            <div class="gantt-header-middle">
-                <div class="gantt-tips1">单击产品可切换产品路线图和资源甘特图</div>
-            </div>
-            <div class="gantt-header-right">
-                <div class="gantt-tips2">红色表示延期订单</div>
-            </div>
-        </div>
-        <div class="time-selector">
-            <div class="time-selector-left">
-                <el-select v-model="dateType" style="width: 160px" @change="timeSelectChange">
-                    <el-option
-                            v-for="item in dateTypeOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-                <el-date-picker
-                        style="width: 160px"
-                        v-model="date"
-                        type="date"
-                        placeholder="选择日期"
-                        @change="timeChange">
-                </el-date-picker>
-            </div>
-            <div class="time-selector-right">
-                <div class="time-left" @click="scroll(-1)">
-                    <div class="time-l-arrow"></div>
+    <Layout>
+        <div class="gantt-wrap">
+            <div class="gantt-header">
+                <div class="gantt-header-left">
+                    <div class="gantt-title">资源甘特图</div>
                 </div>
-                <div class="time-middle"
-                     :style="{'max-width':blocks*blockSize+'px','flex':'0 0 '+(bodyWidth*0.8-180-2*26)+'px'}"
-                     @scroll="drag"
-                > <!--  【 总宽*0.8 - selector宽度 - 左右箭头宽度 = 可视窗口宽度 】-->
-                    <div v-if="dateType==='date'"
-                         :style="{'width':blocks*blockSize+'px'}">
-                        <div v-for="title in timeDivision"
-                             :key="title"
-                             class="time-middle-content"
-                             :style="{'width': blockSize-1+'px'}">
-                            {{title}}
-                        </div>
+                <div class="gantt-header-middle">
+                    <div class="gantt-tips1">单击产品可切换产品路线图和资源甘特图</div>
+                </div>
+                <div class="gantt-header-right">
+                    <div class="gantt-tips2">红色表示延期订单</div>
+                </div>
+            </div>
+            <div class="time-selector">
+                <div class="time-selector-left">
+                    <el-select v-model="dateType" style="width: 160px" @change="timeSelectChange">
+                        <el-option
+                                v-for="item in dateTypeOptions"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-date-picker
+                            style="width: 160px"
+                            v-model="date"
+                            type="date"
+                            placeholder="选择日期"
+                            @change="timeChange">
+                    </el-date-picker>
+                </div>
+                <div class="time-selector-right">
+                    <div class="time-left" @click="scroll(-1)">
+                        <div class="time-l-arrow"></div>
                     </div>
-                    <div v-if="dateType==='month'"
-                         :style="{'width':blocks*blockSize+'px'}">
-                        <div v-for="i in getDays(date,blocks)"
-                             :key="'month'+i"
-                             class="time-middle-content"
-                             :style="{'width': blockSize-1+'px'}">
-                            {{i}}
-                        </div>
-                    </div>
-
-                </div>
-                <div class="time-right" @click="scroll(1)">
-                    <div class="time-r-arrow"></div>
-                </div>
-            </div>
-        </div>
-        <div class="table">
-            <div class="row" v-for="item in queryData" :key="item.role">
-                <div class="row-label">
-                    {{item.role}}
-                </div>
-                <div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
-                    <div class="row-content-wrap" :style="{'left':bias+'px'}">
-                        <el-tooltip
-                                v-for="block in item.plan" :key="block.start+block.end+block.value"
-                                effect="dark" :content="block.value" placement="top">
-                            <div class="row-item"
-                                 @click="showRoutes(block.value)"
-                                 :style="{'background-color': block.bg,'width': getWidth(block.start,block.end)+'px','left': getPosition(block.start)+'px','z-index': block.bg===block.oriBg?1:0}">
-                                {{block.value}}
+                    <div class="time-middle"
+                         :style="{'max-width':blocks*blockSize+'px','flex':'0 0 '+(bodyWidth*0.8-180-2*26)+'px'}"
+                         @scroll="drag"
+                    > <!--  【 总宽*0.8 - selector宽度 - 左右箭头宽度 = 可视窗口宽度 】-->
+                        <div v-if="dateType==='date'"
+                             :style="{'width':blocks*blockSize+'px'}">
+                            <div v-for="title in timeDivision"
+                                 :key="title"
+                                 class="time-middle-content"
+                                 :style="{'width': blockSize-1+'px'}">
+                                {{title}}
                             </div>
-                        </el-tooltip>
+                        </div>
+                        <div v-if="dateType==='month'"
+                             :style="{'width':blocks*blockSize+'px'}">
+                            <div v-for="i in getDays(date,blocks)"
+                                 :key="'month'+i"
+                                 class="time-middle-content"
+                                 :style="{'width': blockSize-1+'px'}">
+                                {{i}}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="time-right" @click="scroll(1)">
+                        <div class="time-r-arrow"></div>
                     </div>
                 </div>
             </div>
-            <div class="canvas-wrap" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px','height':queryData.length*41+'px'}">
-                <canvas class="canvas" height="3000" width="3000" ref="canvas" :style="{'left':bias+'px'}"></canvas>
+            <div class="table">
+                <div class="row" v-for="item in queryData" :key="item.role">
+                    <div class="row-label">
+                        {{item.role}}
+                    </div>
+                    <div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
+                        <div class="row-content-wrap" :style="{'left':bias+'px'}">
+                            <el-tooltip
+                                    v-for="block in item.plan" :key="block.start+block.end+block.value"
+                                    effect="dark" :content="block.value" placement="top">
+                                <div class="row-item"
+                                     @click="showRoutes(block.value)"
+                                     :style="{'background-color': block.bg,'width': getWidth(block.start,block.end)+'px','left': getPosition(block.start)+'px','z-index': block.bg===block.oriBg?1:0}">
+                                    {{block.value}}
+                                </div>
+                            </el-tooltip>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-wrap" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px','height':queryData.length*41+'px'}">
+                    <canvas class="canvas" height="3000" width="3000" ref="canvas" :style="{'left':bias+'px'}"></canvas>
+                </div>
             </div>
         </div>
-    </div>
+    </Layout>
 </template>
 
 <script>
     import {bodyWidthMixin} from "@/common/mixin";
     import {generateRandomColor,colorFaded} from "@/common/utils";
     import {resourceGanttDate,resourceGanttHour} from "@/network/resourceGantt";
+    import Layout from "@/components/content/Layout";
 
     export default {
         name: "ResourceGantt_v2",
         mixins: [bodyWidthMixin],
+        components: {
+            Layout
+        },
         data() {
             return {
                 mode: "gantt", // "gantt" / "route"

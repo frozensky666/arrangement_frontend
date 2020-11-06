@@ -1,7 +1,7 @@
 const mock = require("./utils");
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 3456;
 
 //设置允许跨域访问该服务.
 app.all("*", function(req, res, next) {

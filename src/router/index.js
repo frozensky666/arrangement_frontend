@@ -27,7 +27,7 @@ const routes = [
     component: Home
   },
   {
-    path: "/pc/testGantt",
+    path: "/pc/resourceGantt",
     name: "TestGantt",
     component: ResourceGantt
   },
@@ -45,11 +45,6 @@ const routes = [
     path: "/pc/deviceManage",
     name: "DeviceManage",
     component: DeviceManage,
-  },
-  {
-    path: "/pc/testorderGantt",
-    name: "OrderGantt",
-    component: OrderGantt,
   },
   {
     path: "/pc/orderManage",
