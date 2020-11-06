@@ -272,7 +272,7 @@
 				  }
 </script>
 
-<style>
+<style scoped>
 	.gantt-wrap {
 	    width: 80%;
 	    min-width: 600px;
