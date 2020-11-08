@@ -1,7 +1,11 @@
 const mock = require("./utils");
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 const port = 3456;
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 //设置允许跨域访问该服务.
 app.all("*", function(req, res, next) {
