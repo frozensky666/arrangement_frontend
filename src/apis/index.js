@@ -23,7 +23,7 @@ const FAST_MODE = "/fast";
 const FAST_MODE_TOGGLE = "/fast/toggle";
 
 //物料模块
-const MATERIAL_ID = "/materrial/ID";
+const MATERIAL_ID = "/material/id";
 
 //排程模块
 const PLAN = "/plan";
