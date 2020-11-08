@@ -74,9 +74,10 @@ const routes = [
     component: OutputOfTaskResource,
   },
   {
-    path: "/pc/outputOfWork",
+    path: "/pc/outputOfWork/:id",
     name: "OutputOfWork",
     component: OutputOfWork,
+	props: true
   },
   {
     path: "/pc/personnelManage",

@@ -445,7 +445,7 @@
         border: 1px solid #1f94ff;
     }
     .gantt-header-middle {
-	
+		display: flex;
     }
     .gantt-header-right {
 	margin-top: 170px;
@@ -516,26 +516,15 @@
 		border-radius: 4px;
 	}
 
-	.bg-purple-dark {
-		background: #99a9bf;
-	}
-
-	.bg-purple {
-		border: 1px solid #1f94ff;
-		text-align: center;
-		padding-bottom: 10px;
-	}
-
-	.bg-purple-light {
-		background: #e5e9f2;
-	}
-
 	.grid-content {
-		float:left;
+
 		padding-left: 30px;
 		padding-right: 30px;
 		border-radius: 4px;
 		min-height: 36px;
+		border: 1px solid #1f94ff;
+		text-align: center;
+		padding-bottom: 10px;
 	}
 
 	.row-bg {

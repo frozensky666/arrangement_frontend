@@ -20,6 +20,7 @@ module.exports = {
                 {
                     "orderId": 1,
                     "orderNum": 100,
+					"materialId": 1,
                     "orderDeadline": "2018-10-04",
                     "subOrders|5": [
                         {
