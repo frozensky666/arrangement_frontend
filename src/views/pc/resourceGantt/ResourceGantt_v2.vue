@@ -82,7 +82,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="canvas-wrap" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px','height':queryData.length*41+'px'}">
+                <div class="canvas-wrap" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px','height':queryData.length*51+'px'}">
                     <canvas class="canvas" height="3000" width="3000" ref="canvas" :style="{'left':bias+'px'}"></canvas>
                 </div>
             </div>
@@ -306,8 +306,9 @@
                             for(let k=0;k<tmpArr[i+1].length;k++) {
                                 let end1 = this.getPosition(tmpArr[i][j].end);
                                 let start2 = this.getPosition(tmpArr[i+1][k].start);
+                                let lintHeight = 51;
                                 if(tmpArr[i][j].index === tmpArr[i+1][k].index) {//画横线
-                                    let y = 20+41*tmpArr[i][j].index; //41为一行的高度
+                                    let y = 20+lintHeight*tmpArr[i][j].index; //51为一行的高度 (40px height + 10px margin bottom
                                     ctx.beginPath();
                                     ctx.moveTo(end1,y);
                                     ctx.lineTo(start2,y);
@@ -315,8 +316,8 @@
                                     ctx.stroke();
                                 }else {
                                     let shortLine = 5;
-                                    let y1 = 20+41*tmpArr[i][j].index;
-                                    let y2 = 20+41*tmpArr[i+1][k].index;
+                                    let y1 = 20+lintHeight*tmpArr[i][j].index;
+                                    let y2 = 20+lintHeight*tmpArr[i+1][k].index;
                                     let e2x = end1+shortLine;
                                     let s2x = start2-shortLine;
                                     let p1y = y1+(tmpArr[i][j].index > tmpArr[i+1][k].index ? -1:1)*18;
@@ -459,11 +460,12 @@
 
     /* table */
     .table {
+        margin-top: 20px;
         position: relative;
     }
     .table .row {
         /*background-color: #6c81eb;*/
-        height: 40px;
+        height: 50px;
         border-top: 1px solid #fff;
         /*display: flex;*/
         /*justify-content: left;*/
@@ -475,7 +477,7 @@
         top: 0;
         width: 160px;
         /*flex: 0 0 160px;*/
-        background-color: #f1f1f1;
+        background-color: #F5F7FA;
         border-radius: 10px;
         text-align: center;
         line-height: 40px;
@@ -490,7 +492,7 @@
         top: 0;
         /*margin-left: 46px;*/
         height: 40px;
-        background-color: #f1f1f1;
+        background-color: #F5F7FA;
         overflow-x: hidden;
         overflow-y: hidden;
         white-space: nowrap;
