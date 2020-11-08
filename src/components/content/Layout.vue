@@ -10,6 +10,14 @@
                     @close="handleClose"
                     active-text-color="#ffd04b"
                     router>
+                <el-menu-item index="/pc/plan">
+                    <i class="el-icon-receiving"></i>
+                    <span slot="title">排程</span>
+                </el-menu-item>
+                <el-menu-item index="/pc/timeManage">
+                    <i class="el-icon-alarm-clock"></i>
+                    <span slot="title">模拟时间</span>
+                </el-menu-item>
                 <el-menu-item index="/pc/resourceGantt">
                     <i class="el-icon-data-line"></i>
                     <span slot="title">资源甘特图</span>
@@ -36,10 +44,6 @@
                     </el-menu-item-group>
 
                 </el-submenu>
-                <el-menu-item index="/pc/timeManage">
-                    <i class="el-icon-alarm-clock"></i>
-                    <span slot="title">模拟时间</span>
-                </el-menu-item>
                 <el-menu-item index="/pc/deviceManage">
                     <i class="el-icon-setting"></i>
                     <span slot="title">设备管理</span>

@@ -3,17 +3,21 @@ import VueRouter from "vue-router";
 
 const Home = () => import("@/views/pc/home/Home");
 const M_Home = () => import("@/views/mobile/home/M_Home");
+
 const ResourceGantt = () => import("@/views/pc/resourceGantt/ResourceGantt_v2");
-const ResourceLoad = () => import("@/views/pc/resourceLoad/ResourceLoad")
-const OrderGantt =()=>import("@/views/pc/orderGantt/OrderGantt")
-const DeviceManage =()=>import("@/views/pc/deviceManage/DeviceManage")
-const OrderManage =()=>import("@/views/pc/orderManage/OrderManage")
-const OutputOfTask =()=>import("@/views/pc/outputOfTask/OutputOfTask")
-const OutputOfTaskResource =()=>import("@/views/pc/outputOfTaskResource/OutputOfTaskResource")
-const OutputOfWork =()=>import("@/views/pc/outputOfWork/OutputOfWork")
-const PersonnelManage =()=>import("@/views/pc/personnelManage/PersonnelManage")
-const TimeManage =()=>import("@/views/pc/timeManage/TimeManage")
-const OutputOfOrderPlan =()=>import("@/views/pc/outputOfOrderPlan/OutputOfOrderPlan")
+const ResourceLoad = () => import("@/views/pc/resourceLoad/ResourceLoad");
+const OrderGantt =()=>import("@/views/pc/orderGantt/OrderGantt");
+const DeviceManage =()=>import("@/views/pc/deviceManage/DeviceManage");
+const OrderManage =()=>import("@/views/pc/orderManage/OrderManage");
+const OutputOfTask =()=>import("@/views/pc/outputOfTask/OutputOfTask");
+const OutputOfTaskResource =()=>import("@/views/pc/outputOfTaskResource/OutputOfTaskResource");
+const OutputOfWork =()=>import("@/views/pc/outputOfWork/OutputOfWork");
+const PersonnelManage =()=>import("@/views/pc/personnelManage/PersonnelManage");
+const TimeManage =()=>import("@/views/pc/timeManage/TimeManage");
+const OutputOfOrderPlan =()=>import("@/views/pc/outputOfOrderPlan/OutputOfOrderPlan");
+const Plan = () => import("@/views/pc/plan/Plan");
+const Login = () => import("@/views/pc/login/Login");
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -23,8 +27,16 @@ const routes = [
   },
   {
     path: "/pc", // pc端首页
-    name: "Home",
-    component: Home
+    redirect: "/pc/login"
+  },
+  {
+    path: "/pc/login",
+    component: Login
+  },
+  {
+    path: "/pc/plan",
+    name: "Plan",
+    component: Plan
   },
   {
     path: "/pc/resourceGantt",

@@ -1,10 +1,17 @@
 <template>
-    <div></div>
+    <div>
+        <el-button @click="login">登录</el-button>
+    </div>
 </template>
 
 <script>
     export default {
-        name: "Login"
+        name: "Login",
+        methods: {
+            login() {
+                this.$router.push("/pc/plan");
+            }
+        }
     }
 </script>
 

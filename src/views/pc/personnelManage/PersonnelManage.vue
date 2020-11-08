@@ -1,126 +1,128 @@
 <template>
     <Layout>
-        <h2>人员管理</h2>
-        <div class="btn-wrap">
-            <el-button type="primary" @click="createFormVisible = true">添加人员</el-button>
+        <div class="layout-main">
+            <h2>人员管理</h2>
+            <div class="btn-wrap">
+                <el-button type="primary" @click="createFormVisible = true">添加人员</el-button>
+            </div>
+
+            <el-dialog title="添加人员" :visible.sync="createFormVisible" width="600px">
+                <el-form :model="createForm" :rules="rules"  ref="createForm">
+                    <el-form-item label="人员编号" :label-width="formLabelWidth" prop="personId" style="display: none">
+                        <el-input v-model.number="createForm.personId" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所属组" :label-width="formLabelWidth" prop="groupId">
+                        <el-select v-model="createForm.groupId" placeholder="请选择">
+                            <el-option
+                                    v-for="item in groups"
+                                    :key="'c'+item"
+                                    :label="item"
+                                    :value="item">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="人员姓名" :label-width="formLabelWidth" prop="personName">
+                        <el-col :span="10">
+                            <el-input v-model.number="createForm.personName" autocomplete="off"></el-input>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item label="登录密码" :label-width="formLabelWidth" prop="personPassword">
+                        <el-col :span="10">
+                            <el-input v-model.number="createForm.personPassword" autocomplete="off"></el-input>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item label="人员权限" :label-width="formLabelWidth" prop="personAuth">
+                        <el-select v-model="createForm.personAuth" placeholder="请选择">
+                            <el-option
+                                    v-for="item in auth"
+                                    :key="'c'+item.label"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="cancelForm('createForm','createFormVisible')">取 消</el-button> <!--createFormVisible = false-->
+                    <el-button type="primary" @click="submitForm('createForm','createFormVisible')">确 定</el-button>
+                </div>
+            </el-dialog>
+
+            <el-dialog title="修改人员" :visible.sync="modifyFormVisible" width="600px">
+                <el-form :model="modifyForm" :rules="rules"  ref="modifyForm">
+                    <el-form-item label="人员编号" :label-width="formLabelWidth" prop="personId">
+                        <el-input v-model.number="modifyForm.personId" autocomplete="off" :disabled="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所属组" :label-width="formLabelWidth" prop="groupId">
+                        <el-select v-model="modifyForm.groupId" placeholder="请选择">
+                            <el-option
+                                    v-for="item in groups"
+                                    :key="'c'+item"
+                                    :label="item"
+                                    :value="item">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="人员姓名" :label-width="formLabelWidth" prop="personName">
+                        <el-col :span="10">
+                            <el-input v-model.number="modifyForm.personName" autocomplete="off"></el-input>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item label="登录密码" :label-width="formLabelWidth" prop="personPassword">
+                        <el-col :span="10">
+                            <el-input v-model.number="modifyForm.personPassword" autocomplete="off"></el-input>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item label="人员权限" :label-width="formLabelWidth" prop="personAuth">
+                        <el-select v-model="modifyForm.personAuth" placeholder="请选择">
+                            <el-option
+                                    v-for="item in auth"
+                                    :key="'m'+item.label"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="cancelForm('modifyForm','modifyFormVisible')">取 消</el-button> <!--modifyFormVisible = false-->
+                    <el-button type="primary" @click="submitForm('modifyForm','modifyFormVisible')">确 定</el-button>
+                </div>
+            </el-dialog>
+
+            <el-table
+                    :data="personTableData"
+                    stripe
+                    style="width: 90%">
+                <el-table-column
+                        prop="personId"
+                        label="人员编号">
+                </el-table-column>
+                <el-table-column
+                        prop="groupId"
+                        label="所属组">
+                </el-table-column>
+                <el-table-column
+                        prop="personName"
+                        label="人员名称">
+                </el-table-column>
+                <el-table-column
+                        prop="personPassword"
+                        label="人员密码">
+                </el-table-column>
+                <el-table-column
+                        prop="personAuth"
+                        label="人员权限">
+                </el-table-column>
+                <el-table-column
+                        label="操作">
+                    <template slot-scope="scope">
+                        <el-button type="warning" size="mini" @click="modifyThis(scope.row)">修改</el-button>
+                        <el-button type="danger" size="mini" @click="deleteThis(scope.row.personId)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
         </div>
-
-        <el-dialog title="添加人员" :visible.sync="createFormVisible" width="600px">
-            <el-form :model="createForm" :rules="rules"  ref="createForm">
-                <el-form-item label="人员编号" :label-width="formLabelWidth" prop="personId" style="display: none">
-                    <el-input v-model.number="createForm.personId" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="所属组" :label-width="formLabelWidth" prop="groupId">
-                    <el-select v-model="createForm.groupId" placeholder="请选择">
-                        <el-option
-                                v-for="item in groups"
-                                :key="'c'+item"
-                                :label="item"
-                                :value="item">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="人员姓名" :label-width="formLabelWidth" prop="personName">
-                    <el-col :span="10">
-                        <el-input v-model.number="createForm.personName" autocomplete="off"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="登录密码" :label-width="formLabelWidth" prop="personPassword">
-                    <el-col :span="10">
-                        <el-input v-model.number="createForm.personPassword" autocomplete="off"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="人员权限" :label-width="formLabelWidth" prop="personAuth">
-                    <el-select v-model="createForm.personAuth" placeholder="请选择">
-                        <el-option
-                                v-for="item in auth"
-                                :key="'c'+item.label"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="cancelForm('createForm','createFormVisible')">取 消</el-button> <!--createFormVisible = false-->
-                <el-button type="primary" @click="submitForm('createForm','createFormVisible')">确 定</el-button>
-            </div>
-        </el-dialog>
-
-        <el-dialog title="修改人员" :visible.sync="modifyFormVisible" width="600px">
-            <el-form :model="modifyForm" :rules="rules"  ref="modifyForm">
-                <el-form-item label="人员编号" :label-width="formLabelWidth" prop="personId">
-                    <el-input v-model.number="modifyForm.personId" autocomplete="off" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="所属组" :label-width="formLabelWidth" prop="groupId">
-                    <el-select v-model="modifyForm.groupId" placeholder="请选择">
-                        <el-option
-                                v-for="item in groups"
-                                :key="'c'+item"
-                                :label="item"
-                                :value="item">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="人员姓名" :label-width="formLabelWidth" prop="personName">
-                    <el-col :span="10">
-                        <el-input v-model.number="modifyForm.personName" autocomplete="off"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="登录密码" :label-width="formLabelWidth" prop="personPassword">
-                    <el-col :span="10">
-                        <el-input v-model.number="modifyForm.personPassword" autocomplete="off"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="人员权限" :label-width="formLabelWidth" prop="personAuth">
-                    <el-select v-model="modifyForm.personAuth" placeholder="请选择">
-                        <el-option
-                                v-for="item in auth"
-                                :key="'m'+item.label"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="cancelForm('modifyForm','modifyFormVisible')">取 消</el-button> <!--modifyFormVisible = false-->
-                <el-button type="primary" @click="submitForm('modifyForm','modifyFormVisible')">确 定</el-button>
-            </div>
-        </el-dialog>
-
-        <el-table
-                :data="personTableData"
-                stripe
-                style="width: 90%">
-            <el-table-column
-                    prop="personId"
-                    label="人员编号">
-            </el-table-column>
-            <el-table-column
-                    prop="groupId"
-                    label="所属组">
-            </el-table-column>
-            <el-table-column
-                    prop="personName"
-                    label="人员名称">
-            </el-table-column>
-            <el-table-column
-                    prop="personPassword"
-                    label="人员密码">
-            </el-table-column>
-            <el-table-column
-                    prop="personAuth"
-                    label="人员权限">
-            </el-table-column>
-            <el-table-column
-                    label="操作">
-                <template slot-scope="scope">
-                    <el-button type="warning" size="mini" @click="modifyThis(scope.row)">修改</el-button>
-                    <el-button type="danger" size="mini" @click="deleteThis(scope.row.personId)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
     </Layout>
 </template>
 
@@ -292,5 +294,10 @@
     }
     .btn-wrap > * {
         margin-left: 10px;
+    }
+
+    .layout-main {
+        width: 80%;
+        margin-left: 10%;
     }
 </style>

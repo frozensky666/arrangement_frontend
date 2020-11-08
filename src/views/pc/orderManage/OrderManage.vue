@@ -1,108 +1,110 @@
 <template>
     <Layout>
-        <h2>订单管理</h2>
-        <div class="btn-wrap">
-            <el-button type="primary" @click="createFormVisible = true">添加订单</el-button>
-        </div>
-        
-        <el-dialog title="添加订单" :visible.sync="createFormVisible" width="600px">
-            <el-form :model="createForm" :rules="rules"  ref="createForm">
-                <el-form-item label="订单编号" :label-width="formLabelWidth" prop="orderId" style="display: none">
-                    <el-input v-model.number="createForm.orderId" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="物料编号" :label-width="formLabelWidth" prop="materialId">
-                    <el-select v-model="createForm.materialId" placeholder="请选择">
-                        <el-option
-                                v-for="item in materials"
-                                :key="'c'+item"
-                                :label="item"
-                                :value="item">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="订货数量" :label-width="formLabelWidth" prop="orderNum">
-                    <el-col :span="10">
-                        <el-input v-model.number="createForm.orderNum" autocomplete="off"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="订单交期" :label-width="formLabelWidth" prop="orderDeadline">
-                    <el-date-picker
-                            v-model="createForm.orderDeadline"
-                            type="date"
-                            placeholder="选择日期">
-                    </el-date-picker>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="cancelForm('createForm','createFormVisible')">取 消</el-button> <!--createFormVisible = false-->
-                <el-button type="primary" @click="submitForm('createForm','createFormVisible')">确 定</el-button>
-            </div>
-        </el-dialog>
+       <div class="layout-main">
+           <h2>订单管理</h2>
+           <div class="btn-wrap">
+               <el-button type="primary" @click="createFormVisible = true">添加订单</el-button>
+           </div>
 
-        <el-dialog title="修改订单" :visible.sync="modifyFormVisible" width="600px">
-            <el-form :model="modifyForm" :rules="rules"  ref="modifyForm">
-                <el-form-item label="订单编号" :label-width="formLabelWidth" prop="orderId">
-                    <el-input v-model.number="modifyForm.orderId" autocomplete="off" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="物料编号" :label-width="formLabelWidth" prop="materialId">
-                    <el-select v-model="modifyForm.materialId" placeholder="请选择">
-                        <el-option
-                                v-for="item in materials"
-                                :key="'m'+item"
-                                :label="item"
-                                :value="item">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="订货数量" :label-width="formLabelWidth" prop="orderNum">
-                    <el-col :span="10">
-                        <el-input v-model.number="modifyForm.orderNum" autocomplete="off"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="订单交期" :label-width="formLabelWidth" prop="orderDeadline">
-                    <el-date-picker
-                            v-model="modifyForm.orderDeadline"
-                            type="date"
-                            placeholder="选择日期">
-                    </el-date-picker>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="cancelForm('modifyForm','modifyFormVisible')">取 消</el-button> <!--createFormVisible = false-->
-                <el-button type="primary" @click="submitForm('modifyForm','modifyFormVisible')">确 定</el-button>
-            </div>
-        </el-dialog>
+           <el-dialog title="添加订单" :visible.sync="createFormVisible" width="600px">
+               <el-form :model="createForm" :rules="rules"  ref="createForm">
+                   <el-form-item label="订单编号" :label-width="formLabelWidth" prop="orderId" style="display: none">
+                       <el-input v-model.number="createForm.orderId" autocomplete="off"></el-input>
+                   </el-form-item>
+                   <el-form-item label="物料编号" :label-width="formLabelWidth" prop="materialId">
+                       <el-select v-model="createForm.materialId" placeholder="请选择">
+                           <el-option
+                                   v-for="item in materials"
+                                   :key="'c'+item"
+                                   :label="item"
+                                   :value="item">
+                           </el-option>
+                       </el-select>
+                   </el-form-item>
+                   <el-form-item label="订货数量" :label-width="formLabelWidth" prop="orderNum">
+                       <el-col :span="10">
+                           <el-input v-model.number="createForm.orderNum" autocomplete="off"></el-input>
+                       </el-col>
+                   </el-form-item>
+                   <el-form-item label="订单交期" :label-width="formLabelWidth" prop="orderDeadline">
+                       <el-date-picker
+                               v-model="createForm.orderDeadline"
+                               type="date"
+                               placeholder="选择日期">
+                       </el-date-picker>
+                   </el-form-item>
+               </el-form>
+               <div slot="footer" class="dialog-footer">
+                   <el-button @click="cancelForm('createForm','createFormVisible')">取 消</el-button> <!--createFormVisible = false-->
+                   <el-button type="primary" @click="submitForm('createForm','createFormVisible')">确 定</el-button>
+               </div>
+           </el-dialog>
 
-        <el-table
-                :data="orderTableData"
-                stripe
-                style="width: 90%">
-            <el-table-column
-                    prop="orderId"
-                    label="订单编号">
-            </el-table-column>
-            <el-table-column
-                    prop="materialId"
-                    label="物料编号">
-            </el-table-column>
-            <el-table-column
-                    prop="orderNum"
-                    label="订货数量">
-            </el-table-column>
-            <el-table-column
-                    label="订单交期">
-                <template slot-scope="scope">
-                    {{scope.row.orderDeadline.toISOString().split("T")[0]}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                    label="操作">
-                <template slot-scope="scope">
-                    <el-button type="warning" size="mini" @click="modifyThis(scope.row)">修改</el-button>
-                    <el-button type="danger" size="mini" @click="deleteThis(scope.row.orderId)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+           <el-dialog title="修改订单" :visible.sync="modifyFormVisible" width="600px">
+               <el-form :model="modifyForm" :rules="rules"  ref="modifyForm">
+                   <el-form-item label="订单编号" :label-width="formLabelWidth" prop="orderId">
+                       <el-input v-model.number="modifyForm.orderId" autocomplete="off" :disabled="true"></el-input>
+                   </el-form-item>
+                   <el-form-item label="物料编号" :label-width="formLabelWidth" prop="materialId">
+                       <el-select v-model="modifyForm.materialId" placeholder="请选择">
+                           <el-option
+                                   v-for="item in materials"
+                                   :key="'m'+item"
+                                   :label="item"
+                                   :value="item">
+                           </el-option>
+                       </el-select>
+                   </el-form-item>
+                   <el-form-item label="订货数量" :label-width="formLabelWidth" prop="orderNum">
+                       <el-col :span="10">
+                           <el-input v-model.number="modifyForm.orderNum" autocomplete="off"></el-input>
+                       </el-col>
+                   </el-form-item>
+                   <el-form-item label="订单交期" :label-width="formLabelWidth" prop="orderDeadline">
+                       <el-date-picker
+                               v-model="modifyForm.orderDeadline"
+                               type="date"
+                               placeholder="选择日期">
+                       </el-date-picker>
+                   </el-form-item>
+               </el-form>
+               <div slot="footer" class="dialog-footer">
+                   <el-button @click="cancelForm('modifyForm','modifyFormVisible')">取 消</el-button> <!--createFormVisible = false-->
+                   <el-button type="primary" @click="submitForm('modifyForm','modifyFormVisible')">确 定</el-button>
+               </div>
+           </el-dialog>
+
+           <el-table
+                   :data="orderTableData"
+                   stripe
+                   style="width: 90%">
+               <el-table-column
+                       prop="orderId"
+                       label="订单编号">
+               </el-table-column>
+               <el-table-column
+                       prop="materialId"
+                       label="物料编号">
+               </el-table-column>
+               <el-table-column
+                       prop="orderNum"
+                       label="订货数量">
+               </el-table-column>
+               <el-table-column
+                       label="订单交期">
+                   <template slot-scope="scope">
+                       {{scope.row.orderDeadline.toISOString().split("T")[0]}}
+                   </template>
+               </el-table-column>
+               <el-table-column
+                       label="操作">
+                   <template slot-scope="scope">
+                       <el-button type="warning" size="mini" @click="modifyThis(scope.row)">修改</el-button>
+                       <el-button type="danger" size="mini" @click="deleteThis(scope.row.orderId)">删除</el-button>
+                   </template>
+               </el-table-column>
+           </el-table>
+       </div>
     </Layout>
 </template>
 
@@ -261,5 +263,9 @@
     }
     .btn-wrap > * {
         margin-left: 10px;
+    }
+    .layout-main {
+        width: 80%;
+        margin-left: 10%;
     }
 </style>
