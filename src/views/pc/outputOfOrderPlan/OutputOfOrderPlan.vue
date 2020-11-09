@@ -10,10 +10,40 @@
 				  <el-table
 				    :data="orderPlanData"
 				    style="width: 100%;margin-bottom: 20px;"
-				    row-key="id"
-				    border
-				    default-expand-all
-				    :tree-props="{children: 'subOrders', hasChildren: 'hasChildren'}">
+				    border>
+				    <el-table-column type="expand" >
+					  <template slot-scope="props" v-if="props.row.subOrders.length!=0">
+						  <el-table
+						    :data="props.row.subOrders"
+						    style="width: 100%;margin-bottom: 20px;"
+						    >
+						<el-table-column
+						        prop="workId"
+						        label="子订单编号"
+								>
+						</el-table-column>
+						<el-table-column
+						        prop="num"
+						        label="子订单数量"
+								>
+						</el-table-column>
+						<el-table-column
+						        prop="timeQuantum"
+						        label="生产时间"
+								width="400px">
+						</el-table-column>
+						<el-table-column label="操作"
+						 width="200px">
+						      <template slot-scope="scope" >
+						        <el-button
+						          size="mini"
+								  type="primary"
+						          @click="handleEdit(scope.row.workId)" >子订单-资源关系表</el-button>
+						      </template>
+						</el-table-column>
+						 </el-table>
+					  </template>
+					</el-table-column>
 				    <el-table-column
 				            prop="orderId"
 				            label="订单编号"
@@ -29,30 +59,8 @@
 				            label="订单交期"
 							>
 				    </el-table-column>
-					<el-table-column
-					        prop="workId"
-					        label="子订单编号"
-							>
-					</el-table-column>
-					<el-table-column
-					        prop="num"
-					        label="子订单数量"
-							>
-					</el-table-column>
-					<el-table-column
-					        prop="timeQuantum"
-					        label="生产时间">
-					</el-table-column>
-					<el-table-column label="操作"
-					 width="200px">
-					      <template slot-scope="scope" v-if="!scope.row.subOrders" >
-					        <el-button
-					          size="mini"
-							  type="primary"
-							  
-					          @click="handleEdit(scope.row.workId)" >子订单-资源关系表</el-button>
-					      </template>
-					</el-table-column>
+					
+					
 				  </el-table>
 				</div>
         	</div>
@@ -98,7 +106,10 @@
 				        }
 				    })
 				    .catch(err => {
-				        alert("未知错误，请重试");
+				        this.$message({
+				            type: 'error',
+				            message: "未知错误，请重试"
+				        });
 				    });
 				
 					
@@ -108,7 +119,6 @@
 			methods: {
 			      handleEdit(workId) {
 			        console.log(workId);
-					// 直接调用$router.push 实现携带参数的跳转
 					        this.$router.push({
 					          path: `/pc/outputOfWork/${workId}`,
 					        })
@@ -118,7 +128,7 @@
     }
 </script>
 
-<style>
+<style scoped>
 	.orderplan-wrap {
 		width: 80%;
 	    margin-left: 10%;

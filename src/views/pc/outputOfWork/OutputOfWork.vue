@@ -4,73 +4,75 @@
 		</el-page-header>
 		<div class="work-main">
 		<div class="workspace">
-			<el-collapse >
-			  <el-collapse-item  title="子订单详情" name="1">
-			    <div>子订单编号为 {{workData[0].workId}}</div>
-			    <div>该子订单生产 {{workData[0].num}} 件产品</div>
-				<div>该子订单的生产时间为 {{timeQuantum}}</div>
-			  </el-collapse-item>
-			</el-collapse>
+			<div >
+			  <div class="headerofit">
+			    <span class="headeroftop" >子订单详情</span>
+			    <div class="textline"></div>
+			  </div>
+			  <div class="text item" style="display: flex;justify-content: space-between;">
+			  	<div style="width: 50%;margin-bottom: 20px;">子订单编号: {{workData[0].workId}}</div>
+			  	<div style="width: 50%;margin-bottom: 20px;">子订单数量: {{workData[0].num}} </div>
+			  </div>
+			  <div class="text item" style="display: flex;justify-content: space-between;">
+			  	<div style="width: 50%;">子订单生产时间: {{timeQuantum}}</div>
+			  	<div style="width: 50%;">产线名称：{{workData[0].lineName}}</div>
+			  </div>
+			</div>
+			
+		</div>
+		<div class="worktable">
+			<div style="width: 45%;">
+			  <div class="headerofit">
+			    <span class="headerofcard" >设备</span>
+			    <div class="textline"></div>
+			  </div>
+			  <el-table
+			  		  :data="workData[0].devices"
+			  		 
+			  		  border
+			  		  default-expand-all
+			  		  >
+			  			  <el-table-column
+			  				  prop="deviceId"
+			  				  label="设备ID">
+			  			  </el-table-column>
+			  			  <el-table-column
+			  				  prop="deviceName"
+			  				  label="设备名称">
+			  			  </el-table-column>
+			  </el-table>
+			</div>
+			<div style="width: 45%;">
+			  <div class="headerofit">
+			    <span class="headerofcard" >人员</span>
+			    <div class="textline"></div>
+			  </div>
+			  <el-table
+			    :data="workData[0].persons"
+			   
+			    border
+			    default-expand-all
+			    >
+			  	  <el-table-column
+			  		  prop="personId"
+			  		  label="人员ID">
+			  	  </el-table-column>
+			  	  <el-table-column
+			  		  prop="groupId"
+			  		  label="群组ID">
+			  	  </el-table-column>
+			  	  <el-table-column
+			  		  prop="personName"
+			  		  label="人员姓名">
+			  	  </el-table-column>
+			  </el-table>
+			</div>
+			
 		</div>
 		
-		<el-table
-		  :data="workData"
-		  style="width: 50%%;"
-		  border
-		  default-expand-all
-		  >
-			
-			<el-table-column
-				  prop="lineName"
-				  label="产线名称">
-			</el-table-column>
-			<el-table-column
-			      label="设备"
-			      >
-			      <template slot-scope="scope">
-					<el-table
-					  :data="scope.row.devices"
-					  style="width: 50%%;"
-					  border
-					  default-expand-all
-					  >
-						  <el-table-column
-							  prop="deviceId"
-							  label="设备ID">
-						  </el-table-column>
-						  <el-table-column
-							  prop="deviceName"
-							  label="设备名称">
-						  </el-table-column>
-					</el-table>
-			      </template>
-			</el-table-column>
-			<el-table-column
-			      label="人员"
-			      >
-			      <template slot-scope="scope">
-					<el-table
-					  :data="scope.row.persons"
-					  style="width: 50%%;"
-					  border
-					  default-expand-all
-					  >
-						  <el-table-column
-							  prop="personId"
-							  label="人员ID">
-						  </el-table-column>
-						  <el-table-column
-							  prop="groupId"
-							  label="群组ID">
-						  </el-table-column>
-						  <el-table-column
-							  prop="personName"
-							  label="人员姓名">
-						  </el-table-column>
-					</el-table>
-			      </template>
-			</el-table-column>
-		</el-table>
+					
+					
+		
 		</div>
     </Layout>
 </template>
@@ -131,8 +133,7 @@
 			  }],
 			  }
 		},
-		mounted() 
-		{
+		mounted() {
 			getproduction()
 			    .then(res => {
 			        if(res.code === 200) {
@@ -147,7 +148,10 @@
 			        }
 			    })
 			    .catch(err => {
-			        alert("未知错误，请重试");
+			        this.$message({
+			            type: 'error',
+			            message: "未知错误，请重试"
+			        });
 			    });
 			var d=new Date(this.workData[0].endTime);
 			var c=d- 1 * 60 * 60 * 1000;
@@ -165,32 +169,57 @@
     }
 </script>
 
-<style>
+<style scoped>
 	.work-main {
 	    width: 80%;
 	    margin-left: 10%;
 		
 		
 	}
+	.worktable{
+		display: flex;
+		justify-content: space-between;
+	}
 	
 	
 	.workspace{
 		margin-top: 30px;
-		margin-bottom: 30px;
+		margin-bottom: 50px;
 	}
-	.workspace .el-collapse-item__content {
-	    padding-bottom: 25px;
+	
+	.text {
 	    font-size: 18px;
-	    color: #606266;
-		font-family:"PingFang SC";
-		line-height: 50px;
+	  }
+	
+	.item {
+		margin-top: 15px;
+	    margin-bottom: 15px;
+		
+	  }
+	
+	  .clearfix:before,
+	  .clearfix:after {
+	    display: table;
+	    content: "";
+	  }
+	  .clearfix:after {
+	    clear: both
+	  }
+	.headerofcard{
+		font-size: 22px;
 		
 	}
-	.el-collapse-item__header{
-		font-size: 20px;
-		height: 65px;
-		line-height: 65px;
-		font-family:"PingFang SC";
-
-		}
+	.headeroftop{
+		font-size: 28px;
+		
+	}
+	.textline{
+		margin-top: 20px;
+		border-bottom: solid 1px #ccc;
+		
+	}
+	.headerofit{
+		margin-bottom: 20px;
+	}
+	
 </style>

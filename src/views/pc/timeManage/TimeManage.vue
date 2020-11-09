@@ -2,36 +2,50 @@
     <Layout>
 		<div class="time-wrap">
 			<div class="time-header">
-				<div class="time-header-left">
+				<h2>模拟时间</h2>
+				<!-- <div class="time-header-left">
 					<div class="time-title">模拟时间</div>
-				</div>
-				<div class="time-header-right">
+				</div> -->
+				<!-- <div class="time-header-right">
 					<el-switch
 					  v-model="quickmode"
 					  active-text="快速模式"
 					  inactive-text="普通模式">
 					</el-switch>
-				</div>
+				</div> -->
 			
 			</div>
 			<div class="time-body">
 				<div class="time-left">
-					<div><p class="fontofname">修改当日时间</p></div>
+					<div style="margin-left: 20px;"><p class="fontofname">修改当日时间</p></div>
 					<div class="time-select-moni">
 					    <el-date-picker
 					      v-model="value2"
 					      type="date"
 					      placeholder="选择日期"
-					      format="yyyy 年 MM 月 dd 日"
-					      value-format="yyyy/MM/dd"
 						  @change="timeChange(value2)">
 					    </el-date-picker>
+						
 					 </div>
+					 <div class="time-select-moni">
+					     <el-time-picker
+					        v-model="value1"
+					        :picker-options="{
+					        }"
+					        placeholder="任意时间点"
+							@change="timeChange3(value1)">
+					      </el-time-picker>
+					  </div>
+					 
+					  
 				</div>
 				
-				<div class="time-right">
-					<p class="fontoftimetext">当前系统模拟时间为</p>
-					<p class="fontoftime">{{value2}}</p>
+				<div>
+					<div class="time-right">
+						<p class="fontoftimetext">当前系统模拟时间为</p>
+						<p class="fontoftime">{{finvalue}}</p>
+					</div>
+					<el-button style="margin-left: 600px;" type="primary" round @click="submitetime(subvalue)">提交</el-button>
 				</div>
 			
 			</div>
@@ -53,6 +67,9 @@
 
 <script>
     import Layout from "@/components/content/Layout";
+	import {getsimulatetime} from "@/network/simulationSystem";
+	import {setsimulatetime} from "@/network/simulationSystem";
+	import moment from 'moment';
     export default {
         components: {
             Layout
@@ -60,19 +77,57 @@
 		data() {
 		      return {
 					quickmode: true,
-					value2: "2019/11/09",
-					value: new Date("2019/11/09")
+					value2: "",
+					value1:'',
+					value: '',
+					finvalue:'',
+					subvalue:'',
 		      }
 		    },
+			mounted() {
+				getsimulatetime()
+				    .then(res => {
+				        if(res.code === 200) {
+							this.value1=res.msg;
+							this.value2=res.msg;
+							this.value=res.msg;
+							this.subvalue=res.msg;
+							this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
+				        } else {
+				            alert(res.msg);
+				        }
+				    })
+				    .catch(err => {
+				        alert("未知错误，请重试");
+				    });
+				
+					
+					
+			    
+			 },
 		methods:{
 			timeChange(time) {
 			    console.log(time);
-				this.value=new Date(this.value2);
+				this.value=this.value2;
+				this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
+				this.subvalue=moment(this.finvalue).format('YYYY-MM-DDTHH:mm:ss')
+				console.log(this.value1);
+				console.log(this.finvalue);
+				console.log(this.subvalue);
 			},
 			timeChange2(d) {
 			    console.log(d);
 				this.value2=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
+				this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
+				this.subvalue=moment(this.finvalue).format('YYYY-MM-DDTHH:mm:ss')
 			},
+			timeChange3(time){
+				this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
+				this.subvalue=moment(this.finvalue).format('YYYY-MM-DDTHH:mm:ss')
+			},
+			submitetime(time){
+				
+			}
 		}
     }
 </script>
@@ -80,14 +135,13 @@
 <style scoped>
 	.time-wrap {
 	    width: 80%;
-	    min-width: 600px;
 	    margin-left: 10%;
 	}
 	.time-header {
-	    margin-top: 50px;
+	    /* margin-top: 50px; */
 	    margin-bottom: 50px;
-	    display: flex;
-	    justify-content: space-between;
+	   /* display: flex;
+	    justify-content: space-between; */
 	}
 	.time-title {
 	    padding: 20px;
@@ -110,7 +164,7 @@
 	}
 	.time-left{
 		margin-top: 30px;
-		display: flex;
+
 	}
 	.time-right{
 		display: flex;
@@ -130,6 +184,7 @@
 	.time-select-moni{
 		margin-top: 10px;
 		margin-left: 20px;
+		
 	}
 	.time-calendar{
 		display: flex;
