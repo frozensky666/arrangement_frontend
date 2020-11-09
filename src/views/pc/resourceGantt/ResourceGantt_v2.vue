@@ -39,7 +39,7 @@
                                  :key="title"
                                  class="time-middle-content"
                                  :style="{'width': blockSize-1+'px'}">
-                                {{title}}
+                                <span>{{title}}</span>
                             </div>
                         </div>
                         <div v-if="dateType==='month'"
@@ -48,7 +48,7 @@
                                  :key="'month'+i"
                                  class="time-middle-content"
                                  :style="{'width': blockSize-1+'px'}">
-                                {{i}}
+                                <span>{{i}}</span>
                             </div>
                         </div>
 
@@ -469,10 +469,27 @@
         float: left;
 
         border: solid 1px #DCDFE6;
-        /*border-left: solid 1px #fff;*/
-        /*border-right: solid 1px #fff;*/
-        /*border-top: solid 1px #DCDFE6;*/
-        /*border-bottom: solid 1px #DCDFE6;*/
+    }
+    .time-middle-content span {
+        display: inline-block;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    ::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 7px;
+    }
+
+    ::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        background: #535353;
+    }
+
+    ::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        border-radius: 10px;
+        background: #EDEDED;
     }
 
     /* table */
