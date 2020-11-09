@@ -97,7 +97,7 @@
                <el-table-column
                        label="订单交期">
                    <template slot-scope="scope">
-                       {{scope.row.orderDeadline |dateFormat}}
+                       {{ scope.row.orderDeadline | thisToLocalDate}}
                    </template>
                </el-table-column>
                <el-table-column
@@ -116,6 +116,7 @@
     import Layout from "@/components/content/Layout";
     import {getOrders,updateOrder,createOrder,deleteOrder} from "@/network/orderManage";
     import {getAllMaterial} from "@/network/materialManage";
+    import {toLocalDate} from "@/common/utils";
 
     export default {
         components: {
@@ -161,8 +162,7 @@
             }
         },
         filters: {
-            dateFormat: (d) => new Date( new Date(d).getTime()+ 8 * 3600 * 1000).toISOString()
-                .split("T")[0]
+          thisToLocalDate: toLocalDate
         },
         mounted() {
             getOrders()
@@ -200,7 +200,18 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let op = formName === "createForm" ? createOrder : updateOrder;
-                        op(this[formName]).then(res => {
+                        let tmpForm = {
+                            orderId: -1,
+                            materialId: null,
+                            orderNum: null,
+                            orderDeadline: null
+                        };
+                        tmpForm.orderId = this[formName].orderId;
+                        tmpForm.materialId = this[formName].materialId;
+                        tmpForm.orderNum = this[formName].orderNum;
+                        tmpForm.orderDeadline = toLocalDate(this[formName].orderDeadline);
+
+                        op(tmpForm).then(res => {
                             if(res.code !== 200) {
                                 this.$message({
                                     type: 'error',
