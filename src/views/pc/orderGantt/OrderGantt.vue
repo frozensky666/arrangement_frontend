@@ -97,7 +97,7 @@
 							orderList: [
 							    {
 							        orderId: "418575",
-									num:"1",
+
 							        process: [
 							            {
 							                name:'装配',
@@ -110,7 +110,7 @@
 							    },
 								{
 								    orderId: "418577",
-									num:"1",
+
 								    process: [
 								        {
 								            name:'装配',
@@ -123,7 +123,7 @@
 								},
 								{
 								    orderId: "764486",
-									num:"1",
+
 								    process: [
 								        {
 								            name:'装配',
@@ -136,7 +136,7 @@
 								},
 								{
 								    orderId: "762904",
-									num:"2",
+
 								    process: [
 								        {
 								            name:'装配',
@@ -155,7 +155,7 @@
 								},
 								{
 								    orderId: "762345",
-									num:"2",
+
 								    process: [
 								        {
 								            name:'装配',

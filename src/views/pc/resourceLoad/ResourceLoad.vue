@@ -90,9 +90,9 @@
 
 			</div>
 			<div class="table" >
-				<div class="row" v-for="item in Loaddata.personnelLoad" :key="item.role">
+				<div class="row" v-for="item in Loaddata.personnelLoad" :key="item.name">
 					<div class="row-label">
-						{{item.role}}
+						{{item.name}}
 					</div>
 					<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
 						<div class="row-content-wrap" :style="{'left':bias+'px'}">
@@ -112,9 +112,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="row" v-for="item in Loaddata.deviceLoad" :key="item.role">
+				<div class="row" v-for="item in Loaddata.deviceLoad" :key="item.name">
 					<div class="row-label">
-						{{item.role}}
+						{{item.name}}
 					</div>
 					<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
 						<div class="row-content-wrap" :style="{'left':bias+'px'}">
@@ -187,7 +187,7 @@
 							deviceSumLoad:'0.80',
 							personnelLoad: [
 							    {
-							        role: "小明",
+							        name: "小明",
 							        load: [
 							            {
 							                date:'2018/11/09',
@@ -220,7 +220,7 @@
 							        ]
 							    },
 							    {
-							        role: "小红",
+							        name: "小红",
 							        load: [
 							           {
 							               date:'2018/11/09',
@@ -255,7 +255,7 @@
 							],
 							deviceLoad: [
 							    {
-							        role: "设备1",
+							        name: "设备1",
 							        load: [
 							            {
 							                date:'2018/11/09',
@@ -288,7 +288,7 @@
 							        ]
 							    },
 							    {
-							        role: "设备2",
+							        name: "设备2",
 							        load: [
 							           {
 							               date:'2018/11/09',
