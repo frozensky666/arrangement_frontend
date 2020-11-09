@@ -9,7 +9,9 @@
            <el-dialog title="添加订单" :visible.sync="createFormVisible" width="600px">
                <el-form :model="createForm" :rules="rules"  ref="createForm">
                    <el-form-item label="订单编号" :label-width="formLabelWidth" prop="orderId" style="display: none">
-                       <el-input v-model.number="createForm.orderId" autocomplete="off"></el-input>
+                       <el-col :span="10">
+                            <el-input v-model.number="createForm.orderId" autocomplete="off"></el-input>
+                       </el-col>
                    </el-form-item>
                    <el-form-item label="物料编号" :label-width="formLabelWidth" prop="materialId">
                        <el-select v-model="createForm.materialId" placeholder="请选择">
@@ -43,7 +45,9 @@
            <el-dialog title="修改订单" :visible.sync="modifyFormVisible" width="600px">
                <el-form :model="modifyForm" :rules="rules"  ref="modifyForm">
                    <el-form-item label="订单编号" :label-width="formLabelWidth" prop="orderId">
-                       <el-input v-model.number="modifyForm.orderId" autocomplete="off" :disabled="true"></el-input>
+                       <el-col :span="10">
+                           <el-input v-model.number="modifyForm.orderId" autocomplete="off" :disabled="true"></el-input>
+                       </el-col>
                    </el-form-item>
                    <el-form-item label="物料编号" :label-width="formLabelWidth" prop="materialId">
                        <el-select v-model="modifyForm.materialId" placeholder="请选择">
@@ -93,7 +97,7 @@
                <el-table-column
                        label="订单交期">
                    <template slot-scope="scope">
-                       {{scope.row.orderDeadline.toISOString().split("T")[0]}}
+                       {{scope.row.orderDeadline |dateFormat}}
                    </template>
                </el-table-column>
                <el-table-column
@@ -156,18 +160,28 @@
                 materials: []
             }
         },
+        filters: {
+            dateFormat: (d) => new Date( new Date(d).getTime()+ 8 * 3600 * 1000).toISOString()
+                .split("T")[0]
+        },
         mounted() {
             getOrders()
                 .then(res => {
                     if(res.code === 200) {
                         res.data.forEach(item => item.orderDeadline = new Date(item.orderDeadline));
                         this.orderTableData = res.data;
-                    } else {
-                        alert(res.msg);
+                    }  else {
+                        this.$message({
+                            type: 'error',
+                            message: res.msg
+                        });
                     }
                 })
                 .catch(err => {
-                    alert("未知错误，请重试");
+                    this.$message({
+                        type: 'error',
+                        message: '未知错误，请重试!'
+                    });
                 });
             getAllMaterial().
                 then(res => {

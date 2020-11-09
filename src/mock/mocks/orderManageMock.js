@@ -15,7 +15,8 @@ module.exports = {
                     "orderId|+1": 1,
                     "materialId": 1,
                     "orderNum": 1000,
-                    "orderDeadline": "2018-10-14"
+                    "orderDeadline": "2018-10-14",
+                    "state|1": [0,1,2]
                 }
             ]
         }

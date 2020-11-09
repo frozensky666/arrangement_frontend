@@ -1,14 +1,49 @@
 <template>
     <Layout>
-        <div class="layout-main">
+        <div class="layout-main plan" ref="planMain">
             <h2>排程</h2>
-            <div style="margin-top: 60px" ref="planMain">
-                <el-transfer v-model="value" :data="data" :titles="['Source', 'Target']">
-                    <el-button type="primary" class="transfer-footer" slot="right-footer" size="small" :disabled="value.length === 0"
-                    @click="plan()">排程</el-button>
-                </el-transfer>
+            <div class="btn-wrap">
+                <el-button type="primary" @click="plan()" :disabled="multipleSelection.length === 0">排程</el-button>
             </div>
-        </div>
+                <el-table
+                        ref="multipleTable"
+                        :data="tableData"
+                        tooltip-effect="dark"
+                        style="width: 90%"
+                        @selection-change="handleSelectionChange"
+                        stripe
+                >
+                    <el-table-column
+                            type="selection"
+                            width="55"
+                            :selectable="row => row.state === 0"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                            prop="orderId"
+                            label="订单编号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="materialId"
+                            label="物料编号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="orderNum"
+                            label="订货数量">
+                    </el-table-column>
+                    <el-table-column
+                            prop="orderDeadline"
+                            label="订单交期">
+                    </el-table-column>
+                    <el-table-column
+                            label="订单状态">
+                        <template slot-scope="scope">
+                            {{scope.row.state | stateFilter}}
+                            <div :class="getColor(scope.row.state)" class="state"></div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
     </Layout>
 </template>
 
@@ -24,22 +59,15 @@
         },
         data() {
             return {
-                data: [],
-                value: [],
-                planBtn: true
+                tableData: [],
+                multipleSelection: []
             }
         },
         mounted() {
             getOrders()
                 .then(res => {
                     if(res.code === 200) {
-                        res.data.forEach(item => {
-                            this.data.push({
-                                key: item.orderId,
-                                label: `订单 ${ item.orderId }`,
-                                disabled: false
-                            });
-                        });
+                        this.tableData = res.data;
                     } else {
                         this.$message({
                             type: 'error',
@@ -54,6 +82,9 @@
                     });
                 });
         },
+        filters: {
+            stateFilter: v => v === 0 ? "未排程" : ( v === 1 ? "已排程" : "已过期")
+        },
         methods: {
             plan() {
                 const loading = this.$loading({
@@ -63,9 +94,13 @@
                     // background: 'rgba(0, 0, 0, 0.7)',//遮罩层颜色
                     target: this.$refs.planMain
                 });
+                this.$message({
+                    type: 'info',
+                    message: '正在排程，请稍后'
+                });
 
                 plan({
-                    orderIdList: this.value
+                    orderIdList: this.multipleSelection.map(v => v.orderId)
                 }).then( res => {
                     setTimeout(()=>loading.close(),1000);
                     if(res.code === 200) {
@@ -80,18 +115,50 @@
                         });
                     }
                 });
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(val);
+            },
+            getColor(state) {
+                if (state === 0) {
+                    return 'not-plan-row';
+                } else if (state === 1) {
+                    return 'plan-row';
+                } else if (state === 2) {
+                    return 'overdue-row'
+                }
+                return '';
             }
         }
     }
 </script>
 
 <style scoped>
-    .layout-main {
+    .plan .btn-wrap{
+        display: flex;
+        justify-content: flex-end;
+        width: 90%;
+    }
+    .plan .btn-wrap > * {
+        margin-left: 10px;
+    }
+    .plan.layout-main {
         width: 80%;
         margin-left: 10%;
     }
-    .transfer-footer {
-        margin-left: 150px;
-        padding: 6px 5px;
+    .plan .not-plan-row {
+        background-color: rgb(49, 204, 119);
+    }
+    .plan .plan-row {
+        background-color: #ff6869;
+    }
+    .plan .overdue-row {
+        background-color: #bdbdbd;
+    }
+    .plan .state {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
     }
 </style>

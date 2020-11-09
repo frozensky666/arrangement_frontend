@@ -9,7 +9,9 @@
 			<el-dialog title="添加设备" :visible.sync="createFormVisible" width="600px">
 				<el-form :model="createForm" :rules="rules"  ref="createForm">
 					<el-form-item label="设备编号" :label-width="formLabelWidth" prop="deviceId" style="display: none">
-						<el-input v-model.number="createForm.deviceId" autocomplete="off"></el-input>
+						<el-col :span="10">
+							<el-input v-model.number="createForm.deviceId" autocomplete="off"></el-input>
+						</el-col>
 					</el-form-item>
 					<el-form-item label="设备名称" :label-width="formLabelWidth" prop="deviceName">
 						<el-col :span="10">
@@ -26,7 +28,9 @@
 			<el-dialog title="修改设备" :visible.sync="modifyFormVisible" width="600px">
 				<el-form :model="modifyForm" :rules="rules"  ref="modifyForm">
 					<el-form-item label="设备编号" :label-width="formLabelWidth" prop="deviceId">
-						<el-input v-model.number="modifyForm.deviceId" autocomplete="off" :disabled="true"></el-input>
+						<el-col :span="10">
+							<el-input v-model.number="modifyForm.deviceId" autocomplete="off" :disabled="true"></el-input>
+						</el-col>
 					</el-form-item>
 					<el-form-item label="设备名称" :label-width="formLabelWidth" prop="deviceName">
 						<el-col :span="10">
@@ -106,11 +110,17 @@
 					if(res.code === 200) {
 						this.deviceTableData = res.data;
 					} else {
-						alert(res.msg);
+						this.$message({
+							type: 'error',
+							message: res.msg
+						});
 					}
 				})
 				.catch(err => {
-					alert("未知错误，请重试");
+					this.$message({
+						type: 'error',
+						message: '未知错误，请重试!'
+					});
 				});
 		},
 		methods: {

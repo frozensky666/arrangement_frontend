@@ -44,4 +44,8 @@ export const colorFaded = (hslColor) => {
     return `${hslColor.split(",")[0]},15%,92%`;
 };
 
+export const toLocalDate = (d) => {
+   return  new Date( new Date(d).getTime()+ 8 * 3600 * 1000).toISOString()
+        .split("T")[0];
+};
 

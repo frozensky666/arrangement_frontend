@@ -9,7 +9,9 @@
             <el-dialog title="添加人员" :visible.sync="createFormVisible" width="600px">
                 <el-form :model="createForm" :rules="rules"  ref="createForm">
                     <el-form-item label="人员编号" :label-width="formLabelWidth" prop="personId" style="display: none">
-                        <el-input v-model.number="createForm.personId" autocomplete="off"></el-input>
+                        <el-col :span="10">
+                            <el-input v-model.number="createForm.personId" autocomplete="off"></el-input>
+                        </el-col>
                     </el-form-item>
                     <el-form-item label="所属组" :label-width="formLabelWidth" prop="groupId">
                         <el-select v-model="createForm.groupId" placeholder="请选择">
@@ -51,7 +53,9 @@
             <el-dialog title="修改人员" :visible.sync="modifyFormVisible" width="600px">
                 <el-form :model="modifyForm" :rules="rules"  ref="modifyForm">
                     <el-form-item label="人员编号" :label-width="formLabelWidth" prop="personId">
-                        <el-input v-model.number="modifyForm.personId" autocomplete="off" :disabled="true"></el-input>
+                        <el-col :span="10">
+                            <el-input v-model.number="modifyForm.personId" autocomplete="off" :disabled="true"></el-input>
+                        </el-col>
                     </el-form-item>
                     <el-form-item label="所属组" :label-width="formLabelWidth" prop="groupId">
                         <el-select v-model="modifyForm.groupId" placeholder="请选择">
@@ -193,12 +197,18 @@
                 .then(res => {
                     if(res.code === 200) {
                         this.personTableData = res.data;
-                    } else {
-                        alert(res.msg);
+                    }  else {
+                        this.$message({
+                            type: 'error',
+                            message: res.msg
+                        });
                     }
                 })
                 .catch(err => {
-                    alert("未知错误，请重试");
+                    this.$message({
+                        type: 'error',
+                        message: '未知错误，请重试!'
+                    });
                 });
             getAllGroups().
                 then(res => {

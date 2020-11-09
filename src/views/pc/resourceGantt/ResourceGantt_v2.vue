@@ -3,13 +3,8 @@
         <div class="gantt-wrap">
             <div class="gantt-header">
                 <div class="gantt-header-left">
-                    <div class="gantt-title">资源甘特图</div>
-                </div>
-                <div class="gantt-header-middle">
-                    <div class="gantt-tips1">单击产品可切换产品路线图和资源甘特图</div>
-                </div>
-                <div class="gantt-header-right">
-                    <div class="gantt-tips2">红色表示延期订单</div>
+<!--                    <div class="gantt-title">资源甘特图</div>-->
+                    <h2>资源甘特图</h2>
                 </div>
             </div>
             <div class="time-selector">
@@ -86,6 +81,18 @@
                     <canvas class="canvas" height="3000" width="3000" ref="canvas" :style="{'left':bias+'px'}"></canvas>
                 </div>
             </div>
+            <el-popover
+                    placement="bottom"
+                    width="200"
+                    trigger="hover">
+                        <div class="gantt-tips1">单击产品可切换产品路线图和资源甘特图</div>
+                        <div class="gantt-tips2">红色表示延期订单
+                            <div class="color-block"></div>
+                        </div>
+                <div class="tips" slot="reference">
+                    tips
+                </div>
+            </el-popover>
         </div>
     </Layout>
 </template>
@@ -95,6 +102,7 @@
     import {generateRandomColor,colorFaded} from "@/common/utils";
     import {resourceGanttDate,resourceGanttHour} from "@/network/resourceGantt";
     import Layout from "@/components/content/Layout";
+    import {toLocalDate} from "@/common/utils";
 
     export default {
         name: "ResourceGantt_v2",
@@ -107,7 +115,7 @@
                 mode: "gantt", // "gantt" / "route"
                 screenWidth: document.body.clientWidth,
                 dateType: "date",
-                date: "2018/11/9",
+                date: "2018-11-9",
                 dateTypeOptions: [
                     {
                         value: "month",
@@ -161,11 +169,11 @@
                 return reqFunc({
                     params: this.dateType === "date"?
                         {
-                            date: this.date
+                            date: toLocalDate(this.date)
                         }:
                         {
-                            start: this.date,
-                            end: tmpDate
+                            start: toLocalDate(this.date),
+                            end: toLocalDate(tmpDate)
                         }
                 }).then(res => {
                     if(res.code === 200) {
@@ -382,23 +390,20 @@
 
     /* gantt header */
     .gantt-header {
-        margin-top: 50px;
+        /*margin-top: 50px;*/
         margin-bottom: 50px;
         display: flex;
         justify-content: space-between;
     }
     .gantt-title {
         padding: 20px;
-        border: 1px solid #1f94ff;
+        border: 1px solid #DCDFE6;
     }
     .gantt-tips1 {
         padding: 20px;
-        border: 1px solid #1f94ff;
     }
     .gantt-tips2 {
         padding: 20px;
-        border: 1px solid #850006;
-        background-color: #ff0000;
     }
 
     /* time selector */
@@ -418,11 +423,16 @@
     .time-left,.time-right{
         flex: 0 0 10px;
         padding: 0 8px 0 8px;
-        background-color: #bcbec1;
-        border-radius: 4px;
+        background-color: #DCDFE6;
+    }
+    .time-left {
+        border-radius: 4px 0 0 4px
+    }
+    .time-right {
+        border-radius: 0 4px 4px 0
     }
     .time-left:hover,.time-right:hover{
-        background-color: #dcdcdc;
+        background-color: #c2c2c2;
         cursor: pointer;
     }
     .time-left:active,.time-right:active {
@@ -446,16 +456,23 @@
         overflow-x: auto;
         overflow-y: hidden;
         white-space: nowrap;
+        font-size: 14px;
+        color: #606266;
     }
     .time-middle-content {
         height: 78px;
         line-height: 30px;
         text-align: center;
-        border: solid 1px #888888;
         margin-left: -1px;
         display: inline-block;
         white-space: normal;
         float: left;
+
+        border: solid 1px #DCDFE6;
+        /*border-left: solid 1px #fff;*/
+        /*border-right: solid 1px #fff;*/
+        /*border-top: solid 1px #DCDFE6;*/
+        /*border-bottom: solid 1px #DCDFE6;*/
     }
 
     /* table */
@@ -464,11 +481,8 @@
         position: relative;
     }
     .table .row {
-        /*background-color: #6c81eb;*/
         height: 50px;
         border-top: 1px solid #fff;
-        /*display: flex;*/
-        /*justify-content: left;*/
         position: relative;
     }
     .table .row .row-label {
@@ -476,7 +490,6 @@
         left: 0;
         top: 0;
         width: 160px;
-        /*flex: 0 0 160px;*/
         background-color: #F5F7FA;
         border-radius: 10px;
         text-align: center;
@@ -486,11 +499,9 @@
 
     }
     .table .row .row-content {
-        /*display: inline-block;*/
         position: absolute;
         left: 206px;
         top: 0;
-        /*margin-left: 46px;*/
         height: 40px;
         background-color: #F5F7FA;
         overflow-x: hidden;
@@ -525,5 +536,30 @@
         top: 0;
         overflow: hidden;
         white-space: nowrap;
+    }
+    .color-block {
+        display: inline-block;
+        height: 10px;
+        width: 10px;
+        background-color: #ff0000;
+    }
+    .tips {
+        position: fixed;
+        right: -30px;
+        top:60px;
+        background-color: rgb(102, 177, 255);
+        color: #fff;
+        width: 60px;
+        border: solid 1px #EBEEF5;
+        border-radius: 10px 0 0 10px;
+        padding: 15px;
+
+        transition: right 0.5s;
+        -moz-transition: right 0.5s; /* Firefox 4 */
+        -webkit-transition: right 0.5s; /* Safari 和 Chrome */
+        -o-transition: right 0.5s; /* Opera */
+    }
+    .tips:hover {
+        right: 0;
     }
 </style>
