@@ -3,7 +3,9 @@
 		<div class="gantt-wrap">
 			<div class="gantt-header">
 				<div class="gantt-header-left">
-					<div class="gantt-title">订单甘特图</div>
+					<h2>
+						订单甘特图
+					</h2>
 				</div>
 				<div class="gantt-header-middle">
 					<div class="grid-content bg-purple">
@@ -25,10 +27,6 @@
 							placeholder="选择日期"
 							@change="timeChange">
 					</el-date-picker>
-				</div>
-
-				<div class="gantt-header-right">
-					<div class="gantt-tips2">红色表示延期订单</div>
 				</div>
 			</div>
 			<div class="order-title">
@@ -69,7 +67,17 @@
 				</div>
 			</div>
 
-
+			<el-popover
+			        placement="bottom"
+			        width="200"
+			        trigger="hover">
+			            <div class="gantt-tips2">红色表示延期订单
+			                <div class="color-block"></div>
+			            </div>
+			    <div class="tips" slot="reference">
+			        tips
+			    </div>
+			</el-popover>
 
 		</div>
 	</Layout>
@@ -280,14 +288,13 @@
 	}
 /* gantt header */
     .gantt-header {
-        margin-top: 50px;
         margin-bottom: 50px;
         display: flex;
         justify-content: space-between;
     }
     .gantt-title {
         padding: 20px;
-        border: 1px solid #1f94ff;
+        border: 1px solid #DCDFE6;
     }
     .gantt-header-middle {
 
@@ -303,8 +310,6 @@
 	}
 	.gantt-tips2 {
 	    padding: 20px;
-	    border: 1px solid #850006;
-	    background-color: #ff0000;
 	}
 	.el-row {
 		margin-bottom: 20px;
@@ -323,7 +328,7 @@
 	}
 
 	.bg-purple {
-		border: 1px solid #1f94ff;
+		border: 1px solid #DCDFE6;
 		text-align: center;
 		padding-bottom: 10px;
 	}
@@ -393,13 +398,13 @@
 		text-align: center;
 		line-height: 40px;
 		height: 40px;
-	    border: 1px solid #1f94ff;
+	    border: 1px solid #DCDFE6;
 	}
 	.order-text2{
 		width: 1180px;
 		padding-top: 20px;
 		padding-bottom: 20px;
-		border: 1px solid #1f94ff;
+		border: 1px solid #DCDFE6;
 	}
 	
 	  /* table */
@@ -418,7 +423,7 @@
 	    width: 160px;
 	    /*flex: 0 0 160px;*/
 	    
-		border: 1px solid #1f94ff;
+		border: 1px solid #DCDFE6;
 
 	    text-align: center;
 	    line-height: 40px;
@@ -445,7 +450,7 @@
 	    height: 40px;
 	    top: 5px;
 	    display: inline-block;
-		border: 1px solid #1f94ff;
+		border: 1px solid #DCDFE6;
 		
 	    cursor: pointer;
 	}
@@ -457,6 +462,31 @@
 	    text-align: center;
 	    cursor: pointer;
 		
+	}
+	.tips {
+	    position: fixed;
+	    right: -30px;
+	    top:60px;
+	    background-color: rgb(102, 177, 255);
+	    color: #fff;
+	    width: 60px;
+	    border: solid 1px #EBEEF5;
+	    border-radius: 10px 0 0 10px;
+	    padding: 15px;
+	
+	    transition: right 0.5s;
+	    -moz-transition: right 0.5s; /* Firefox 4 */
+	    -webkit-transition: right 0.5s; /* Safari 和 Chrome */
+	    -o-transition: right 0.5s; /* Opera */
+	}
+	.tips:hover {
+	    right: 0;
+	}
+	.color-block {
+	    display: inline-block;
+	    height: 10px;
+	    width: 10px;
+	    background-color: #ff0000;
 	}
 </style>
 

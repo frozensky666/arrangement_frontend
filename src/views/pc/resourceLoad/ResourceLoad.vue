@@ -3,7 +3,7 @@
 		<div class="gantt-wrap">
 			<div class="gantt-header">
 				<div class="gantt-header-left">
-					<div class="gantt-title">资源负载图</div>
+					<h2>资源负载图</h2>
 				</div>
 				<div class="gantt-header-middle">
 					<div class="grid-content bg-purple" v-if="dateType==='day'">
@@ -68,7 +68,7 @@
 								 :key="'month'+i"
 								 class="time-middle-content"
 								 :style="{'width': blockSize-1+'px'}">
-								{{i}}
+								<span>{{i}}</span>
 							</div>
 						</div>
 						<div v-if="dateType==='date'"
@@ -77,7 +77,7 @@
 								 :key="'month'+i"
 								 class="time-middle-content"
 								 :style="{'width': blockSize-1+'px'}">
-								{{i}}
+								<span>{{i}}</span>
 							</div>
 						</div>
 
@@ -435,7 +435,7 @@
 	}
 /* gantt header */
     .gantt-header {
-        margin-top: 50px;
+
         margin-bottom: 50px;
         display: flex;
         justify-content: space-between;
@@ -452,7 +452,7 @@
 	
     }
 	.fontofright{
-		border: 1px solid #1f94ff;
+		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
@@ -460,7 +460,7 @@
 
 		float:left;
 		background-color: #08FFFF;
-		border: 1px solid #1f94ff;
+		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
@@ -468,7 +468,7 @@
 
 		float:left;
 		background-color: #4EA4CB;
-		border: 1px solid #1f94ff;
+		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
@@ -476,7 +476,7 @@
 
 		float:left;
 		background-color: #98F20c;
-		border: 1px solid #1f94ff;
+		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
@@ -484,7 +484,7 @@
 
 		float:left;
 		background-color: #F59D2A;
-		border: 1px solid #1f94ff;
+		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
@@ -492,7 +492,7 @@
 
 		float:left;
 		background-color: #E4C7FF;
-		border: 1px solid #1f94ff;
+		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
@@ -500,7 +500,7 @@
 
 		float:left;
 		background-color: #E02E44;
-		border: 1px solid #1f94ff;
+		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
@@ -522,7 +522,7 @@
 		padding-right: 30px;
 		border-radius: 4px;
 		min-height: 36px;
-		border: 1px solid #1f94ff;
+		border: 1px solid #ebeef5;
 		text-align: center;
 		padding-bottom: 10px;
 	}
@@ -589,28 +589,71 @@
 	    overflow-x: auto;
 	    overflow-y: hidden;
 	    white-space: nowrap;
+	    font-size: 14px;
+	    color: #606266;
 	}
 	.time-middle-content {
 	    height: 78px;
 	    line-height: 30px;
-	    border: solid 1px #888888;
+	    text-align: center;
 	    margin-left: -1px;
 	    display: inline-block;
 	    white-space: normal;
 	    float: left;
+	
+	    border: solid 1px #DCDFE6;
+	}
+	.time-middle-content span {
+	    display: inline-block;
+	    position: relative;
+	    top: 50%;
+	    transform: translateY(-50%);
+	}
+	
+	::-webkit-scrollbar {/*滚动条整体样式*/
+	    width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+	    height: 7px;
+	}
+	
+	::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+	    background: #535353;
+	}
+	
+	::-webkit-scrollbar-track {/*滚动条里面轨道*/
+	    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+	    border-radius: 10px;
+	    background: #EDEDED;
 	}
 	.time-left,.time-right{
 	    flex: 0 0 10px;
 	    padding: 0 8px 0 8px;
-	    background-color: #bcbec1;
-	    border-radius: 4px;
+	    background-color: #DCDFE6;
+	}
+	.time-left {
+	    border-radius: 4px 0 0 4px
+	}
+	.time-right {
+	    border-radius: 0 4px 4px 0
 	}
 	.time-left:hover,.time-right:hover{
-	    background-color: #dcdcdc;
+	    background-color: #c2c2c2;
 	    cursor: pointer;
 	}
 	.time-left:active,.time-right:active {
 	    background-color: #b4b4b4;
+	}
+	.time-l-arrow, .time-r-arrow{
+	    width: 8px;
+	    height: 8px;
+	    border-top: 2px solid #fff;
+	    border-right: 2px solid #fff;
+	    margin-top: 36px;
+	}
+	.time-l-arrow {
+	    transform: rotate(225deg);
+	}
+	.time-r-arrow {
+	    transform: rotate(45deg);
 	}
 	
 	  /* table */
@@ -658,7 +701,7 @@
 	    top: 7px;
 	    display: inline-block;
 	    border-radius: 10px;
-		border: 1px solid #1f94ff;
+		border: 1px solid #ebeef5;
 	    cursor: pointer;
 	}
 	.table .row .row-content .row-item .row-colorbox{
