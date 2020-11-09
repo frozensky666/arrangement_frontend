@@ -18,15 +18,7 @@
 			<div class="time-body">
 				<div class="time-left">
 					<div style="margin-left: 20px;"><p class="fontofname">修改当日时间</p></div>
-					<div class="time-select-moni">
-					    <el-date-picker
-					      v-model="value2"
-					      type="date"
-					      placeholder="选择日期"
-						  @change="timeChange(value2)">
-					    </el-date-picker>
-						
-					 </div>
+					
 					 <div class="time-select-moni">
 					     <el-time-picker
 					        v-model="value1"
@@ -45,7 +37,6 @@
 						<p class="fontoftimetext">当前系统模拟时间为</p>
 						<p class="fontoftime">{{finvalue}}</p>
 					</div>
-					<el-button style="margin-left: 600px;" type="primary" round @click="submitetime(subvalue)">提交</el-button>
 				</div>
 			
 			</div>
@@ -69,6 +60,8 @@
     import Layout from "@/components/content/Layout";
 	import {getsimulatetime} from "@/network/simulationSystem";
 	import {setsimulatetime} from "@/network/simulationSystem";
+	import request from "@/network/request";
+	const API = require("@/apis"); //此处务必使用require导入（因为是module.exports导出的...）
 	import moment from 'moment';
     export default {
         components: {
@@ -106,27 +99,37 @@
 			    
 			 },
 		methods:{
-			timeChange(time) {
-			    console.log(time);
-				this.value=this.value2;
-				this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
-				this.subvalue=moment(this.finvalue).format('YYYY-MM-DDTHH:mm:ss')
-				console.log(this.value1);
-				console.log(this.finvalue);
-				console.log(this.subvalue);
-			},
+			
 			timeChange2(d) {
 			    console.log(d);
 				this.value2=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
 				this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
-				this.subvalue=moment(this.finvalue).format('YYYY-MM-DDTHH:mm:ss')
+				this.subvalue=moment(this.finvalue).format('YYYY-MM-DDTHH:mm:ss');
+				this.submitetime(this.subvalue)
 			},
 			timeChange3(time){
 				this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
 				this.subvalue=moment(this.finvalue).format('YYYY-MM-DDTHH:mm:ss')
+				this.submitetime(this.subvalue)
 			},
 			submitetime(time){
 				
+				request._get(API.SIMULATE_TIME+"/"+time)
+				    .then(res => {
+				        if(res.code === 200) {
+
+							console.log(res.data)
+							
+				        } else {
+				            alert(res.msg);
+				        }
+				    })
+				    .catch(err => {
+				        this.$message({
+				            type: 'error',
+				            message: "未知错误，请重试"
+				        });
+				    });
 			}
 		}
     }
