@@ -10,12 +10,12 @@
 			    <div class="textline"></div>
 			  </div>
 			  <div class="text item" style="display: flex;justify-content: space-between;">
-			  	<div style="width: 50%;margin-bottom: 20px;">子订单编号: {{workData[0].workId}}</div>
-			  	<div style="width: 50%;margin-bottom: 20px;">子订单数量: {{workData[0].num}} </div>
+			  	<div style="width: 50%;margin-bottom: 20px;">子订单编号: {{workData.workId}}</div>
+			  	<div style="width: 50%;margin-bottom: 20px;">子订单数量: {{workData.num}} </div>
 			  </div>
 			  <div class="text item" style="display: flex;justify-content: space-between;">
 			  	<div style="width: 50%;">子订单生产时间: {{timeQuantum}}</div>
-			  	<div style="width: 50%;">产线名称：{{workData[0].lineName}}</div>
+			  	<div style="width: 50%;">产线名称：{{workData.lineName}}</div>
 			  </div>
 			</div>
 			
@@ -27,7 +27,7 @@
 			    <div class="textline"></div>
 			  </div>
 			  <el-table
-			  		  :data="workData[0].devices"
+			  		  :data="workData.devices"
 			  		 
 			  		  border
 			  		  default-expand-all
@@ -48,7 +48,7 @@
 			    <div class="textline"></div>
 			  </div>
 			  <el-table
-			    :data="workData[0].persons"
+			    :data="workData.persons"
 			   
 			    border
 			    default-expand-all
@@ -80,6 +80,9 @@
 <script>
     import Layout from "@/components/content/Layout";
 	import {getproduction} from "@/network/plan";
+	import request from "@/network/request";
+	import {getsuborder} from "@/network/plan";
+	const API = require("@/apis"); //此处务必使用require导入（因为是module.exports导出的...）
 	import moment from 'moment'
 
     export default {
@@ -89,74 +92,35 @@
 		data(){
 			return {
 			timeQuantum:'',
-			workData:[{
-			    workId: 123123123,
-			    num: 100,
-			    endTime: "2018-10-01T08:00:00",
-			    lineName: "line1",
-			    devices: [
-			      {
-			        deviceId: 1,
-			        deviceName: "移印机"
-			      },
-				  {
-				    deviceId: 2,
-				    deviceName: "移印机"
-				  },
-				  {
-				    deviceId: 3,
-				    deviceName: "移印机"
-				  }
-			    ],
-			    persons: [
-			      {
-			        personId: 1111,
-			        groupId: "12222",
-			        personName: "林佳奇"
-			      },
-				  {
-				    personId: 13333,
-				    groupId: "14444",
-				    personName: "林佳奇"
-				  },
-				  {
-				    personId: 15555,
-				    groupId: "16666",
-				    personName: "林佳奇"
-				  },
-				  {
-				    personId: 17777,
-				    groupId: "18888",
-				    personName: "林佳奇"
-				  }
-			    ]
-			  }],
+			workData:[],
+			thedate:'',
 			  }
 		},
 		mounted() {
-			getproduction()
-			    .then(res => {
-			        if(res.code === 200) {
-			            this.workData[0] = res.data;
-			            console.log(this.orderPlanData[0])
-			            var d=new Date(this.workData[0].endTime);
-			            var c=d- 1 * 60 * 60 * 1000;
-			            this.timeQuantum=moment(c).format('YYYY-MM-DD HH:mm:ss')+"~"+moment(d).format('YYYY-MM-DD HH:mm:ss');
-			            console.log(this.timeQuantum);
-			        } else {
-			            alert(res.msg);
-			        }
-			    })
-			    .catch(err => {
-			        this.$message({
-			            type: 'error',
-			            message: "未知错误，请重试"
-			        });
-			    });
-			var d=new Date(this.workData[0].endTime);
-			var c=d- 1 * 60 * 60 * 1000;
-			this.timeQuantum=moment(c).format('YYYY-MM-DD HH:mm:ss')+"~"+moment(d).format('YYYY-MM-DD HH:mm:ss');
-			console.log(this.timeQuantum);
+				
+				getproduction({
+				    params: {
+				       workId:'1'
+				    }
+				}).then(res => {
+				        if(res.code === 200) {
+							this.workData = res.data;
+							var d=new Date(this.workData.endTime);
+							var c=d- 1 * 60 * 60 * 1000;
+							this.timeQuantum=moment(c).format('YYYY-MM-DD HH:mm:ss')+"~"+moment(d).format('YYYY-MM-DD HH:mm:ss');
+				        } else {
+				            alert(res.msg);
+				        }
+				    })
+				    .catch(err => {
+				        this.$message({
+				            type: 'error',
+				            message: "未知错误，请重试"
+				        });
+				    });
+				
+					
+					
 				
 				
 		    
