@@ -53,6 +53,13 @@
 								:value="item.value">
 						</el-option>
 					</el-select>
+					<el-date-picker
+					        style="width: 160px"
+					        v-model="date"
+					        type="date"
+					        placeholder="选择日期"
+					        @change="timeChange">
+					</el-date-picker>
 				</div>
 				<div class="time-selector-right">
 					<div class="time-left" @click="scroll(-1)">
@@ -146,7 +153,9 @@
 	import {bodyWidthMixin} from "@/common/mixin";
 	import {generateRandomColor,colorFaded} from "@/common/utils";
 	import Layout from "@/components/content/Layout";
-	
+	import {resourceLoadDay} from "@/network/resourceLoad";
+	import {resourceLoadWeek} from "@/network/resourceLoad";
+	import moment from 'moment';
 				  export default {
 					mixins: [bodyWidthMixin],
 					  components: {
@@ -341,6 +350,7 @@
 					      }
 					  },
 					  timeChange(time) {
+						  var theday=moment(time).format('YYYY-MM-DD');
 					      console.log(time);
 					  },
 					  scroll(pages) {
@@ -397,7 +407,7 @@
 					      for (let i = 0; i <days*7; i++) {
 					          arr[i] = d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
 					          d.setDate(d.getDate()+6);
-							  arr[i]=arr[i]+'~'+'\n'+d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
+							  arr[i]=arr[i]+'~'+(d.getMonth()+1)+'/'+d.getDate();
 							  d.setDate(d.getDate()+1);
 					      }
 					      return arr;
@@ -657,6 +667,9 @@
 	}
 	
 	  /* table */
+	.table{
+		margin-top: 20px;
+	}
 	.table .row {
 	    /*background-color: #6c81eb;*/
 	    height: 100px;

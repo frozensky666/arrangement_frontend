@@ -12,7 +12,9 @@ module.exports = {
                         {
                             "name": "装配",
                             "percent|0.2": 1,
-                            "isdelayed|0-1": 1
+                            "isdelayed|0-1": 1,
+							"theline|0.2": 1,
+							"ddl": "@date",
                         }
                     ]
                 }

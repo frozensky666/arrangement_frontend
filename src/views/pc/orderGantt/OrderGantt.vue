@@ -10,7 +10,7 @@
 				<div class="gantt-header-middle">
 					<div class="grid-content bg-purple">
 						<p class="fontofname">按期交货率</p>
-						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20"   :percentage="rate*100"></el-progress>
+						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20"   :percentage="parseInt(rate*100)"></el-progress>
 					</div>
 
 				</div>
@@ -49,17 +49,45 @@
 									v-for="(block,index) in item.process" :key="block.name+block.percent"
 									effect="dark" :content="getPercentage(block.percent)" placement="top">
 
-								<div class="row-item"
+								<div class="row-item" v-if="block.isdelayed==0"
 									 :style="{'left': getPosition(item.process.length,index)+'px','width':getWidthOfBox(item.process.length)+'px'}">
-									<div class="row-percentbox"
-										 :style="{'background-color': getColor(block.percent,block.isdelayed,index),'width':getWidthOfPercent(item.process.length,block.percent)+'px'}">
-										{{block.name}}   {{getPercentage(block.percent)}}
+									<div class="row-item2" 
+										 :style="{'width':getWidthOfBox(item.process.length)+'px'}">
+										 <div class="row-percentbox2" v-if="getmaxlenth(item.process.length,block.percent)"
+										 	 :style="{'background-color': getColor(block.percent,block.isdelayed,index),'width':getWidthOfPercent(item.process.length,block.percent)+'px'}">
+										 	{{block.name}}   {{getPercentage(block.percent)}}
+										 </div>
+										 <div class="row-percentbox" v-if="!getmaxlenth(item.process.length,block.percent)"
+										 	 :style="{'background-color': getColor(block.percent,block.isdelayed,index),'width':getWidthOfPercent(item.process.length,block.percent)+'px'}">
+										 	{{block.name}}   {{getPercentage(block.percent)}}
+										 </div>
 									</div>
-									<div class="row-percentbox" v-if="block.isdelayed==1"
-										 :style="{'left': getPosition2(item.process.length,block.percent)+'px','background-color': getColorAfter(block.percent,block.isdelayed),'width':getWidthOfPercentAfter(item.num,block.percent)+'px'}">
-
-									</div>
+										
+										
 								</div>
+
+								<div class="row-item" v-if="(block.isdelayed==1)"
+									 :style="{'left': getPosition(item.process.length,index)+'px','width':getWidthOfBox(item.process.length)+'px'}">
+									<div class="row-item2" 
+										 :style="{'width':getWidthOfBox(item.process.length)+'px'}">
+										 <div class="row-percentbox2" v-if="getmaxlenth(item.process.length,block.percent)"
+										 	 :style="{'background-color': getColorAfter(block.percent,block.isdelayed,index),'width':getWidthOfPercent(item.process.length,block.percent)+'px'}">
+										 	{{block.name}}   {{getPercentage(block.percent)}}
+										 </div>
+										 <div class="row-percentbox" v-if="!getmaxlenth(item.process.length,block.percent)"
+										 	 :style="{'background-color': getColorAfter(block.percent,block.isdelayed,index),'width':getWidthOfPercent(item.process.length,block.percent)+'px'}">
+										 	{{block.name}}   {{getPercentage(block.percent)}}
+										 </div>
+										 
+									</div>
+									<el-tooltip class="row-percentbox" v-if="(block.isdelayed==1)"
+										 :style="{'left':getPosition2(item.process.length,block.theline)+'px','top':'33px'}"
+																				  effect="dark" :content="getddl(block.ddl)" placement="top">
+									      
+										  <i class="el-icon-top"></i>
+									    </el-tooltip>
+								</div>
+								
 
 							</el-tooltip>
 						</div>
@@ -111,7 +139,7 @@
 							            {
 							                name:'装配',
 											percent:'0.6',
-											
+											theline:'0.8',
 											isdelayed:'1'
 							            }
 										
@@ -124,7 +152,7 @@
 								        {
 								            name:'装配',
 											percent:'1',
-											
+											theline:'1',
 											isdelayed:'0'
 								        }
 										
@@ -135,7 +163,8 @@
 								    process: [
 								        {
 								            name:'装配',
-											percent:'1',
+											percent:'0.8',
+											theline:'0.7',
 											isdelayed:'1'
 								        }
 										
@@ -148,12 +177,13 @@
 								        {
 								            name:'装配',
 											percent:'0.53',
+											theline:'1',
 											isdelayed:'0'
 								        },
 										{
 										    name:'测试',
 											percent:'0.33',
-											
+											theline:'1',
 											isdelayed:'0'
 										}
 										
@@ -166,19 +196,57 @@
 								        {
 								            name:'装配',
 											percent:'0.53',
-											
+											theline:'1',
 											isdelayed:'0'
 								        },
 										{
 										    name:'测试',
 											percent:'0',
-											
+											theline:'1',
 											isdelayed:'0'
 										}
 										
 								    ]
 								}
+							    ,
+							    {
+							        orderId: "762345",
 							    
+							        process: [
+							            {
+							                name:'装配',
+							    			percent:'0.53',
+							    			theline:'0.7',
+							    			isdelayed:'1'
+							            },
+							    		{
+							    		    name:'测试',
+							    			percent:'0',
+							    			theline:'0.5',
+							    			isdelayed:'1'
+							    		}
+							    		
+							        ]
+							    },
+							    {
+							        orderId: "762345",
+							    
+							        process: [
+							            {
+							                name:'装配',
+							    			percent:'0.8',
+							    			theline:'0.7',
+							    			isdelayed:'1'
+							            },
+							    		{
+							    		    name:'测试',
+							    			percent:'0.9',
+							    			theline:'0.5',
+							    			isdelayed:'1'
+							    		}
+							    		
+							        ]
+							    }
 							]
 						
 						
@@ -314,6 +382,7 @@
 						            return '#E02E44';
 						          } */
 					  },
+					  
 					  getColorAfter(percent,isdelayed){
 						  if(isdelayed==1){
 						  		return '#E02E44'
@@ -331,6 +400,10 @@
 					  					  return (1150/num)*percent;
 					      
 					  },
+					  getPosition3(num,percent) {
+					  					  return (1150/num)*percent+1;
+					      
+					  },
 					  getWidthOfBox(num) {
 					  					  return 1150/num;
 					      
@@ -339,15 +412,28 @@
 					  					  return 1150/num*percent;
 					      
 					  },
-					  
+					  getWidthOfPercent2(num,percent) {
+					  					  return 1150/num*percent-1;
+					      
+					  },
 					  getPercentage(percent) {
 						  if(percent!=1){
-							  return (percent*100)+"%";
+							  return parseInt(percent*100)+"%";
 						  }else{
 							  return "已完成"
 						  }
 					  					  
 					      
+					  },
+					  getmaxlenth(num,percent){
+						  if(percent/num<0.06){
+							  return true;
+						  }else{
+							  return false;
+						  }
+					  },
+					  getddl(ddl){
+						  return "交期："+ddl;
 					  }
 				  },
 				  
@@ -453,6 +539,8 @@
 	.order-title{
 	    display: flex;
 	    justify-content: left;
+		margin-bottom: 10px;
+		margin-top: 10px;
 	}
 	.order-title-left {
 	    flex: 0 0 160px;
@@ -470,8 +558,7 @@
 	.order-text {
 	    padding: 20px;
 		text-align: center;
-		line-height: 40px;
-		height: 40px;
+        padding-bottom: 20px;
 	    border: 1px solid #DCDFE6;
 	}
 	.order-text2{
@@ -484,7 +571,7 @@
 	  /* table */
 	.table .row {
 	    /*background-color: #6c81eb;*/
-	    height: 50px;
+	    height: 70px;
 	    border-top: 1px solid #fff;
 	    /*display: flex;*/
 	    /*justify-content: left;*/
@@ -511,7 +598,7 @@
 	    left: 180px;
 	    top: 0;
 	    /*margin-left: 46px;*/
-	    height: 50px;
+	    height: 70px;
 	    overflow-x: hidden;
 	    overflow-y: hidden;
 	    white-space: nowrap;
@@ -521,22 +608,38 @@
 	}
 	.table .row .row-content .row-item{
 	    position: absolute;
-	    height: 40px;
+	    height: 70px;
 	    top: 5px;
 	    display: inline-block;
-		border: 1px solid #DCDFE6;
 		
 	    cursor: pointer;
 	}
-	.table .row .row-content .row-item .row-percentbox{
+	.table .row .row-content .row-item2{
 	    position: absolute;
+	    height: 40px;
+	    display: inline-block;
+		border: 1px solid #DCDFE6;
+	    cursor: pointer;
+	}
+	.table .row .row-content .row-item .row-percentbox{
+		position: absolute;
+
 		height: 30px;
 	    display: inline-block;
 	    padding-top: 10px;
 	    text-align: center;
 	    cursor: pointer;
-		
 	}
+	.table .row .row-content .row-item .row-percentbox2{
+		position: absolute;
+	
+		height: 30px;
+	    display: inline-block;
+	    padding-top: 10px;
+	    cursor: pointer;
+		text-indent:70px;
+	}
+	
 	.tips {
 	    position: fixed;
 	    right: -30px;
