@@ -65,15 +65,25 @@
                     </div>
                     <div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
                         <div class="row-content-wrap" :style="{'left':bias+'px'}">
-                            <el-tooltip
-                                    v-for="block in item.plan" :key="block.start+block.end+block.value"
-                                    effect="dark" :content="block.value" placement="top">
-                                <div class="row-item"
-                                     @click="showRoutes(block.value)"
-                                     :style="{'background-color': block.bg,'width': getWidth(block.start,block.end)+'px','left': getPosition(block.start)+'px','z-index': block.bg===block.oriBg?1:0}">
-                                    {{block.value}}
-                                </div>
-                            </el-tooltip>
+<!--                            <el-tooltip-->
+<!--                                    v-for="block in item.plan" :key="block.start+block.end+block.value"-->
+<!--                                    effect="dark" :content="block.value" placement="top">-->
+                                <el-popover
+                                        v-for="block in item.plan" :key="block.start+block.end+block.value"
+                                        placement="top"
+                                        width="100"
+                                        trigger="hover">
+                                    <div>资源名称： {{block.value}}</div>
+                                    <div>订单编号： {{block.orderId}}</div>
+                                    <div>物料编号： {{block.materialId}}</div>
+                                    <div class="row-item"
+                                         slot="reference"
+                                         @click="showRoutes(block.value)"
+                                         :style="{'background-color': block.bg,'width': getWidth(block.start,block.end)+'px','left': getPosition(block.start)+'px','z-index': block.bg===block.oriBg?1:0}">
+                                        {{dateType === "date" ? block.value : ""}}
+                                    </div>
+                                </el-popover>
+<!--                            </el-tooltip>-->
                         </div>
                     </div>
                 </div>
@@ -501,6 +511,7 @@
         height: 50px;
         border-top: 1px solid #fff;
         position: relative;
+        font-size: 10px;
     }
     .table .row .row-label {
         position: absolute;
@@ -531,6 +542,7 @@
     .table .row .row-content .row-item{
         position: absolute;
         height: 26px;
+        line-height: 26px;
         top: 7px;
         display: inline-block;
         border-radius: 10px;

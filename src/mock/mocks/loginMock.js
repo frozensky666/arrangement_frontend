@@ -10,7 +10,11 @@ module.exports = {
         {
             "code": 200,
             "msg": "",
-            "data": {}
+            "data": {
+                "personAuth|1" : [0,1,2],
+                "username" : "林佳奇",
+                "password" : 123
+            }
         }
     ]
 };

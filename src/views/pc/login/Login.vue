@@ -1,13 +1,13 @@
 <template>
     <div class="login-container">
-        <h1 class="login-title">排程系统</h1>
+<!--        <h1 class="login-title">排程系统</h1>-->
         <el-form :model="ruleForm2" :rules="rules2"
                  status-icon
                  ref="ruleForm2"
                  label-position="left"
                  label-width="0px"
                  class="demo-ruleForm login-page">
-            <h3 class="title">系统登录</h3>
+            <h3 class="title">排程系统登录</h3>
             <el-form-item prop="username">
                 <el-input type="text"
                           v-model="ruleForm2.username"
@@ -37,8 +37,8 @@
             return {
                 logining: false,
                 ruleForm2: {
-                    username: 'admin',
-                    password: '123456',
+                    username: '林佳奇',
+                    password: '123',
                 },
                 rules2: {
                     username: [{required: true, message: 'please enter your account', trigger: 'blur'}],
@@ -61,8 +61,9 @@
 
                            } else{
                                sessionStorage.setItem('user', this.ruleForm2.username);
+                               sessionStorage.setItem("auth",res.data.personAuth);
                                this.logining = false;
-                               this.$router.push("/pc/plan");
+                               this.$router.push("/pc/outputOfOrderPlan");
                                this.$message({
                                    type: "success",
                                    message: "登陆成功"
@@ -89,7 +90,7 @@
     .login-page {
         -webkit-border-radius: 5px;
         border-radius: 5px;
-        margin: 40px auto;
+        margin: 160px auto;
         width: 350px;
         padding: 35px 35px 15px;
         background: #fff;
