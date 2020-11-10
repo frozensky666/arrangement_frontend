@@ -71,13 +71,12 @@
                                 <el-popover
                                         v-for="block in item.plan" :key="block.start+block.end+block.value"
                                         placement="top"
-                                        width="220"
+                                        width="240"
                                         trigger="hover">
-                                    <div class="item-msg">产品 ID： {{block.value}}</div>
                                     <div class="item-msg">订单编号： {{block.orderId}}</div>
                                     <div class="item-msg">物料编号： {{block.materialId}}</div>
-                                    <div class="item-msg">开始时间： {{block.start}}</div>
-                                    <div class="item-msg">结束时间： {{block.end}}</div>
+                                    <div class="item-msg">开始时间： {{block.start.substr(0, 19).replace('T', ' ')}}</div>
+                                    <div class="item-msg">结束时间： {{block.end.substr(0, 19).replace('T', ' ')}}</div>
                                     <div class="row-item"
                                          slot="reference"
                                          @click="showRoutes(block.value)"
@@ -522,7 +521,6 @@
         top: 0;
         width: 160px;
         background-color: #F5F7FA;
-        border-radius: 10px;
         text-align: center;
         line-height: 40px;
         height: 40px;
