@@ -71,11 +71,13 @@
                                 <el-popover
                                         v-for="block in item.plan" :key="block.start+block.end+block.value"
                                         placement="top"
-                                        width="100"
+                                        width="220"
                                         trigger="hover">
-                                    <div>资源名称： {{block.value}}</div>
-                                    <div>订单编号： {{block.orderId}}</div>
-                                    <div>物料编号： {{block.materialId}}</div>
+                                    <div class="item-msg">产品 ID： {{block.value}}</div>
+                                    <div class="item-msg">订单编号： {{block.orderId}}</div>
+                                    <div class="item-msg">物料编号： {{block.materialId}}</div>
+                                    <div class="item-msg">开始时间： {{block.start}}</div>
+                                    <div class="item-msg">结束时间： {{block.end}}</div>
                                     <div class="row-item"
                                          slot="reference"
                                          @click="showRoutes(block.value)"
@@ -338,7 +340,7 @@
                                     let y2 = 20+lintHeight*tmpArr[i+1][k].index;
                                     let e2x = end1+shortLine;
                                     let s2x = start2-shortLine;
-                                    let p1y = y1+(tmpArr[i][j].index > tmpArr[i+1][k].index ? -1:1)*18;
+                                    let p1y = y1+(tmpArr[i][j].index > tmpArr[i+1][k].index ? -1:1)*25;
                                     ctx.beginPath();
                                     ctx.moveTo(end1,y1);
                                     ctx.lineTo(e2x,y1);
@@ -541,14 +543,14 @@
     }
     .table .row .row-content .row-item{
         position: absolute;
-        height: 26px;
-        line-height: 26px;
-        top: 7px;
+        height: 40px;
+        line-height: 40px;
+        /*top: 7px;*/
         display: inline-block;
-        border-radius: 10px;
+        /*border-radius: 10px;*/
         text-align: center;
-        color: #fff;
-        text-shadow: 2px 2px 2px #000;
+        /*color: #fff;*/
+        /*text-shadow: 2px 2px 2px #000;*/
         cursor: pointer;
 
         overflow: hidden;
@@ -590,5 +592,8 @@
     }
     .tips:hover {
         right: 0;
+    }
+    .item-msg {
+        margin: 10px;
     }
 </style>
