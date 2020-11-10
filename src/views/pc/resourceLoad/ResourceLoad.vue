@@ -335,6 +335,9 @@
 				      }
 				    
 				  },
+				  mounted() {
+					  this.date = sessionStorage.getItem("now");
+				  },
 				  
 				  methods: {
 					  timeSelectChange(timeSelect) {

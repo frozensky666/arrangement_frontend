@@ -78,25 +78,27 @@
 		      }
 		    },
 			mounted() {
-				getsimulatetime()
-				    .then(res => {
-				        if(res.code === 200) {
-							this.value1=res.msg;
-							this.value2=res.msg;
-							this.value=res.msg;
-							this.subvalue=res.msg;
-							this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
-				        } else {
-				            alert(res.msg);
-				        }
-				    })
-				    .catch(err => {
-				        alert("未知错误，请重试");
-				    });
-				
-					
-					
-			    
+				// getsimulatetime()
+				//     .then(res => {
+				//         if(res.code === 200) {
+				// 			this.value1=res.msg;
+				// 			this.value2=res.msg;
+				// 			this.value=res.msg;
+				// 			this.subvalue=res.msg;
+				// 			this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
+				//         } else {
+				//             alert(res.msg);
+				//         }
+				//     })
+				//     .catch(err => {
+				//         alert("未知错误，请重试");
+				//     });
+
+				this.value1=sessionStorage.getItem("now");
+				this.value2=this.value1;
+				this.value=this.value1;
+				this.subvalue=this.value1;
+				this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
 			 },
 		methods:{
 			
@@ -118,7 +120,8 @@
 				    .then(res => {
 				        if(res.code === 200) {
 
-							console.log(res.data)
+							console.log(res.data);
+							sessionStorage.setItem("now",time);
 							
 				        } else {
 				            alert(res.msg);

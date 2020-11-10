@@ -256,6 +256,7 @@
 				    
 				  },
 				  mounted() {
+						this.date = sessionStorage.getItem("now");
 				  		getorderList({
 				  		    params: {
 				  		       date:this.date

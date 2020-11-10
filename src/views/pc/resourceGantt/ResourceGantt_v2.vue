@@ -165,7 +165,8 @@
 
         },
         mounted() {
-          this.timeChange(this.date);
+            this.date = sessionStorage.getItem("now");
+            this.timeChange(this.date);
         },
         methods: {
             getData() {
