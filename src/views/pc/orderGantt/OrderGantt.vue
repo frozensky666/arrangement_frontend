@@ -117,6 +117,7 @@
 	import Layout from "@/components/content/Layout";
 	import {getorderList} from "@/network/orderGantt";
 	import {getorderRate} from "@/network/orderGantt";
+	import {toLocalDate} from "@/common/utils";
 	import moment from 'moment';
 				  export default {
 					mixins: [bodyWidthMixin],
@@ -130,7 +131,7 @@
 						date: "2018-11-09",
 						height:80,
 						bias: 0,
-						rate:'0.79',
+						rate:0.79,
 							orderList: [
 							    {
 							        orderId: "418575",
@@ -217,7 +218,7 @@
 				    
 				  },
 				  mounted() {
-						this.date = sessionStorage.getItem("now");
+						this.date = toLocalDate(sessionStorage.getItem("now"));
 				  		getorderList({
 				  		    params: {
 				  		       date:this.date
@@ -242,7 +243,7 @@
 				  		    }
 				  		}).then(res => {
 				  		        if(res.code === 200) {
-				  					this.rate = res.data;
+				  					this.rate = res.data.rate;
 				  					console.log(this.rate)
 				  					} else {
 				  		            alert(res.msg);

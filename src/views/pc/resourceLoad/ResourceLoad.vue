@@ -156,7 +156,9 @@
 	import {resourceLoadDay} from "@/network/resourceLoad";
 	import {resourceLoadWeek} from "@/network/resourceLoad";
 	import moment from 'moment';
-				  export default {
+	import {toLocalDate} from "@/common/utils";
+
+	export default {
 					mixins: [bodyWidthMixin],
 					  components: {
 						Layout
@@ -336,7 +338,7 @@
 				    
 				  },
 				  mounted() {
-					  this.date = sessionStorage.getItem("now");
+					  this.date = toLocalDate(sessionStorage.getItem("now"));
 				  },
 				  
 				  methods: {
