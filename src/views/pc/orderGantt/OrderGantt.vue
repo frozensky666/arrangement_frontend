@@ -208,45 +208,6 @@
 										
 								    ]
 								}
-							    ,
-							    {
-							        orderId: "762345",
-							    
-							        process: [
-							            {
-							                name:'装配',
-							    			percent:'0.53',
-							    			theline:'0.7',
-							    			isdelayed:'1'
-							            },
-							    		{
-							    		    name:'测试',
-							    			percent:'0',
-							    			theline:'0.5',
-							    			isdelayed:'1'
-							    		}
-							    		
-							        ]
-							    },
-							    {
-							        orderId: "762345",
-							    
-							        process: [
-							            {
-							                name:'装配',
-							    			percent:'0.8',
-							    			theline:'0.7',
-							    			isdelayed:'1'
-							            },
-							    		{
-							    		    name:'测试',
-							    			percent:'0.9',
-							    			theline:'0.5',
-							    			isdelayed:'1'
-							    		}
-							    		
-							        ]
-							    }
 							]
 						
 						
@@ -280,7 +241,7 @@
 				  		    }
 				  		}).then(res => {
 				  		        if(res.code === 200) {
-				  					this.rate = res.data.rate;
+				  					this.rate = res.data;
 				  					console.log(this.rate)
 				  					} else {
 				  		            alert(res.msg);
@@ -474,9 +435,11 @@
 	.el-row {
 		margin-bottom: 20px;
 
-		&:last-child {
-			margin-bottom: 0;
-		}
+		
+	}
+
+	.el-row:last-child {
+		margin-bottom: 0;
 	}
 
 	.el-col {
@@ -539,7 +502,7 @@
 	.order-title{
 	    display: flex;
 	    justify-content: left;
-		margin-bottom: 10px;
+		margin-bottom: 30px;
 		margin-top: 10px;
 	}
 	.order-title-left {
@@ -559,13 +522,13 @@
 	    padding: 20px;
 		text-align: center;
         padding-bottom: 20px;
-	    border: 1px solid #DCDFE6;
+	    background-color: #F5F7FA;
 	}
 	.order-text2{
 		width: 1180px;
 		padding-top: 20px;
 		padding-bottom: 20px;
-		border: 1px solid #DCDFE6;
+		background-color: #F5F7FA;
 	}
 	
 	  /* table */
@@ -583,13 +546,13 @@
 	    top: 5px;
 	    width: 160px;
 	    /*flex: 0 0 160px;*/
-	    
-		border: 1px solid #DCDFE6;
 
 	    text-align: center;
 	    line-height: 40px;
 	    height: 40px;
 	    font-size: large;
+
+			background-color: #F5F7FA;
 	
 	}
 	.table .row .row-content {
