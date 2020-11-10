@@ -9,13 +9,25 @@
 			    <span class="headeroftop" >子订单详情</span>
 			    <div class="textline"></div>
 			  </div>
-			  <div class="text item" style="display: flex;justify-content: space-between;">
-			  	<div style="width: 50%;margin-bottom: 20px;">子订单编号: {{workData.workId}}</div>
-			  	<div style="width: 50%;margin-bottom: 20px;">子订单数量: {{workData.num}} </div>
+			  <div class="item" style="display: flex; margin-bottom: 20px;">
+					<div class="attr">
+						<div class="attr-name">子订单编号</div>
+						<div class="attr-value">{{workData.workId}}</div>
+					</div>
+					<div class="attr">
+						<div class="attr-name">子订单生产数量</div>
+						<div class="attr-value">{{workData.num}}</div>
+					</div>
 			  </div>
-			  <div class="text item" style="display: flex;justify-content: space-between;">
-			  	<div style="width: 50%;">子订单生产时间: {{timeQuantum}}</div>
-			  	<div style="width: 50%;">产线名称：{{workData.lineName}}</div>
+			  <div class="item" style="display: flex;">
+					<div class="attr">
+						<div class="attr-name">子订单生产时间</div>
+						<div class="attr-value">{{timeQuantum}}</div>
+					</div>
+					<div class="attr">
+						<div class="attr-name">生产线</div>
+						<div class="attr-value">{{workData.lineName}}</div>
+					</div>
 			  </div>
 			</div>
 			
@@ -100,10 +112,11 @@
 				
 				getproduction({
 				    params: {
-				       workId:'1'
+				       workId:this.$route.params.id
 				    }
 				}).then(res => {
 				        if(res.code === 200) {
+							console.log("workid======"+this.$route.params.id)
 							this.workData = res.data;
 							var d=new Date(this.workData.endTime);
 							var c=d- 1 * 60 * 60 * 1000;
@@ -156,8 +169,8 @@
 	  }
 	
 	.item {
-		margin-top: 15px;
-	    margin-bottom: 15px;
+		margin-top: 24px;
+	    margin-bottom: 24px;
 		
 	  }
 	
@@ -184,6 +197,18 @@
 	}
 	.headerofit{
 		margin-bottom: 20px;
+	}
+	.attr {
+		display: flex;
+		flex-direction: row;
+		width: 50%;
+	}
+	.attr-name {
+		min-width: 160px;
+		font-size: 18px;
+	}
+	.attr-value {
+		font-size: 16px;
 	}
 	
 </style>
