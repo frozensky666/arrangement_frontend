@@ -81,10 +81,11 @@
 				getsimulatetime()
 				    .then(res => {
 				        if(res.code === 200) {
-							this.value1=res.msg;
-							this.value2=res.msg;
-							this.value=res.msg;
-							this.subvalue=res.msg;
+									console.log(res.data)
+							this.value1=res.data;
+							this.value2=res.data;
+							this.value=res.data;
+							this.subvalue=res.data;
 							this.finvalue=moment(this.value).format('YYYY-MM-DD ')+moment(this.value1).format('HH:mm:ss');
 				        } else {
 				            alert(res.msg);
