@@ -112,10 +112,11 @@
 				
 				getproduction({
 				    params: {
-				       workId:'1'
+				       workId:this.$route.params.id
 				    }
 				}).then(res => {
 				        if(res.code === 200) {
+							console.log("workid======"+this.$route.params.id)
 							this.workData = res.data;
 							var d=new Date(this.workData.endTime);
 							var c=d- 1 * 60 * 60 * 1000;

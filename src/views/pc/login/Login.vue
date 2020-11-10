@@ -22,10 +22,6 @@
                           placeholder="密码"
                 ></el-input>
             </el-form-item>
-<!--            <el-checkbox-->
-<!--                    v-model="checked"-->
-<!--                    class="rememberme"-->
-<!--            >记住密码</el-checkbox>-->
             <el-form-item style="width:100%;">
                 <el-button type="primary" style="width:100%;" @click="handleSubmit" :loading="logining">登录</el-button>
             </el-form-item>
@@ -34,6 +30,8 @@
 </template>
 
 <script>
+    import {login} from "@/network/login";
+
     export default {
         data(){
             return {
@@ -54,30 +52,28 @@
                 this.$refs.ruleForm2.validate((valid) => {
                     if(valid){
                         this.logining = true;
-                        // if(this.ruleForm2.username === 'admin' &&
-                        //     this.ruleForm2.password === '123456'){
-                        //     this.logining = false;
-                        //     sessionStorage.setItem('user', this.ruleForm2.username);
-                        //     this.$router.push({path: '/'});
-                        // }else{
-                        //     this.logining = false;
-                        //     this.$alert('username or password wrong!', 'info', {
-                        //         confirmButtonText: 'ok'
-                        //     })
-                        // }
-                        sessionStorage.setItem('user', this.ruleForm2.username);
-                        setTimeout(() => {
-                            this.logining = false;
-                            this.$router.push("/pc/plan");
-                            this.$message({
-                                type: "success",
-                                message: "登陆成功"
-                            })
-                        },1000);
+                        login(this.ruleForm2).then(res => {
+                           if(res.data === null) {
+                               this.$message({
+                                   type: "error",
+                                   message: "用户名或密码错误！"
+                               });
 
+                           } else{
+                               sessionStorage.setItem('user', this.ruleForm2.username);
+                               this.logining = false;
+                               this.$router.push("/pc/plan");
+                               this.$message({
+                                   type: "success",
+                                   message: "登陆成功"
+                               });
+                           }
+                        });
                     }else{
-                        console.log('error submit!');
-                        return false;
+                        this.$message({
+                            type: "error",
+                            message: "未知的错误"
+                        });
                     }
                 })
             }

@@ -107,4 +107,20 @@ const router = new VueRouter({
   routes
 });
 
+router.beforeEach((to,from,next) => {
+  if(to.path!=='/pc/login') {
+    if(sessionStorage.getItem("user") === null
+        || sessionStorage.getItem("user") === undefined
+        || sessionStorage.getItem("user") === ""
+    ) {
+      next('/pc/login');
+    } else {
+      next();
+    }
+  }
+  else {
+    next();
+  }
+});
+
 export default router;

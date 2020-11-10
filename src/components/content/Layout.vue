@@ -50,6 +50,9 @@
         </el-aside>
 
         <el-main>
+            <el-tooltip class="item" effect="dark" content="点击登出" placement="bottom-end">
+                <div class="logout" @click="logout()">欢迎你，{{getUsername()}}</div>
+            </el-tooltip>
             <slot></slot>
         </el-main>
     </el-container>
@@ -64,13 +67,26 @@
             },
             handleClose(key, keyPath) {
                 console.log(key, keyPath);
+            },
+            logout() {
+                sessionStorage.removeItem("user");
+                this.$router.push('/pc/login');
+            },
+            getUsername() {
+                return sessionStorage.getItem("user");
             }
-        }
+        },
     }
 </script>
 
 <style>
     .el-aside {
         color: #333;
+    }
+    .logout {
+        text-align: right;
+        text-decoration: underline;
+        color: #1f94ff;
+        cursor: pointer;
     }
 </style>

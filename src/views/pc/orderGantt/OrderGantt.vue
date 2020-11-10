@@ -52,7 +52,7 @@
 								<div class="row-item"
 									 :style="{'left': getPosition(item.process.length,index)+'px','width':getWidthOfBox(item.process.length)+'px'}">
 									<div class="row-percentbox"
-										 :style="{'background-color': getColor(block.percent,block.isdelayed),'width':getWidthOfPercent(item.process.length,block.percent)+'px'}">
+										 :style="{'background-color': getColor(block.percent,block.isdelayed,index),'width':getWidthOfPercent(item.process.length,block.percent)+'px'}">
 										{{block.name}}   {{getPercentage(block.percent)}}
 									</div>
 									<div class="row-percentbox" v-if="block.isdelayed==1"
@@ -87,7 +87,9 @@
 	import {bodyWidthMixin} from "@/common/mixin";
 	import {generateRandomColor,colorFaded} from "@/common/utils";
 	import Layout from "@/components/content/Layout";
-	
+	import {getorderList} from "@/network/orderGantt";
+	import {getorderRate} from "@/network/orderGantt";
+	import moment from 'moment';
 				  export default {
 					mixins: [bodyWidthMixin],
 					  components: {
@@ -97,11 +99,10 @@
 				      return {
 						screenWidth: document.body.clientWidth,
 						dateType: "day",
-						date: "2018/11/9",
+						date: "2018-11-9",
 						height:80,
 						bias: 0,
 						rate:'0.79',
-						
 							orderList: [
 							    {
 							        orderId: "418575",
@@ -131,12 +132,10 @@
 								},
 								{
 								    orderId: "764486",
-
 								    process: [
 								        {
 								            name:'装配',
 											percent:'1',
-											
 											isdelayed:'1'
 								        }
 										
@@ -149,7 +148,6 @@
 								        {
 								            name:'装配',
 											percent:'0.53',
-											
 											isdelayed:'0'
 								        },
 										{
@@ -189,22 +187,87 @@
 				      }
 				    
 				  },
-				  
+				  mounted() {
+				  		getorderList({
+				  		    params: {
+				  		       date:this.date
+				  		    }
+				  		}).then(res => {
+				  		        if(res.code === 200) {
+				  					this.orderList = res.data;
+				  					console.log(this.orderList)
+				  					} else {
+				  		            alert(res.msg);
+				  		        }
+				  		    })
+				  		    .catch(err => {
+				  		        this.$message({
+				  		            type: 'error',
+				  		            message: "未知错误，请重试"
+				  		        });
+				  		    });
+				  		getorderRate({
+				  		    params: {
+				  		       date:this.date
+				  		    }
+				  		}).then(res => {
+				  		        if(res.code === 200) {
+				  					this.rate = res.data.rate;
+				  					console.log(this.rate)
+				  					} else {
+				  		            alert(res.msg);
+				  		        }
+				  		    })
+				  		    .catch(err => {
+				  		        this.$message({
+				  		            type: 'error',
+				  		            message: "未知错误，请重试"
+				  		        });
+				  		    });
+				  },
 				  methods: {
-					  timeSelectChange(timeSelect) {
-					      console.log(timeSelect);
-					      if(timeSelect === "day") {
-					          this.blocks = 7;
-					          this.blockSize = 170;
-					          this.timeChange(this.date);
-					      } else if (timeSelect === "date") {
-					          this.blocks = 7;
-					          this.blockSize = 170;
-					          this.timeChange(this.date);
-					      }
-					  },
+					  
 					  timeChange(time) {
 					      console.log(time);
+						  this.date=moment(time).format('YYYY-MM-DD');
+						  console.log(this.date);
+						  getorderList({
+						      params: {
+						         date:this.date
+						      }
+						  }).then(res => {
+						          if(res.code === 200) {
+						  			this.orderList = res.data;
+						  			console.log(this.orderList)
+						  			} else {
+						              alert(res.msg);
+						          }
+						      })
+						      .catch(err => {
+						          this.$message({
+						              type: 'error',
+						              message: "未知错误，请重试"
+						          });
+						      });
+						  getorderRate({
+						      params: {
+						         date:this.date
+						      }
+						  }).then(res => {
+						          if(res.code === 200) {
+						  			this.rate = res.data.rate;
+						  			console.log(this.rate)
+						  			} else {
+						              alert(res.msg);
+						          }
+						      })
+						      .catch(err => {
+						          this.$message({
+						              type: 'error',
+						              message: "未知错误，请重试"
+						          });
+						      });
+						  
 					  },
 					  scroll(pages) {
 					      let d = new Date(this.date);
@@ -217,9 +280,20 @@
 					  
 					      console.log('scroll', event.target.scrollLeft);
 					  },
-					  getColor(percent,isdelayed){
+					  getColor(percent,isdelayed,index){
 						 if(percent<1){
-							 return '#C0E9FC'
+							 if(index==0){
+								 return '#C0E9FC'
+							 }else if(index==2){
+								 return '#4EA4CB';
+							 }else if(index==3){
+								 return '#F59D2A';
+							 }else if(index==4){
+								 return '#E4C7FF';
+							 }else{
+								 return '#E4C7FF';
+							 }
+							 
 						 }else if(isdelayed==1){
 							 return '#E02E44'
 						 }else {

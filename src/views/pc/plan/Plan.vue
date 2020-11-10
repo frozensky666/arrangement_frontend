@@ -108,6 +108,7 @@
                             type: 'success',
                             message: '排程成功!请点击其他栏目查看排程结果！'
                         });
+                        setTimeout(() => this.$router.go(0),1000);
                     } else {
                         this.$message({
                             type: 'error',
