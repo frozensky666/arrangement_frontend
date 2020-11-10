@@ -127,7 +127,7 @@
 				      return {
 						screenWidth: document.body.clientWidth,
 						dateType: "day",
-						date: "2018-11-9",
+						date: "2018-11-09",
 						height:80,
 						bias: 0,
 						rate:'0.79',
