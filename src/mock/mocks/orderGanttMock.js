@@ -11,7 +11,7 @@ module.exports = {
                     "process|1-5": [
                         {
                             "name": "装配",
-                            "precent|0.2": 1,
+                            "percent|0.2": 1,
                             "isdelayed|0-1": 1
                         }
                     ]
@@ -23,6 +23,7 @@ module.exports = {
     ],
     ORDER_GANTT_RATE: [
         API.ORDER_GANTT_RATE,
+		"get",
         {
             "data": {
                 "rate|0.2": 1,
