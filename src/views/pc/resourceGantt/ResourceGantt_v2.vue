@@ -82,7 +82,7 @@
                                          slot="reference"
                                          @click="showRoutes(block.value)"
                                          :style="{'background-color': block.bg,'width': getWidth(block.start,block.end)+'px','left': getPosition(block.start)+'px','z-index': block.bg===block.oriBg?1:0}">
-                                        {{dateType === "date" ? block.value : ""}}
+<!--                                        {{dateType === "date" ? block.value : ""}}-->
                                     </div>
                                 </el-popover>
 <!--                            </el-tooltip>-->
@@ -140,7 +140,7 @@
 
                 ],
                 blocks: 12,
-                blockSize: 100,
+                blockSize: 91,
                 timeDivision: [
                     "7:00-9:00",
                     "9:00-11:00",
@@ -243,11 +243,11 @@
             timeSelectChange(timeSelect) {
                 if(timeSelect === "date") {
                     this.blocks = 12;
-                    this.blockSize = 100;
+                    this.blockSize = 91;
                     this.timeChange(this.date);
                 } else if (timeSelect === "month") {
                     this.blocks = 7;
-                    this.blockSize = 170;
+                    this.blockSize = 156;
                     this.timeChange(this.date);
                 }
             },
