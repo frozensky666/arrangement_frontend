@@ -284,7 +284,7 @@
 						      }
 						  }).then(res => {
 						          if(res.code === 200) {
-						  			this.rate = res.data.rate;
+						  			this.rate = res.data;
 						  			console.log(this.rate)
 						  			} else {
 						              alert(res.msg);
