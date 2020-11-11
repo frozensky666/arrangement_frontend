@@ -357,27 +357,27 @@
 						  
 					  },
 					  getPosition(num,theindex) {
-					  					  return (1150/num)*theindex+30;
+					  					  return (1100/num)*theindex+30;
 					      
 					  },
 					  getPosition2(num,percent) {
-					  					  return (1150/num)*percent;
+					  					  return (1100/num)*percent;
 					      
 					  },
 					  getPosition3(num,percent) {
-					  					  return (1150/num)*percent+1;
+					  					  return (1100/num)*percent+1;
 					      
 					  },
 					  getWidthOfBox(num) {
-					  					  return 1150/num;
+					  					  return 1100/num;
 					      
 					  },
 					  getWidthOfPercent(num,percent) {
-					  					  return 1150/num*percent;
+					  					  return 1100/num*percent;
 					      
 					  },
 					  getWidthOfPercent2(num,percent) {
-					  					  return 1150/num*percent-1;
+					  					  return 1100/num*percent-1;
 					      
 					  },
 					  getPercentage(percent) {
