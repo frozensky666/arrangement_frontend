@@ -48,6 +48,8 @@
 							<el-tooltip
 									v-for="(block,index) in item.process" :key="block.name+block.percent"
 									effect="dark" :content="getPercentage(block.percent)" placement="top">
+									<div slot="content">生产进度：{{getPercentage(block.percent)}}<br/>预计完成进度：{{getPercentage(block.theline)}}</div>
+																		      
 
 								<div class="row-item" v-if="block.isdelayed==0"
 									 :style="{'left': getPosition(item.process.length,index)+'px','width':getWidthOfBox(item.process.length)+'px'}">
@@ -64,9 +66,8 @@
 									</div>
 									<el-tooltip class="row-percentbox" v-if="(block.isdelayed==0)"
 										 :style="{'left':getPosition2(item.process.length,block.theline)+'px','top':'33px'}"
-																				  effect="dark"  placement="top">
-																				  <div slot="content">生产进度：{{getPercentage(block.percent)}}<br/>预计完成进度：{{getPercentage(block.ddl)}}</div>
-									      
+																				  effect="dark" :content="getddl(block.ddl)"  placement="top">
+																				  
 										  <i class="el-icon-top"></i>
 									    </el-tooltip>	
 										
