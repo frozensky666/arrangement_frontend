@@ -367,7 +367,7 @@
 					      
 					  },
 					  getPosition2(num,percent) {
-					  					  return (1100/num)*percent;
+					  					  return (1100/num)*percent-7;
 					      
 					  },
 					  getPosition3(num,percent) {
