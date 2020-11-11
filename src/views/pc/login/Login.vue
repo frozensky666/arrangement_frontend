@@ -63,7 +63,10 @@
                                sessionStorage.setItem('user', this.ruleForm2.username);
                                sessionStorage.setItem("auth",res.data.personAuth);
                                this.logining = false;
-                               this.$router.push("/pc/outputOfOrderPlan");
+                               if (res.data.personAuth === 0)
+                                this.$router.push("/pc/plan");
+                               else
+                                this.$router.push("/pc/outputOfOrderPlan");
                                this.$message({
                                    type: "success",
                                    message: "登陆成功"
