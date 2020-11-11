@@ -48,7 +48,7 @@
 							<el-tooltip
 									v-for="(block,index) in item.process" :key="block.name+block.percent"
 									effect="dark" :content="getPercentage(block.percent)" placement="top">
-									<div slot="content">生产进度：{{getPercentage(block.percent)}}<br/>预计完成进度：{{getPercentage(block.theline)}}</div>
+									<div slot="content">生产进度：{{getPercentage(block.percent)}}<br/>预计完成进度：{{parseInt(block.theline*100)+"%"}}</div>
 																		      
 
 								<div class="row-item" v-if="block.isdelayed==0"
@@ -475,6 +475,8 @@
 		float:left;
 		padding-left: 50px;
 		padding-right: 50px;
+		padding-top: 8px;
+		padding-bottom: 24px;
 		border-radius: 4px;
 		min-height: 36px;
 	}
@@ -484,7 +486,6 @@
 	}
 
 	.fontofname {
-		padding-top: 10px;
 		color: #8C8C8C;
 		font-family: "PingFang SC";
 		font-size: 18px;
