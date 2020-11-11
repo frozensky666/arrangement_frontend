@@ -10,10 +10,13 @@
 
   export default {
     created() {
+    },
+    mounted() {
+
       getsimulatetime()
               .then(res => {
                 if(res.code === 200) {
-                  sessionStorage.setItem("now",res.data);
+                  sessionStorage.setItem("now",res.msg);
                 } else {
                   sessionStorage.setItem("now","2018-10-10T00:00:00");
                   this.$message({
@@ -22,8 +25,6 @@
                   });
                 }
               })
-    },
-    mounted() {
       // if(this.$route.path === "/" || this.$route.path === "/pc" || this.$route.path === "/m") {
       //   if (_isMobile()) {
       //     this.$router.replace('/m');
