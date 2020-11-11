@@ -95,8 +95,8 @@
 								for(let j=0;j<this.orderPlanData[i].subOrders.length;j++){
 									this.$set(this.orderPlanData[i].subOrders[j],"id",(i+1)*100+j);
 									var d=new Date(this.orderPlanData[i].subOrders[j].endTime);
-									var c=d- 1 * 60 * 60 * 1000;
-									var f=moment(c).format('YYYY-MM-DD HH:mm:ss')+" ~ "+moment(d).format('YYYY-MM-DD HH:mm:ss');
+									var c=new Date(d.getTime() + 1 * 60 * 60 * 1000);
+									var f=moment(d).format('YYYY-MM-DD HH:mm:ss')+" ~ "+moment(c).format('YYYY-MM-DD HH:mm:ss');
 									this.$set(this.orderPlanData[i].subOrders[j],"timeQuantum",f);
 								}
 								
