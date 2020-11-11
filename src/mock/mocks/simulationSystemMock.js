@@ -9,8 +9,8 @@ module.exports = {
         "get",
         {
             "code": 200,
-            "msg": "2018-10-04T00:00:00",
-            "data": []
+            "msg": "",
+            "data": "2018-10-04T00:00:00"
         }
     ],
     CURRENT_TIME_SET: [

@@ -27,9 +27,7 @@ module.exports = {
         API.ORDER_GANTT_RATE,
 		"get",
         {
-            "data": {
-                "rate|0.2": 1,
-            },
+            "data|0.2": 1,
             "code": 200,
             "msg": ""
         }
