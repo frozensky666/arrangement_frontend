@@ -218,6 +218,7 @@
 				    
 				  },
 				  mounted() {
+						console.log(sessionStorage.getItem("now"))
 						this.date = toLocalDate(sessionStorage.getItem("now"));
 				  		getorderList({
 				  		    params: {
@@ -243,7 +244,7 @@
 				  		    }
 				  		}).then(res => {
 				  		        if(res.code === 200) {
-				  					this.rate = res.data.rate;
+				  					this.rate = res.data;
 				  					console.log(this.rate)
 				  					} else {
 				  		            alert(res.msg);

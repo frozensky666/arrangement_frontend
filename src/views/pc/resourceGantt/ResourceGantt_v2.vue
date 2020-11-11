@@ -555,6 +555,8 @@
         overflow: hidden;
         text-overflow:ellipsis;
         white-space: nowrap;
+
+        outline: 1px solid #FFF;
     }
     .canvas {
         position: absolute;
