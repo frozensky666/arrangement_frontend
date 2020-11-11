@@ -33,7 +33,7 @@
 				<div class="order-title-left">
 					<div class="order-text">订单号</div>
 				</div>
-				<div class="order-title-right" :style="{'max-width':'1200px','flex':'0 0 '+(bodyWidth*0.8-180)+'px'}"  @scroll="drag">
+				<div class="order-title-right" :style="{'max-width':'1100px','flex':'0 0 1100px'}"  @scroll="drag">
 					<div class="order-text2">订单进度</div>
 				</div>
 			</div>
@@ -43,7 +43,7 @@
 					<div class="row-label">
 						{{item.orderId}}
 					</div>
-					<div class="row-content" :style="{'width':(bodyWidth*0.8-180)+'px','max-width':'1180px'}">
+					<div class="row-content" :style="{'width':'1180px','max-width':'1180px'}">
 						<div class="row-content-wrap" :style="{'left':bias+'px'}">
 							<el-tooltip
 									v-for="(block,index) in item.process" :key="block.name+block.percent"
@@ -62,7 +62,13 @@
 										 	{{block.name}}   {{getPercentage(block.percent)}}
 										 </div>
 									</div>
-										
+									<el-tooltip class="row-percentbox" v-if="(block.isdelayed==0)"
+										 :style="{'left':getPosition2(item.process.length,block.theline)+'px','top':'33px'}"
+																				  effect="dark"  placement="top">
+																				  <div slot="content">生产进度：{{getPercentage(block.percent)}}<br/>预计完成进度：{{getPercentage(block.ddl)}}</div>
+									      
+										  <i class="el-icon-top"></i>
+									    </el-tooltip>	
 										
 								</div>
 
@@ -353,7 +359,7 @@
 						  }
 					  },
 					  getWidthOfPercentAfter(num,percent){
-						  return 1150/num*(1-percent);
+						  return 1100/num*(1-percent);
 						  
 					  },
 					  getPosition(num,theindex) {
@@ -399,6 +405,7 @@
 					  getddl(ddl){
 						  return "交期："+ddl;
 					  }
+					  
 				  },
 				  
 				  }
@@ -528,7 +535,7 @@
 	    background-color: #F5F7FA;
 	}
 	.order-text2{
-		width: 1180px;
+		width: 1100px;
 		padding-top: 20px;
 		padding-bottom: 20px;
 		background-color: #F5F7FA;
