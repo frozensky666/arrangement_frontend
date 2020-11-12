@@ -762,7 +762,7 @@
 	    top: 15px;
 	    width: 160px;
 	    /*flex: 0 0 160px;*/
-	    background-color: #f1f1f1;
+	    background-color: #F5F7FA;
 	    text-align: center;
 	    line-height: 60px;
 	    height: 60px;
