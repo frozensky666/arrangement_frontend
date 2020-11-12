@@ -177,13 +177,13 @@
 	}
 	.fontoftimetext {
 		font-family: "PingFang SC";
-		font-size: 36px;
+		font-size: 30px;
 		font-weight: bold;
 	}
 	.fontoftime {
 		padding-left: 20px;
 		font-family: "PingFang SC";
-		font-size: 36px;
+		font-size: 30px;
 		font-weight: bold;
 		color: #00BFFF;
 	}
