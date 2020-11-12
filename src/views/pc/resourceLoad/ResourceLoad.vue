@@ -105,7 +105,7 @@
 										 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
 									</div>
 									
-									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</div>
+									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '70px'}">{{getPercentage(block.percent)}}</div>
 								</div>
 
 							</el-tooltip>
@@ -130,7 +130,7 @@
 										 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
 									</div>
 									
-									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</div>
+									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '80px'}">{{getPercentage(block.percent)}}</div>
 								</div>
 
 							</el-tooltip>
@@ -533,6 +533,9 @@
     .gantt-header-middle {
 		display: flex;
     }
+		.gantt-header-middle > div {
+			margin: 10px 20px;
+		}
     .gantt-header-right {
 	margin-top: 170px;
 	
@@ -541,54 +544,52 @@
 		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
+		box-sizing: border-box;
+		height: 28px;
+		line-height: 28px;
 	}
 	.fontofrightson1{
-
-		
+		height: 24px;
+		line-height: 24px;
 		background-color: #08FFFF;
-		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
 	.fontofrightson2{
-
-		
+		height: 24px;
+		line-height: 24px;
 		background-color: #4EA4CB;
-		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
 	.fontofrightson3{
-
-		
+		height: 24px;
+		line-height: 24px;
 		background-color: #98F20c;
-		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
 	.fontofrightson4{
-
-		
+		height: 24px;
+		line-height: 24px;
 		background-color: #F59D2A;
-		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
 	.fontofrightson5{
-
-		
+		height: 24px;
+		line-height: 24px;
 		background-color: #E4C7FF;
-		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
 	}
 	.fontofrightson6{
-
-		
+		height: 24px;
+		line-height: 24px;
 		background-color: #E02E44;
-		border: 1px solid #ebeef5;
 		text-align: center;
 		width: 100px;
+		color: #FFF;
 	}
 	.el-row {
 		margin-bottom: 20px;
@@ -804,8 +805,6 @@
 	    cursor: pointer;
 	}
 	.table .row .row-content .row-item .textofbox{
-
-
 		z-index:auto; 
 	    text-align: center;
 
