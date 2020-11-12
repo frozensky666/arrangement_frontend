@@ -103,6 +103,7 @@
                         label="人员编号">
                 </el-table-column>
                 <el-table-column
+                        width="80"
                         prop="groupId"
                         label="所属组">
                 </el-table-column>
