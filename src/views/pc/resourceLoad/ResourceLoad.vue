@@ -9,37 +9,27 @@
 					<div class="grid-content bg-purple" v-if="dateType==='day'">
 						<p class="fontofname">设备总负载</p>
 						<p class="fontofdate">{{getdaydate(date)}}</p>
-						<el-progress type="circle" :percentage="Loaddata.deviceSumLoad*100"></el-progress>
+						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.deviceSumLoad*100)"></el-progress>
 					</div>
 					<div class="grid-content bg-purple" v-if="dateType==='day'">
 						<p class="fontofname">人员总负载</p>
 						<p class="fontofdate">{{getdaydate(date)}}</p>
-						<el-progress type="circle" :percentage="Loaddata.personnelSumLoad*100"></el-progress>
+						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.personnelSumLoad*100)"></el-progress>
 					</div>
 					<div class="grid-content bg-purple" v-if="dateType==='date'">
 						<p class="fontofname">设备总负载</p>
 						<p class="fontofdate">{{getweekdate(date)}}</p>
-						<el-progress type="circle" :percentage="Loaddata.deviceSumLoad*100"></el-progress>
+						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.deviceSumLoad*100)"></el-progress>
 					</div>
 					<div class="grid-content bg-purple" v-if="dateType==='date'">
 						<p class="fontofname">人员总负载</p>
 						<p class="fontofdate">{{getweekdate(date)}}</p>
-						<el-progress type="circle" :percentage="Loaddata.personnelSumLoad*100"></el-progress>
+						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.personnelSumLoad*100)"></el-progress>
 					</div>
 				</div>
 
 				<div class="gantt-header-right">
-					<div class="fontofright">图例</div>
-					<div>
-						<div class="fontofrightson1">0~20%</div>
-						<div class="fontofrightson2">20%~40%</div>
-						<div class="fontofrightson3">40%~60%</div>
-					</div>
-					<div>
-						<div class="fontofrightson4">60%~80%</div>
-						<div class="fontofrightson5">80%~100%</div>
-						<div class="fontofrightson6">>100%</div>
-					</div>
+					
 
 				</div>
 			</div>
@@ -105,14 +95,17 @@
 						<div class="row-content-wrap" :style="{'left':bias+'px'}">
 							<el-tooltip
 									v-for="(block,index) in item.load" :key="block.data+block.percent"
-									effect="dark" :content="block.percent" placement="top">
+									effect="dark" :content="getPercentage(block.percent)" placement="top">
 
 								<div class="row-item"
 									 :style="{'left': getPosition(index)+'px'}">
 									<div class="row-colorbox"
-										 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}">
-										{{getPercentage(block.percent)}}
+										 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
+										 ">
+										 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
 									</div>
+									
+									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</div>
 								</div>
 
 							</el-tooltip>
@@ -132,9 +125,12 @@
 								<div class="row-item"
 									 :style="{'left': getPosition(index)+'px'}">
 									<div class="row-colorbox"
-										 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}">
-										{{getPercentage(block.percent)}}
+										 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
+										 ">
+										 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
 									</div>
+									
+									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</div>
 								</div>
 
 							</el-tooltip>
@@ -143,7 +139,30 @@
 				</div>
 			</div>
 
-
+			<el-popover
+			        placement="bottom"
+			        width="150"
+			        trigger="hover">
+			            <div >
+			            	<div class="fontofright">图例</div>
+			            	<div>
+			            		<div class="fontofrightson1">0~20%</div>
+			            		<div class="fontofrightson2">20%~40%</div>
+			            		
+			            	</div>
+							<div class="fontofrightson3">40%~60%</div>
+							<div class="fontofrightson4">60%~80%</div>
+			            	<div>
+			            		
+			            		<div class="fontofrightson5">80%~100%</div>
+			            		<div class="fontofrightson6">>100%</div>
+			            	</div>
+			            
+			            </div>
+			    <div class="tips" slot="reference">
+			        tips
+			    </div>
+			</el-popover>
 
 		</div>
 	</Layout>
@@ -167,7 +186,7 @@
 				      return {
 						screenWidth: document.body.clientWidth,
 						dateType: "day",
-						date: "2018/11/1",
+						date: "2018/11/01",
 				        dateTypeOptions: [
 				            {
 				                value: "day",
@@ -339,6 +358,7 @@
 				  },
 				  mounted() {
 					  this.date = toLocalDate(sessionStorage.getItem("now"));
+					  this.timeChange(this.date)
 				  },
 				  
 				  methods: {
@@ -357,6 +377,46 @@
 					  timeChange(time) {
 						  var theday=moment(time).format('YYYY-MM-DD');
 					      console.log(time);
+						  if(this.dateType==="day"){
+							  resourceLoadDay({
+							      params: {
+							         date:time
+							      }
+							  }).then(res => {
+							          if(res.code === 200) {
+							  			this.Loaddata = res.data;
+							  			console.log(this.Loaddata)
+							  			} else {
+							              alert(res.msg);
+							          }
+							      })
+							      .catch(err => {
+							          this.$message({
+							              type: 'error',
+							              message: "未知错误，请重试"
+							          });
+							      });
+						  }
+						  if(this.dateType==="date"){
+							  resourceLoadWeek({
+								  params: {
+									 date:time
+								  }
+							  }).then(res => {
+									  if(res.code === 200) {
+										this.Loaddata = res.data;
+										console.log(this.Loaddata)
+										} else {
+										  alert(res.msg);
+									  }
+								  })
+								  .catch(err => {
+									  this.$message({
+										  type: 'error',
+										  message: "未知错误，请重试"
+									  });
+								  });
+						  }
 					  },
 					  scroll(pages) {
 					      let d = new Date(this.date);
@@ -391,6 +451,17 @@
 					  },
 					  gettop(percent) {
 					  					  return this.height*(1-percent);
+					      
+					  },
+					  gettoptext(percent) {
+						  if(percent>0.5){
+							  return this.height*(percent)/2;
+						  }else if(percent>0.3){
+							  return this.height*(percent-0.3)/2;
+						  }else{
+							  return 60;
+						  }
+					  					  
 					      
 					  },
 					  getHeight(percent) {
@@ -434,7 +505,7 @@
 						  return out;
 					  },
 					  getPercentage(percent) {
-					  					  return (percent*100)+"%";
+					  					  return parseInt(percent*100)+"%";
 					      
 					  }
 				  },
@@ -473,7 +544,7 @@
 	}
 	.fontofrightson1{
 
-		float:left;
+		
 		background-color: #08FFFF;
 		border: 1px solid #ebeef5;
 		text-align: center;
@@ -481,7 +552,7 @@
 	}
 	.fontofrightson2{
 
-		float:left;
+		
 		background-color: #4EA4CB;
 		border: 1px solid #ebeef5;
 		text-align: center;
@@ -489,7 +560,7 @@
 	}
 	.fontofrightson3{
 
-		float:left;
+		
 		background-color: #98F20c;
 		border: 1px solid #ebeef5;
 		text-align: center;
@@ -497,7 +568,7 @@
 	}
 	.fontofrightson4{
 
-		float:left;
+		
 		background-color: #F59D2A;
 		border: 1px solid #ebeef5;
 		text-align: center;
@@ -505,7 +576,7 @@
 	}
 	.fontofrightson5{
 
-		float:left;
+		
 		background-color: #E4C7FF;
 		border: 1px solid #ebeef5;
 		text-align: center;
@@ -513,7 +584,7 @@
 	}
 	.fontofrightson6{
 
-		float:left;
+		
 		background-color: #E02E44;
 		border: 1px solid #ebeef5;
 		text-align: center;
@@ -548,12 +619,14 @@
 
 	.fontofname {
 		padding-top: 10px;
+		color: #8C8C8C;
 		font-family: "PingFang SC";
 		font-size: 18px;
 		font-weight: bold;
 	}
 	.fontofdate {
 		font-family: "PingFang SC";
+		color: #8C8C8C;
 		font-size: 12px;
 	}
 	.fontoftitle {
@@ -686,17 +759,17 @@
 	.table .row .row-label {
 	    position: absolute;
 	    left: 0;
-	    top: 0;
+	    top: 15px;
 	    width: 160px;
 	    /*flex: 0 0 160px;*/
 	    background-color: #f1f1f1;
-	    border-radius: 10px;
 	    text-align: center;
-	    line-height: 80px;
-	    height: 80px;
+	    line-height: 60px;
+	    height: 60px;
 	    font-size: large;
 	
 	}
+	
 	.table .row .row-content {
 	    /*display: inline-block;*/
 	    position: absolute;
@@ -718,7 +791,7 @@
 		width: 120px;
 	    top: 7px;
 	    display: inline-block;
-	    border-radius: 10px;
+
 		border: 1px solid #ebeef5;
 	    cursor: pointer;
 	}
@@ -726,8 +799,33 @@
 	    position: absolute;
 		width: 120px;
 	    display: inline-block;
-	    border-radius: 10px;
+		z-index:-1;
 	    text-align: center;
 	    cursor: pointer;
+	}
+	.table .row .row-content .row-item .textofbox{
+
+
+		z-index:auto; 
+	    text-align: center;
+
+	}
+	.tips {
+	    position: fixed;
+	    right: -30px;
+	    top:60px;
+	    background-color: rgb(102, 177, 255);
+	    color: #fff;
+	    width: 60px;
+	    border: solid 1px #EBEEF5;
+	    border-radius: 10px 0 0 10px;
+	    padding: 15px;
+	    transition: right 0.5s;
+	    -moz-transition: right 0.5s; /* Firefox 4 */
+	    -webkit-transition: right 0.5s; /* Safari 和 Chrome */
+	    -o-transition: right 0.5s; /* Opera */
+	}
+	.tips:hover {
+	    right: 0;
 	}
 </style>
