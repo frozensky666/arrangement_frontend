@@ -115,15 +115,17 @@
                         label="人员密码">
                 </el-table-column>
                 <el-table-column
-                        prop="personAuth"
                         label="人员权限">
+                    <template slot-scope="scope">
+                        {{scope.row.personAuth | authToStr}}
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="操作">
-                    <template slot-scope="scope">
+
                         <el-button type="warning" size="mini" @click="modifyThis(scope.row)">修改</el-button>
                         <el-button type="danger" size="mini" @click="deleteThis(scope.row.personId)">删除</el-button>
-                    </template>
+
                 </el-table-column>
             </el-table>
         </div>
@@ -191,6 +193,9 @@
                     value: 2
                 }]
             }
+        },
+        filters: {
+            authToStr: i => i === 0 ? "管理员" : ( i === 1 ? "组长" : "普通员工")
         },
         mounted() {
             getPeople()
