@@ -120,7 +120,7 @@
 						<div class="row-content-wrap" :style="{'left':bias+'px'}">
 							<el-tooltip
 									v-for="(block,index) in item.load" :key="block.data+block.percent"
-									effect="dark" :content="block.percent" placement="top">
+									effect="dark" :content="getPercentage(block.percent)" placement="top">
 
 								<div class="row-item"
 									 :style="{'left': getPosition(index)+'px'}">
