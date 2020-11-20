@@ -37,6 +37,7 @@ const RESOURCE_LOAD_WEEK = "/resourceLoad/week";
 //订单甘特图
 const ORDER_GANTT_LIST = "/order/gantt";
 const ORDER_GANTT_RATE = "/order/rate";
+const ORDER_GANTT_RATE_FINISH = "/order/rate/finish";
 
 
 module.exports = {
@@ -68,5 +69,6 @@ module.exports = {
   RESOURCE_LOAD_WEEK,
 
   ORDER_GANTT_LIST,
-  ORDER_GANTT_RATE
+  ORDER_GANTT_RATE,
+  ORDER_GANTT_RATE_FINISH
 };

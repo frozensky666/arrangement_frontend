@@ -9,7 +9,7 @@
 				</div>
 				<div class="gantt-header-middle">
 					<div class="grid-content bg-purple">
-						<p class="fontofname">按期交货率</p>
+						<p class="fontofname">订单完成率</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20"   :percentage="parseInt(rate*100)"></el-progress>
 					</div>
 
@@ -123,7 +123,7 @@
 	import {generateRandomColor,colorFaded} from "@/common/utils";
 	import Layout from "@/components/content/Layout";
 	import {getorderList} from "@/network/orderGantt";
-	import {getorderRate} from "@/network/orderGantt";
+	import {getorderRateFinish} from "@/network/orderGantt";
 	import {toLocalDate} from "@/common/utils";
 	import moment from 'moment';
 				  export default {
@@ -245,7 +245,7 @@
 				  		            message: "未知错误，请重试"
 				  		        });
 				  		    });
-				  		getorderRate({
+				  		getorderRateFinish({
 				  		    params: {
 				  		       date:this.date
 				  		    }
@@ -288,7 +288,7 @@
 						              message: "未知错误，请重试"
 						          });
 						      });
-						  getorderRate({
+						  getorderRateFinish({
 						      params: {
 						         date:this.date
 						      }
