@@ -7,6 +7,11 @@
                     <h2>资源甘特图</h2>
                 </div>
             </div>
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label=人员 name="person">人员</el-tab-pane>
+                <el-tab-pane label="设备" name="device">设备</el-tab-pane>
+                <el-tab-pane label="产线" name="line">产线</el-tab-pane>
+            </el-tabs>
             <div class="time-selector">
                 <div class="time-selector-left">
                     <el-select v-model="dateType" style="width: 160px" @change="timeSelectChange">
@@ -171,11 +176,9 @@
                 bias: 0,
                 queryData: [],
                 transformedData: null,
-                currentProduct: null
+                currentProduct: null,
+                activeName: "person"
             }
-        },
-        beforeMount() {
-
         },
         mounted() {
             this.date = sessionStorage.getItem("now");
@@ -195,18 +198,23 @@
                 return reqFunc({
                     params: this.dateType === "date"?
                         {
-                            date: toLocalDate(this.date)
+                            date: toLocalDate(this.date),
+                            role: this.activeName
                         }:
                         {
                             start: toLocalDate(this.date),
-                            end: toLocalDate(tmpDate)
+                            end: toLocalDate(tmpDate),
+                            role: this.activeName
                         }
                 }).then(res => {
                     if(res.code === 200) {
                         this.queryData = res.data;
                         this.dataTransform();
                     }
-                    else alert("Some Error Occured!")
+                    else this.$message({
+                        type: "error",
+                        value: "Some Error Occured!"
+                    })
                 });
             },
             dataTransform() {
@@ -396,6 +404,9 @@
                 } else {
                     this.clearCanvas();
                 }
+            },
+            handleClick() {
+                this.timeChange(this.date);
             }
         }
     }
@@ -417,7 +428,7 @@
     /* gantt header */
     .gantt-header {
         /*margin-top: 50px;*/
-        margin-bottom: 50px;
+        margin-bottom: 20px;
         display: flex;
         justify-content: space-between;
     }
@@ -434,6 +445,7 @@
 
     /* time selector */
     .time-selector{
+        margin-top: 30px;
         display: flex;
         justify-content: left;
     }
