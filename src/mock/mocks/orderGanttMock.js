@@ -24,7 +24,7 @@ module.exports = {
         }
     ],
     ORDER_GANTT_RATE: [
-        API.ORDER_GANTT_RATE,
+        API.ORDER_GANTT_RATE_FINISH,
 		"get",
         {
             "data|0.2": 1,
