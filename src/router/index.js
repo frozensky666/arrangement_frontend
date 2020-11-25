@@ -5,7 +5,8 @@ const Home = () => import("@/views/pc/home/Home");
 const M_Home = () => import("@/views/mobile/home/M_Home");
 
 const Error = () => import("@/views/pc/error/Error");
-const ResourceGantt = () => import("@/views/pc/resourceGantt/ResourceGantt_v2");
+const ResourceGantt_v2 = () => import("@/views/pc/resourceGantt/ResourceGantt_v2");
+const ResourceGantt = () => import("@/views/pc/resourceGantt/ResourceGantt");
 const ResourceLoad = () => import("@/views/pc/resourceLoad/ResourceLoad");
 const OrderGantt =()=>import("@/views/pc/orderGantt/OrderGantt");
 const DeviceManage =()=>import("@/views/pc/deviceManage/DeviceManage");
@@ -48,6 +49,12 @@ const routes = [
     path: "/pc/resourceGantt",
     name: "TestGantt",
     component: ResourceGantt,
+    meta:{ requiresAuth: [0,1,2] }
+  },
+  {
+    path: "/pc/resourceGantt_v2",
+    name: "TestGantt_v2",
+    component: ResourceGantt_v2,
     meta:{ requiresAuth: [0,1,2] }
   },
   {

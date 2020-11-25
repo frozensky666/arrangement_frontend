@@ -7,11 +7,6 @@
                     <h2>资源甘特图</h2>
                 </div>
             </div>
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label=人员 name="person">人员</el-tab-pane>
-                <el-tab-pane label="设备" name="device">设备</el-tab-pane>
-                <el-tab-pane label="产线" name="line">产线</el-tab-pane>
-            </el-tabs>
             <div class="time-selector">
                 <div class="time-selector-left">
                     <el-select v-model="dateType" style="width: 160px" @change="timeSelectChange">
@@ -176,8 +171,7 @@
                 bias: 0,
                 queryData: [],
                 transformedData: null,
-                currentProduct: null,
-                activeName: "person"
+                currentProduct: null
             }
         },
         mounted() {
@@ -198,13 +192,11 @@
                 return reqFunc({
                     params: this.dateType === "date"?
                         {
-                            date: toLocalDate(this.date),
-                            role: this.activeName
+                            date: toLocalDate(this.date)
                         }:
                         {
                             start: toLocalDate(this.date),
-                            end: toLocalDate(tmpDate),
-                            role: this.activeName
+                            end: toLocalDate(tmpDate)
                         }
                 }).then(res => {
                     if(res.code === 200) {
@@ -404,9 +396,6 @@
                 } else {
                     this.clearCanvas();
                 }
-            },
-            handleClick() {
-                this.timeChange(this.date);
             }
         }
     }
@@ -428,7 +417,7 @@
     /* gantt header */
     .gantt-header {
         /*margin-top: 50px;*/
-        margin-bottom: 20px;
+        margin-bottom: 50px;
         display: flex;
         justify-content: space-between;
     }
@@ -445,7 +434,6 @@
 
     /* time selector */
     .time-selector{
-        margin-top: 30px;
         display: flex;
         justify-content: left;
     }
@@ -595,6 +583,11 @@
         overflow: hidden;
         white-space: nowrap;
     }
+    .item-msg {
+        margin: 10px;
+    }
+
+
     .color-block {
         display: inline-block;
         height: 10px;
@@ -619,8 +612,5 @@
     }
     .tips:hover {
         right: 0;
-    }
-    .item-msg {
-        margin: 10px;
     }
 </style>
