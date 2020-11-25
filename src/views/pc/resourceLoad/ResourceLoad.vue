@@ -16,32 +16,32 @@
 					</div>
 				</div>
 				<div class="gantt-header-middle">
-					<div class="grid-content bg-purple" v-if="dateType==='day'">
+					<div class="grid-content bg-purple" v-if="(dateType==='day'&&loadType==='device')">
 						<p class="fontofname">设备总负载</p>
 						<p class="fontofdate">{{getdaydate(date)}}</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.deviceSumLoad*100)"></el-progress>
 					</div>
-					<div class="grid-content bg-purple" v-if="dateType==='day'">
+					<div class="grid-content bg-purple" v-if="(dateType==='day'&&loadType==='person')">
 						<p class="fontofname">人员总负载</p>
 						<p class="fontofdate">{{getdaydate(date)}}</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.personnelSumLoad*100)"></el-progress>
 					</div>
-					<div class="grid-content bg-purple" v-if="dateType==='day'">
+					<div class="grid-content bg-purple" v-if="(dateType==='day'&&loadType==='line')">
 						<p class="fontofname">产线总负载</p>
 						<p class="fontofdate">{{getdaydate(date)}}</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.lineSumLoad*100)"></el-progress>
 					</div>
-					<div class="grid-content bg-purple" v-if="dateType==='date'">
+					<div class="grid-content bg-purple" v-if="(dateType==='date'&&loadType==='device')">
 						<p class="fontofname">设备总负载</p>
 						<p class="fontofdate">{{getweekdate(date)}}</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.deviceSumLoad*100)"></el-progress>
 					</div>
-					<div class="grid-content bg-purple" v-if="dateType==='date'">
+					<div class="grid-content bg-purple" v-if="(dateType==='date'&&loadType==='person')">
 						<p class="fontofname">人员总负载</p>
 						<p class="fontofdate">{{getweekdate(date)}}</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.personnelSumLoad*100)"></el-progress>
 					</div>
-					<div class="grid-content bg-purple" v-if="dateType==='date'">
+					<div class="grid-content bg-purple" v-if="(dateType==='date'&&loadType==='line')">
 						<p class="fontofname">产线总负载</p>
 						<p class="fontofdate">{{getweekdate(date)}}</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.lineSumLoad*100)"></el-progress>
