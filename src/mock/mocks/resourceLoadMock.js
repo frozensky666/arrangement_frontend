@@ -4,6 +4,7 @@ const resourceLoadVO = {
     "data": {
         "personnelSumLoad|0.2": 1,
         "deviceSumLoad|0.2": 1,
+		"lineSumLoad|0.2": 1,
         "personnelLoad|1-20": [
             {
                 "name": "@name",
@@ -25,7 +26,18 @@ const resourceLoadVO = {
                     }
                 ]
             }
-        ]
+        ],
+		"lineLoad|1-20": [
+		    {
+		        "name": "@name",
+		        "load|7": [
+		            {
+		                "date": "@date",
+		                "percent|0.2": 1
+		            }
+		        ]
+		    }
+		]
     },
     "code": 200,
     "msg": ""

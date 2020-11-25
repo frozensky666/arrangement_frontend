@@ -242,7 +242,7 @@
 				  		    .catch(err => {
 				  		        this.$message({
 				  		            type: 'error',
-				  		            message: "未知错误，请重试"
+				  		            message: "获取订单列表失败"
 				  		        });
 				  		    });
 				  		getorderRateFinish({
@@ -260,7 +260,7 @@
 				  		    .catch(err => {
 				  		        this.$message({
 				  		            type: 'error',
-				  		            message: "未知错误，请重试"
+				  		            message: "获取订单完成率失败"
 				  		        });
 				  		    });
 				  },
@@ -285,7 +285,7 @@
 						      .catch(err => {
 						          this.$message({
 						              type: 'error',
-						              message: "未知错误，请重试"
+						              message: "获取订单列表失败"
 						          });
 						      });
 						  getorderRateFinish({
@@ -303,7 +303,7 @@
 						      .catch(err => {
 						          this.$message({
 						              type: 'error',
-						              message: "未知错误，请重试"
+						              message: "获取订单完成率失败"
 						          });
 						      });
 						  

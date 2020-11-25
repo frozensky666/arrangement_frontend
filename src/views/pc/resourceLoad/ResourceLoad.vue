@@ -4,27 +4,47 @@
 			<div class="gantt-header">
 				<div class="gantt-header-left">
 					<h2>资源负载图</h2>
+					<div>
+						<el-select v-model="loadType" style="width: 160px" @change="loadSelectChange">
+							<el-option
+									v-for="item in loadTypeOptions"
+									:key="item.value"
+									:label="item.label"
+									:value="item.value">
+							</el-option>
+						</el-select>
+					</div>
 				</div>
 				<div class="gantt-header-middle">
-					<div class="grid-content bg-purple" v-if="dateType==='day'">
+					<div class="grid-content bg-purple" v-if="(dateType==='day'&&loadType==='device')">
 						<p class="fontofname">设备总负载</p>
 						<p class="fontofdate">{{getdaydate(date)}}</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.deviceSumLoad*100)"></el-progress>
 					</div>
-					<div class="grid-content bg-purple" v-if="dateType==='day'">
+					<div class="grid-content bg-purple" v-if="(dateType==='day'&&loadType==='person')">
 						<p class="fontofname">人员总负载</p>
 						<p class="fontofdate">{{getdaydate(date)}}</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.personnelSumLoad*100)"></el-progress>
 					</div>
-					<div class="grid-content bg-purple" v-if="dateType==='date'">
+					<div class="grid-content bg-purple" v-if="(dateType==='day'&&loadType==='line')">
+						<p class="fontofname">产线总负载</p>
+						<p class="fontofdate">{{getdaydate(date)}}</p>
+						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.lineSumLoad*100)"></el-progress>
+					</div>
+					<div class="grid-content bg-purple" v-if="(dateType==='date'&&loadType==='device')">
 						<p class="fontofname">设备总负载</p>
 						<p class="fontofdate">{{getweekdate(date)}}</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.deviceSumLoad*100)"></el-progress>
 					</div>
-					<div class="grid-content bg-purple" v-if="dateType==='date'">
+					<div class="grid-content bg-purple" v-if="(dateType==='date'&&loadType==='person')">
 						<p class="fontofname">人员总负载</p>
 						<p class="fontofdate">{{getweekdate(date)}}</p>
 						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.personnelSumLoad*100)"></el-progress>
+					</div>
+					<div class="grid-content bg-purple" v-if="(dateType==='date'&&loadType==='line')">
+						<p class="fontofname">产线总负载</p>
+						<p class="fontofdate">{{getweekdate(date)}}</p>
+						<el-progress type="circle" stroke-linecap="butt" :stroke-width="20" :percentage="parseInt(Loaddata.lineSumLoad*100)"></el-progress>
 					</div>
 				</div>
 
@@ -86,8 +106,8 @@
 
 
 			</div>
-			<div class="table" >
-				<div class="row" v-for="item in Loaddata.personnelLoad" :key="item.name">
+			<div class="table"  v-if="loadType=='person'">
+				<div class="row"  v-for="item in Loaddata.personnelLoad" :key="item.name">
 					<div class="row-label">
 						{{item.name}}
 					</div>
@@ -112,6 +132,8 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="table"  v-if="loadType=='device'">
 				<div class="row" v-for="item in Loaddata.deviceLoad" :key="item.name">
 					<div class="row-label">
 						{{item.name}}
@@ -133,6 +155,33 @@
 									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '80px'}">{{getPercentage(block.percent)}}</div>
 								</div>
 
+							</el-tooltip>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="table"  v-if="loadType=='line'">
+				<div class="row" v-for="item in Loaddata.lineLoad" :key="item.name">
+					<div class="row-label">
+						{{item.name}}
+					</div>
+					<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
+						<div class="row-content-wrap" :style="{'left':bias+'px'}">
+							<el-tooltip
+									v-for="(block,index) in item.load" :key="block.data+block.percent"
+									effect="dark" :content="getPercentage(block.percent)" placement="top">
+				
+								<div class="row-item"
+									 :style="{'left': getPosition(index)+'px'}">
+									<div class="row-colorbox"
+										 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
+										 ">
+										 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
+									</div>
+									
+									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '80px'}">{{getPercentage(block.percent)}}</div>
+								</div>
+				
 							</el-tooltip>
 						</div>
 					</div>
@@ -198,6 +247,22 @@
 				            }
 				        
 				        ],
+						loadType: "device",
+						loadTypeOptions: [
+							{
+							    value: "device",
+							    label: '设备负载'
+							},
+						    {
+						        value: "person",
+						        label: '人员负载'
+						    },
+						    {
+						        value: "line",
+						        label: '产线负载'
+						    }
+						
+						],
 						
 						blocks: 7,
 						blockSize: 170,
@@ -215,6 +280,7 @@
 						Loaddata:{
 							personnelSumLoad:'0.70',
 							deviceSumLoad:'0.80',
+							lineSumLoad:'0.88',
 							personnelLoad: [
 							    {
 							        name: "小明",
@@ -350,6 +416,74 @@
 							           },
 							        ]
 							    },
+							],
+							lineLoad: [
+							    {
+							        name: "line1",
+							        load: [
+							            {
+							                date:'2018/11/09',
+											percent:'0.6'
+							            },
+							            {
+							                date:'2018/11/10',
+							                percent:'0.7'
+							            },
+							            {
+							                date:'2018/11/11',
+							                percent:'0.8'
+							            },
+							            {
+							                date:'2018/11/12',
+							                percent:'0.9'
+							            },
+										{
+										    date:'2018/11/13',
+										    percent:'1'
+										},
+										{
+										    date:'2018/11/14',
+										    percent:'0.4'
+										},
+										{
+										    date:'2018/11/15',
+										    percent:'0.5'
+										},
+							        ]
+							    },
+							    {
+							        name: "设备2",
+							        load: [
+							           {
+							               date:'2018/11/09',
+							           	percent:'0.2'
+							           },
+							           {
+							               date:'2018/11/10',
+							               percent:'0.1'
+							           },
+							           {
+							               date:'2018/11/11',
+							               percent:'0.3'
+							           },
+							           {
+							               date:'2018/11/12',
+							               percent:'0.4'
+							           },
+							           {
+							               date:'2018/11/13',
+							               percent:'0.5'
+							           },
+							           {
+							               date:'2018/11/14',
+							               percent:'1'
+							           },
+							           {
+							               date:'2018/11/15',
+							               percent:'1'
+							           },
+							        ]
+							    },
 							]
 						},
 						
@@ -393,7 +527,7 @@
 							      .catch(err => {
 							          this.$message({
 							              type: 'error',
-							              message: "未知错误，请重试"
+							              message: "获取天负载列表失败"
 							          });
 							      });
 						  }
@@ -413,7 +547,7 @@
 								  .catch(err => {
 									  this.$message({
 										  type: 'error',
-										  message: "未知错误，请重试"
+										  message: "获取周负载列表失败"
 									  });
 								  });
 						  }
