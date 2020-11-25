@@ -14,6 +14,10 @@
                     <i class="el-icon-receiving"></i>
                     <span slot="title">排程</span>
                 </el-menu-item>
+                <el-menu-item index="/pc/planOverview" v-if="permit(['0'])">
+                    <i class="el-icon-s-marketing"></i>
+                    <span slot="title">排程概况</span>
+                </el-menu-item>
                 <el-menu-item index="/pc/outputOfOrderPlan" v-if="permit(['0','1','2'])">
                     <i class="el-icon-notebook-2"></i>
                     <span slot="title">订单计划表</span>

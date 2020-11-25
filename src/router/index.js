@@ -5,6 +5,7 @@ const Home = () => import("@/views/pc/home/Home");
 const M_Home = () => import("@/views/mobile/home/M_Home");
 
 const Error = () => import("@/views/pc/error/Error");
+const Login = () => import("@/views/pc/login/Login");
 const ResourceGantt_v2 = () => import("@/views/pc/resourceGantt/ResourceGantt_v2");
 const ResourceGantt = () => import("@/views/pc/resourceGantt/ResourceGantt");
 const ResourceLoad = () => import("@/views/pc/resourceLoad/ResourceLoad");
@@ -18,7 +19,7 @@ const PersonnelManage =()=>import("@/views/pc/personnelManage/PersonnelManage");
 const TimeManage =()=>import("@/views/pc/timeManage/TimeManage");
 const OutputOfOrderPlan =()=>import("@/views/pc/outputOfOrderPlan/OutputOfOrderPlan");
 const Plan = () => import("@/views/pc/plan/Plan");
-const Login = () => import("@/views/pc/login/Login");
+const PlanOverview = () => import("@/views/pc/planOverview/PlanOverview");
 
 Vue.use(VueRouter);
 
@@ -43,6 +44,12 @@ const routes = [
     path: "/pc/plan",
     name: "Plan",
     component: Plan,
+    meta: { requiresAuth: [0] }
+  },
+  {
+    path: "/pc/planOverview",
+    name: "PlanOverview",
+    component: PlanOverview,
     meta: { requiresAuth: [0] }
   },
   {

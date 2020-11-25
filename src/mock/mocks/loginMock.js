@@ -11,7 +11,7 @@ module.exports = {
             "code": 200,
             "msg": "",
             "data": {
-                "personAuth|1" : [0,1,2],
+                "personAuth|1" : [0],
                 "username" : "林佳奇",
                 "password" : 123
             }

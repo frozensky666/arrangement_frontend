@@ -29,6 +29,7 @@ const MATERIAL_ID = "/material/id";
 const PLAN = "/plan";
 const PLAN_SUBORDER = "/plan/sub-order";
 const PLAN_PROD = "/plan/production";
+const PLAN_OVERVIEW = "/plan/overview";
 
 //资源负载图
 const RESOURCE_LOAD_DAY = "/resourceLoad/day";
@@ -64,6 +65,7 @@ module.exports = {
   PLAN,
   PLAN_PROD,
   PLAN_SUBORDER,
+  PLAN_OVERVIEW,
 
   RESOURCE_LOAD_DAY,
   RESOURCE_LOAD_WEEK,
