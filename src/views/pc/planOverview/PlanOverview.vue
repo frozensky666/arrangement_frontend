@@ -55,7 +55,7 @@
                         <template slot-scope="scope">
                             <planOverviewChart
                                     width="400px"
-                                    height="200px"
+                                    height="100px"
                                     :option="getChartOption(scope.row.plans)"
                             ></planOverviewChart>
 
@@ -114,6 +114,13 @@
             getChartOption(plans) {
                 console.log(plans);
                 return {
+                    // padding: [0, 10],
+                    grid: {
+                        x: 30,
+                        y: 10,
+                        x2: 10,
+                        y2: 25
+                    },
                     tooltip: {
                         trigger: "item",
                         formatter: "{c} ({b})"

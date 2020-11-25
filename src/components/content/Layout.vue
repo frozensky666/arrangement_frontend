@@ -34,10 +34,10 @@
                     <i class="el-icon-data-analysis"></i>
                     <span slot="title">订单甘特图</span>
                 </el-menu-item>
-                <el-menu-item index="/pc/timeManage" v-if="permit(['0'])">
-                    <i class="el-icon-alarm-clock"></i>
-                    <span slot="title">模拟时间</span>
-                </el-menu-item>
+<!--                <el-menu-item index="/pc/timeManage" v-if="permit(['0'])">-->
+<!--                    <i class="el-icon-alarm-clock"></i>-->
+<!--                    <span slot="title">模拟时间</span>-->
+<!--                </el-menu-item>-->
 				<el-menu-item index="/pc/orderManage" v-if="permit(['0'])">
 				    <i class="el-icon-document"></i>
 				    <span slot="title">订单管理</span>
@@ -54,19 +54,40 @@
         </el-aside>
 
         <el-main>
+            <div class="main-header">
+                <div>
+                    系统当前模拟时间：
+                    <el-date-picker
+                        v-model="current"
+                        type="datetime"
+                        placeholder="选择日期时间"
+                        @change="dateChange">
+                    </el-date-picker>
+                </div>
                 <div class="logout">欢迎你，
                     <el-tooltip class="item" effect="dark" content="点击登出" placement="bottom-end">
                         <span @click="logout()" class="logout-name">{{getUsername()}}</span>
                     </el-tooltip>
                 </div>
+            </div>
             <slot></slot>
         </el-main>
     </el-container>
 </template>
 
 <script>
+    import moment from "moment";
+
     export default {
         name: "Layout",
+        data() {
+            return {
+                current: "2018-10-04T00:00:00"
+            }
+        },
+        mounted() {
+          this.current = sessionStorage.getItem("now");
+        },
         methods: {
             handleOpen(key, keyPath) {
                 console.log(key, keyPath);
@@ -84,6 +105,9 @@
             },
             permit(arr) {
                 return arr.some(auth => auth === sessionStorage.getItem("auth"));
+            },
+            dateChange() {
+                sessionStorage.setItem("now",moment(this.current).format('YYYY-MM-DDTHH:mm:ss'));
             }
         },
     }
@@ -93,12 +117,15 @@
     .el-aside {
         color: #333;
     }
-    .logout {
-        text-align: right;
-    }
     .logout-name {
         text-decoration: underline;
         color: #1f94ff;
         cursor: pointer;
+    }
+    .main-header {
+        height: 100px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
     }
 </style>

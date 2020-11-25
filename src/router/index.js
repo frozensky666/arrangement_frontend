@@ -16,7 +16,7 @@ const OrderManage =()=>import("@/views/pc/orderManage/OrderManage");
 // const OutputOfTaskResource =()=>import("@/views/pc/outputOfTaskResource/OutputOfTaskResource");
 const OutputOfWork =()=>import("@/views/pc/outputOfWork/OutputOfWork");
 const PersonnelManage =()=>import("@/views/pc/personnelManage/PersonnelManage");
-const TimeManage =()=>import("@/views/pc/timeManage/TimeManage");
+// const TimeManage =()=>import("@/views/pc/timeManage/TimeManage");
 const OutputOfOrderPlan =()=>import("@/views/pc/outputOfOrderPlan/OutputOfOrderPlan");
 const Plan = () => import("@/views/pc/plan/Plan");
 const PlanOverview = () => import("@/views/pc/planOverview/PlanOverview");
@@ -88,18 +88,6 @@ const routes = [
     component: OrderManage,
     meta: { requiresAuth: [0] }
   },
-  // {
-  //   path: "/pc/outputOfTask",
-  //   name: "OutputOfTask",
-  //   component: OutputOfTask,
-  //   meta: { requiresAuth: [0] }
-  // },
-  // {
-  //   path: "/pc/outputOfTaskResource",
-  //   name: "OutputOfTaskResource",
-  //   component: OutputOfTaskResource,
-  //   meta: { requiresAuth: [0] }
-  // },
   {
     path: "/pc/outputOfWork/:id",
     name: "OutputOfWork",
@@ -113,12 +101,12 @@ const routes = [
     component: PersonnelManage,
     meta: { requiresAuth: [0] }
   },
-  {
-    path: "/pc/timeManage",
-    name: "TimeManage",
-    component: TimeManage,
-    meta: { requiresAuth: [0] }
-  },
+  // {
+  //   path: "/pc/timeManage",
+  //   name: "TimeManage",
+  //   component: TimeManage,
+  //   meta: { requiresAuth: [0] }
+  // },
   {
     path: "/pc/outputOfOrderPlan",
     name: "OutputOfOrderPlan",
