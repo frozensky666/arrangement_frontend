@@ -10,6 +10,10 @@
                     @close="handleClose"
                     active-text-color="#ffd04b"
                     router>
+				<el-menu-item index="/pc/projectSwitch" v-if="permit(['0'])">
+				    <i class="el-icon-sort"></i>
+				    <span slot="title">工程切换</span>
+				</el-menu-item>
                 <el-menu-item index="/pc/plan" v-if="permit(['0'])">
                     <i class="el-icon-receiving"></i>
                     <span slot="title">排程</span>

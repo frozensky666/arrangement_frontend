@@ -4,16 +4,7 @@
 			<div class="gantt-header">
 				<div class="gantt-header-left">
 					<h2>资源负载图</h2>
-					<div>
-						<el-select v-model="loadType" style="width: 160px" @change="loadSelectChange">
-							<el-option
-									v-for="item in loadTypeOptions"
-									:key="item.value"
-									:label="item.label"
-									:value="item.value">
-							</el-option>
-						</el-select>
-					</div>
+					
 				</div>
 				<div class="gantt-header-middle">
 					<div class="grid-content bg-purple" v-if="(dateType==='day'&&loadType==='device')">
@@ -106,88 +97,99 @@
 
 
 			</div>
-			<div class="table"  v-if="loadType=='person'">
-				<div class="row"  v-for="item in Loaddata.personnelLoad" :key="item.name">
-					<div class="row-label">
-						{{item.name}}
-					</div>
-					<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
-						<div class="row-content-wrap" :style="{'left':bias+'px'}">
-							<el-tooltip
-									v-for="(block,index) in item.load" :key="block.data+block.percent"
-									effect="dark" :content="getPercentage(block.percent)" placement="top">
-
-								<div class="row-item"
-									 :style="{'left': getPosition(index)+'px'}">
-									<div class="row-colorbox"
-										 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
-										 ">
-										 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
-									</div>
-									
-									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '70px'}">{{getPercentage(block.percent)}}</div>
+			<el-tabs v-model="loadType">
+			    <el-tab-pane label="人员负载" name="person">
+					<div class="table">
+						<div class="row"  v-for="item in Loaddata.personnelLoad" :key="item.name">
+							<div class="row-label">
+								{{item.name}}
+							</div>
+							<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
+								<div class="row-content-wrap" :style="{'left':bias+'px'}">
+									<el-tooltip
+											v-for="(block,index) in item.load" :key="block.data+block.percent"
+											effect="dark" :content="getPercentage(block.percent)" placement="top">
+					
+										<div class="row-item"
+											 :style="{'left': getPosition(index)+'px'}">
+											<div class="row-colorbox"
+												 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
+												 ">
+												 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
+											</div>
+											
+											<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '70px'}">{{getPercentage(block.percent)}}</div>
+										</div>
+					
+									</el-tooltip>
 								</div>
-
-							</el-tooltip>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="table"  v-if="loadType=='device'">
-				<div class="row" v-for="item in Loaddata.deviceLoad" :key="item.name">
-					<div class="row-label">
-						{{item.name}}
-					</div>
-					<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
-						<div class="row-content-wrap" :style="{'left':bias+'px'}">
-							<el-tooltip
-									v-for="(block,index) in item.load" :key="block.data+block.percent"
-									effect="dark" :content="getPercentage(block.percent)" placement="top">
-
-								<div class="row-item"
-									 :style="{'left': getPosition(index)+'px'}">
-									<div class="row-colorbox"
-										 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
-										 ">
-										 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
-									</div>
-									
-									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '80px'}">{{getPercentage(block.percent)}}</div>
+				</el-tab-pane>
+			    <el-tab-pane label="设备负载" name="device">
+					<div class="table">
+						<div class="row" v-for="item in Loaddata.deviceLoad" :key="item.name">
+							<div class="row-label">
+								{{item.name}}
+							</div>
+							<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
+								<div class="row-content-wrap" :style="{'left':bias+'px'}">
+									<el-tooltip
+											v-for="(block,index) in item.load" :key="block.data+block.percent"
+											effect="dark" :content="getPercentage(block.percent)" placement="top">
+					
+										<div class="row-item"
+											 :style="{'left': getPosition(index)+'px'}">
+											<div class="row-colorbox"
+												 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
+												 ">
+												 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
+											</div>
+											
+											<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '80px'}">{{getPercentage(block.percent)}}</div>
+										</div>
+					
+									</el-tooltip>
 								</div>
-
-							</el-tooltip>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="table"  v-if="loadType=='line'">
-				<div class="row" v-for="item in Loaddata.lineLoad" :key="item.name">
-					<div class="row-label">
-						{{item.name}}
-					</div>
-					<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
-						<div class="row-content-wrap" :style="{'left':bias+'px'}">
-							<el-tooltip
-									v-for="(block,index) in item.load" :key="block.data+block.percent"
-									effect="dark" :content="getPercentage(block.percent)" placement="top">
-				
-								<div class="row-item"
-									 :style="{'left': getPosition(index)+'px'}">
-									<div class="row-colorbox"
-										 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
-										 ">
-										 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
-									</div>
-									
-									<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '80px'}">{{getPercentage(block.percent)}}</div>
+				</el-tab-pane>
+			    <el-tab-pane label="产线负载" name="line">
+					<div class="table">
+						<div class="row" v-for="item in Loaddata.lineLoad" :key="item.name">
+							<div class="row-label">
+								{{item.name}}
+							</div>
+							<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
+								<div class="row-content-wrap" :style="{'left':bias+'px'}">
+									<el-tooltip
+											v-for="(block,index) in item.load" :key="block.data+block.percent"
+											effect="dark" :content="getPercentage(block.percent)" placement="top">
+						
+										<div class="row-item"
+											 :style="{'left': getPosition(index)+'px'}">
+											<div class="row-colorbox"
+												 :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
+												 ">
+												 <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
+											</div>
+											
+											<div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '80px'}">{{getPercentage(block.percent)}}</div>
+										</div>
+						
+									</el-tooltip>
 								</div>
-				
-							</el-tooltip>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-
+				</el-tab-pane>
+			    
+			  </el-tabs>
+			
+			
+			
 			<el-popover
 			        placement="bottom"
 			        width="150"
@@ -236,6 +238,7 @@
 						screenWidth: document.body.clientWidth,
 						dateType: "day",
 						date: "2018/11/01",
+						activeName: 'person',
 				        dateTypeOptions: [
 				            {
 				                value: "day",
@@ -496,6 +499,9 @@
 				  },
 				  
 				  methods: {
+					  loadSelectChange() {
+					          
+					        },
 					  timeSelectChange(timeSelect) {
 					      console.log(timeSelect);
 					      if(timeSelect === "day") {
@@ -782,6 +788,7 @@
 	.time-selector{
 	    display: flex;
 	    justify-content: left;
+		margin-bottom: 50px;
 	}
 	.time-selector-left {
 	    flex: 0 0 160px;

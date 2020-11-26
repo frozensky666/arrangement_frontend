@@ -20,6 +20,8 @@ const PersonnelManage =()=>import("@/views/pc/personnelManage/PersonnelManage");
 const OutputOfOrderPlan =()=>import("@/views/pc/outputOfOrderPlan/OutputOfOrderPlan");
 const Plan = () => import("@/views/pc/plan/Plan");
 const PlanOverview = () => import("@/views/pc/planOverview/PlanOverview");
+const ProjectSwitch = () => import("@/views/pc/projectSwitch/ProjectSwitch");
+
 
 Vue.use(VueRouter);
 
@@ -50,6 +52,12 @@ const routes = [
     path: "/pc/planOverview",
     name: "PlanOverview",
     component: PlanOverview,
+    meta: { requiresAuth: [0] }
+  },
+  {
+    path: "/pc/projectSwitch",
+    name: "ProjectSwitch",
+    component: ProjectSwitch,
     meta: { requiresAuth: [0] }
   },
   {

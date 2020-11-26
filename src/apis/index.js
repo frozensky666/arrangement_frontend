@@ -40,6 +40,9 @@ const ORDER_GANTT_LIST = "/order/gantt";
 const ORDER_GANTT_RATE = "/order/rate";
 const ORDER_GANTT_RATE_FINISH = "/order/rate/finish";
 
+//工程切换
+const SWITCH_GET = "/switchget";
+const SWITCH_POST = "/switchpost";
 
 module.exports = {
   TEST_GET,
@@ -72,5 +75,9 @@ module.exports = {
 
   ORDER_GANTT_LIST,
   ORDER_GANTT_RATE,
-  ORDER_GANTT_RATE_FINISH
+  ORDER_GANTT_RATE_FINISH,
+  
+  
+  SWITCH_GET,
+  SWITCH_POST
 };
