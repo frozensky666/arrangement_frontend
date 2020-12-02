@@ -29,7 +29,9 @@
                 <el-table
                         :data="overview.orderPlans"
                         stripe
-                        style="width: 100%">
+                        style="width: 100%"
+                        header-cell-style="text-align: center;"
+                        cell-style="text-align: center;">
                     <el-table-column
                             prop="orderId"
                             label="订单编号"
@@ -55,7 +57,7 @@
                         <template slot-scope="scope">
                             <planOverviewChart
                                     width="400px"
-                                    height="100px"
+                                    height="160px"
                                     :option="getChartOption(scope.row.plans)"
                             ></planOverviewChart>
 
@@ -68,6 +70,7 @@
 </template>
 
 <script>
+    import moment from "moment";
     import {planOverview} from "@/network/plan";
     import Layout from "@/components/content/Layout";
     import planOverviewChart from "@/views/pc/planOverview/childComps/planOverviewChart";
@@ -92,7 +95,7 @@
             planOverview().then(
                 res => {
                     if (res.code === 200) {
-                        this.overview = res.data;
+                        this.overview = this.completeChartData(res.data);
                     } else {
                         this.$message({
                             type: "error",
@@ -122,8 +125,10 @@
                         y2: 25
                     },
                     tooltip: {
-                        trigger: "item",
-                        formatter: "{c} ({b})"
+                        trigger: "axis",
+                        formatter: (params, ticket, callback) => {
+                            return `日期：${params[0].name}<br>进度：${(params[0].value * 100).toFixed(2)}%`
+                        }
                     },
                     itemStyle: {
                         color: "#83a2ff",
@@ -132,11 +137,16 @@
                     },
                     xAxis: {
                         type: "category",
-                        data: plans.map(val => val['date'])
+                        data: plans.map(val => val['date']),
+                        axisTick: {
+                            alignWithLabel: true
+                        }
                     },
                     yAxis: {
                         type: "value",
-                        show: true
+                        show: true,
+                        min: 0,
+                        max: 1
                     },
                     series: [
                         {
@@ -150,6 +160,35 @@
                     ]
                 };
 
+            },
+            completeChartData(overview) {
+                for (const orderPlan of overview.orderPlans) {
+                    const plans = orderPlan.plans
+                    if (plans.length > 1) {
+                        const start = new Date(Date.parse(plans[0].date))
+                        const end = new Date(Date.parse(plans[plans.length - 1].date))
+                        start.setDate(start.getDate() + 1)
+                        let pos = 1
+                        while (start.toLocaleDateString() !== end.toLocaleDateString()) {
+                            const date = moment(start.toLocaleDateString()).format('YYYY-MM-DD')
+                            let index = pos
+                            for (; index < plans.length; index++) {
+                                if (date === plans[index].date) {
+                                    break
+                                }
+                            }
+                            if (index === plans.length) {
+                                plans.splice(pos, 0, {
+                                    date,
+                                    production: 0
+                                })
+                            }
+                            start.setDate(start.getDate() + 1)
+                            pos++
+                        }
+                    }
+                }
+                return overview
             }
         }
     }
