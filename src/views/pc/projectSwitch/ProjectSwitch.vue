@@ -114,6 +114,9 @@
     }
 </script>
 <style scoped>
+.el-button+.el-button {
+	margin-left: 0;
+}
 	.project-wrap {
 	    width: 80%;
 	    margin-left: 10%;
