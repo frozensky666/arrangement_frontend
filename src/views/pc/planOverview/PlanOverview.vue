@@ -16,21 +16,21 @@
             ></el-progress>
           </div>
           <div class="grid-content bg-purple">
-            <p class="fontofname">设备利用率</p>
-            <el-progress
-              type="circle"
-              stroke-linecap="butt"
-              :stroke-width="20"
-              :percentage="Math.round(overview.deviceUseRate * 100)"
-            ></el-progress>
-          </div>
-          <div class="grid-content bg-purple">
             <p class="fontofname">设备负载率</p>
             <el-progress
               type="circle"
               stroke-linecap="butt"
               :stroke-width="20"
               :percentage="Math.round(overview.deviceLoadRate * 100)"
+            ></el-progress>
+          </div>
+          <div class="grid-content bg-purple">
+            <p class="fontofname">产线负载率</p>
+            <el-progress
+              type="circle"
+              stroke-linecap="butt"
+              :stroke-width="20"
+              :percentage="Math.round(overview.deviceUseRate * 100)"
             ></el-progress>
           </div>
           <div class="grid-content bg-purple">
