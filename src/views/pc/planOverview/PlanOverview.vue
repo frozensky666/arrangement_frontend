@@ -145,7 +145,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: plans.map(val => val["date"]),
+          data: plans.map(val => val["date"].substr(5, 5)),
           axisTick: {
             alignWithLabel: true
           }
