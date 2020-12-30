@@ -107,7 +107,7 @@
 							<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
 								<div class="row-content-wrap" :style="{'left':bias+'px'}">
 									<el-tooltip
-											v-for="(block,index) in item.load" :key="block.data+block.percent"
+											v-for="(block,index) in item.load" :key="block.date+block.percent"
 											effect="dark" :content="getPercentage(block.percent)" placement="top">
 					
 										<div class="row-item"
@@ -136,7 +136,7 @@
 							<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
 								<div class="row-content-wrap" :style="{'left':bias+'px'}">
 									<el-tooltip
-											v-for="(block,index) in item.load" :key="block.data+block.percent"
+											v-for="(block,index) in item.load" :key="block.date+block.percent"
 											effect="dark" :content="getPercentage(block.percent)" placement="top">
 					
 										<div class="row-item"
@@ -165,7 +165,7 @@
 							<div class="row-content" :style="{'width':(bodyWidth*0.8-180-26)+'px','max-width':blocks*blockSize+'px'}">
 								<div class="row-content-wrap" :style="{'left':bias+'px'}">
 									<el-tooltip
-											v-for="(block,index) in item.load" :key="block.data+block.percent"
+											v-for="(block,index) in item.load" :key="block.date+block.percent"
 											effect="dark" :content="getPercentage(block.percent)" placement="top">
 						
 										<div class="row-item"

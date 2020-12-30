@@ -5,12 +5,9 @@
 </template>
 
 <script>
-  import {_isMobile} from "@/common/utils";
   import {getsimulatetime} from "@/network/simulationSystem";
 
   export default {
-    created() {
-    },
     mounted() {
 
       getsimulatetime()
@@ -25,13 +22,7 @@
                   });
                 }
               })
-      // if(this.$route.path === "/" || this.$route.path === "/pc" || this.$route.path === "/m") {
-      //   if (_isMobile()) {
-      //     this.$router.replace('/m');
-      //   } else {
-      //     this.$router.replace('/pc');
-      //   }
-      // }
+
     }
   }
 </script>

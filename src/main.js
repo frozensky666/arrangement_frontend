@@ -5,6 +5,7 @@ import "@/assets/css/normalize.css";
 import "@/assets/css/base.css";
 import "@/plugins/elementui";
 import "@/plugins/myecharts";
+import "@/plugins/mintui";
 
 Vue.config.productionTip = false;
 Vue.prototype.$bus = new Vue(); //用于取代Vuex实现组件之间的消息传递

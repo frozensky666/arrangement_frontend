@@ -1,10 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import {_isMobile} from "@/common/utils";
 
-const Home = () => import("@/views/pc/home/Home");
-const M_Home = () => import("@/views/mobile/home/M_Home");
+const Error = () => import("@/components/content/Error");
 
-const Error = () => import("@/views/pc/error/Error");
+// ----------------- PC --------------------------
 const Login = () => import("@/views/pc/login/Login");
 const ResourceGantt_v2 = () => import("@/views/pc/resourceGantt/ResourceGantt_v2");
 const ResourceGantt = () => import("@/views/pc/resourceGantt/ResourceGantt");
@@ -22,6 +22,15 @@ const Plan = () => import("@/views/pc/plan/Plan");
 const PlanOverview = () => import("@/views/pc/planOverview/PlanOverview");
 const ProjectSwitch = () => import("@/views/pc/projectSwitch/ProjectSwitch");
 
+// ----------------- MOBILE --------------------------
+const M_PlanOverview = () => import("@/views/mobile/planOverview/M_PlanOverview");
+const M_ResourceLoad = () => import("@/views/mobile/resourceLoad/M_ResourceLoad");
+const M_OrderGantt =()=>import("@/views/mobile/orderGantt/M_OrderGantt");
+const M_ProjectSwitch = () => import("@/views/mobile/projectSwitch/M_ProjectSwitch");
+const M_Login = () => import("@/views/mobile/login/M_Login");
+
+
+
 
 Vue.use(VueRouter);
 
@@ -31,12 +40,15 @@ const routes = [
     component: Error
   },
   {
-    path: "/",
-    redirect: "/pc"
+    path: '/',
+    redirect: _isMobile()?'/m':'/pc',
+    meta: { requiresAuth: null }
   },
+
+  // -----------------------PC----------------------------
   {
     path: "/pc", // pc端首页
-    redirect: "/pc/outputOfOrderPlan"
+    redirect: "/pc/outputOfOrderPlan",
   },
   {
     path: "/pc/login",
@@ -121,11 +133,43 @@ const routes = [
     component: OutputOfOrderPlan,
     meta:{ requiresAuth: [0,1,2] },
   },
+
+// -----------------------MOBILE-----------------------------
   {
     path: '/m', // 手机端首页
-    name: "M_Home",
-    component: M_Home
+    redirect: "/m/planOverview",
   },
+  {
+    path: "/m/login",
+    component: M_Login
+  },
+  {
+    path: "/m/planOverview",
+    name: "M_PlanOverview",
+    component: M_PlanOverview,
+    meta: { requiresAuth: [0] }
+  },
+  {
+    path: "/m/projectSwitch",
+    name: "M_ProjectSwitch",
+    component: M_ProjectSwitch,
+    meta: { requiresAuth: [0] }
+  },
+  {
+    path: "/m/resourceLoad",
+    name: "M_ResourceLoad",
+    component: M_ResourceLoad,
+    meta:{ requiresAuth: [0,1,2] }
+  },
+  {
+    path: "/m/orderGantt",
+    name: "M_OrderGantt",
+    component: M_OrderGantt,
+    meta:{ requiresAuth: [0,1,2] }
+  },
+
+
+// -----------------------未找到页面-----------------------------
   {
     path: '*',
     redirect: '/error'
@@ -139,20 +183,29 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to,from,next) => {
-  if(to.path!=='/pc/login') {
-    if(sessionStorage.getItem("user") === null) {
-      next('/pc/login');
-    } else if (!to.meta.requiresAuth) {
-      next();
-    } else if(to.meta.requiresAuth.some(auth => auth.toString() === sessionStorage.getItem("auth"))) {
-      next();
-    } else {
-      next("/error")
+  if(to.path!=='/m/login' &&  to.path!=='/pc/login') { // 访问非login页面
+    if(sessionStorage.getItem("user") === null) { //未登录，则跳转登录
+      if(_isMobile()) {
+        next('/m/login');
+      } else {
+        next('/pc/login');
+      }
+    } else { //若已经登录，查看用户权限
+      if(to.meta.requiresAuth) {
+        if(to.meta.requiresAuth.some(auth => auth.toString() === sessionStorage.getItem("auth"))) { //有权限
+          next();
+        } else {
+          next("/error"); //无权限
+        }
+      }
+      else { //页面没有权限限制，直接访问
+        next();
+      }
     }
-  }
-  else {
+  } else { //直接访问login页面
     next();
   }
+  // next();
 });
 
 export default router;

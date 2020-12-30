@@ -48,7 +48,7 @@ const resourceGanttVO = {
                 role: "p小芳",
                 plan: [
                     {
-                        start: '2018/10/04 7:00',
+                        start: '2018/10/04 0:00',
                         end: '2018/10/04 16:00',
                         value: '554979844',
                         orderId: 0,

@@ -25,7 +25,7 @@
             ></el-progress>
           </div>
           <div class="grid-content bg-purple">
-            <p class="fontofname">产线负载率</p>
+            <p class="fontofname">设备利用率</p>
             <el-progress
               type="circle"
               stroke-linecap="butt"
