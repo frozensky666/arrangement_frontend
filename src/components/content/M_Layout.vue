@@ -1,6 +1,6 @@
 <template>
     <div>
-        <mt-header fixed :title="title">
+        <mt-header fixed :title="title" style='z-index:999;'>
             <mt-button slot="right">
                 <span @click="logout()" class="logout">退出登录</span>
             </mt-button>
@@ -8,7 +8,7 @@
         <div style="padding-top: 3rem;padding-bottom: 3rem">
             <slot></slot>
         </div>
-        <mt-tabbar v-model="selected">
+        <mt-tabbar v-model="selected" style='z-index:999;'>
             <mt-tab-item id="/m/projectSwitch" v-if="permit(['0'])">
                 <i class="el-icon-sort"></i>
                 <div>工程切换</div>
