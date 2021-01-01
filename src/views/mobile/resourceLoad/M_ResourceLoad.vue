@@ -67,10 +67,10 @@
                                             <div class="row-colorbox"
                                                  :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
 												 ">
-                                                <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
+                                                <p v-if="block.percent>0.5" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
                                             </div>
 
-                                            <div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '70px'}">{{getPercentage(block.percent)}}</div>
+                                            <div v-if="block.percent<=0.5" class="textofbox"   :style="{'line-height': '40px'}">{{getPercentage(block.percent)}}</div>
                                         </div>
 
                                     </el-tooltip>
@@ -96,10 +96,10 @@
                                             <div class="row-colorbox"
                                                  :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
 												 ">
-                                                <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
+                                                <p v-if="block.percent>0.5" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
                                             </div>
 
-                                            <div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '80px'}">{{getPercentage(block.percent)}}</div>
+                                            <div v-if="block.percent<=0.5" class="textofbox"   :style="{'line-height': '40px'}">{{getPercentage(block.percent)}}</div>
                                         </div>
 
                                     </el-tooltip>
@@ -125,10 +125,10 @@
                                             <div class="row-colorbox"
                                                  :style="{'background-color': getColor(block.percent),'top': gettop(block.percent)+'px','height': getHeight(block.percent)+'px'}
 												 ">
-                                                <p v-if="block.percent>0.3" :style="{'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
+                                                <p v-if="block.percent>0.5" :style="{ 'line-height': gettoptext(block.percent)+'px'}">{{getPercentage(block.percent)}}</p>
                                             </div>
 
-                                            <div v-if="block.percent<=0.3" class="textofbox"   :style="{'line-height': '80px'}">{{getPercentage(block.percent)}}</div>
+                                            <div v-if="block.percent<=0.5" class="textofbox"   :style="{'line-height': '40px'}">{{getPercentage(block.percent)}}</div>
                                         </div>
 
                                     </el-tooltip>
@@ -218,7 +218,7 @@
 
                 blocks: 7,
                 blockSize: 70,
-                height:80,
+                height:60,
                 timeDivision: [
                     '2018/11/09',
                     '2018/11/10',
@@ -540,14 +540,19 @@
 
             },
             gettop(percent) {
-                return this.height*(1-percent);
+				if(percent>0.5){
+					return this.height*(1-percent);
+				}
+                else{
+					return this.height*(1-percent-0.15);
+				}
 
             },
             gettoptext(percent) {
-                if(percent>0.5){
-                    return this.height*(percent)/2;
-                }else if(percent>0.3){
-                    return this.height*(percent-0.3)/2;
+                if(percent>0.8){
+                    return 10;
+                }else if(percent>0.5){
+                    return 0;
                 }else{
                     return 60;
                 }
@@ -742,7 +747,6 @@
         height: 80px;
         overflow-x: auto;
         overflow-y: hidden;
-        white-space: nowrap;
         font-size: 14px;
         color: #606266;
     }
@@ -751,8 +755,8 @@
         line-height: 30px;
         text-align: center;
         margin-left: -1px;
-        display: inline-block;
-        white-space: normal;
+
+        word-wrap:break-word;
         float: left;
         border: solid 1px #DCDFE6;
         font-size: 0.5rem;
@@ -816,7 +820,7 @@
     }
     .table .row {
         /*background-color: #6c81eb;*/
-        height: 100px;
+        height: 60px;
         border-top: 1px solid #fff;
         /*display: flex;*/
         /*justify-content: left;*/
@@ -832,7 +836,7 @@
         background-color: #F5F7FA;
         text-align: center;
         line-height: 1.25rem;
-        height: 60px;
+        height: 40px;
         font-size: 0.5rem;
 
     }
@@ -841,7 +845,7 @@
         position: absolute;
         left: 3rem; /*标签宽度*/
         top: 0;
-        height: 100px;
+        height: 60px;
 
         overflow-x: hidden;
         overflow-y: hidden;
@@ -852,7 +856,7 @@
     }
     .table .row .row-content .row-item{
         position: absolute;
-        height: 80px;
+        height: 60px;
         width: 60px;
         top: 7px;
         display: inline-block;
