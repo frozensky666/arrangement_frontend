@@ -21,6 +21,7 @@ const OutputOfOrderPlan =()=>import("@/views/pc/outputOfOrderPlan/OutputOfOrderP
 const Plan = () => import("@/views/pc/plan/Plan");
 const PlanOverview = () => import("@/views/pc/planOverview/PlanOverview");
 const ProjectSwitch = () => import("@/views/pc/projectSwitch/ProjectSwitch");
+const Analyze = () => import("@/views/pc/analyze/Analyze");
 
 // ----------------- MOBILE --------------------------
 const M_PlanOverview = () => import("@/views/mobile/planOverview/M_PlanOverview");
@@ -71,6 +72,12 @@ const routes = [
     name: "ProjectSwitch",
     component: ProjectSwitch,
     meta: { requiresAuth: [0] }
+  },
+  {
+    path: "/pc/analyze",
+    name: "Analyze",
+    component: Analyze,
+    meta: { requiresAuth: [0,1,2] }
   },
   {
     path: "/pc/resourceGantt",

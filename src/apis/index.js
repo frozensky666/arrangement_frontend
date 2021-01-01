@@ -30,6 +30,7 @@ const PLAN = "/plan";
 const PLAN_SUBORDER = "/plan/sub-order";
 const PLAN_PROD = "/plan/production";
 const PLAN_OVERVIEW = "/plan/overview";
+const DELAYLIST = "/plan/delay";
 
 //资源负载图
 const RESOURCE_LOAD_DAY = "/resourceLoad/day";
@@ -69,6 +70,7 @@ module.exports = {
   PLAN_PROD,
   PLAN_SUBORDER,
   PLAN_OVERVIEW,
+  DELAYLIST,
 
   RESOURCE_LOAD_DAY,
   RESOURCE_LOAD_WEEK,

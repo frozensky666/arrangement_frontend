@@ -54,6 +54,10 @@
                     <i class="el-icon-setting"></i>
                     <span slot="title">设备管理</span>
                 </el-menu-item>
+				<el-menu-item index="/pc/analyze" v-if="permit(['0','1','2'])">
+				    <i class="el-icon-files"></i>
+				    <span slot="title">延期分析</span>
+				</el-menu-item>
             </el-menu>
         </el-aside>
 
