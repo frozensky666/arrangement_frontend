@@ -66,7 +66,7 @@
 			        });
 					setswitch({
 					params: {
-					   project:'0'
+					   projectId:'0'
 					}
 					}).then(res => {
 						          if(res.code === 200) {
@@ -91,7 +91,7 @@
 				         });
 						 setswitch({
 							params: {
-							   project:'1'
+							   projectId:'1'
 							}
 							}).then(res => {
 										  if(res.code === 200) {

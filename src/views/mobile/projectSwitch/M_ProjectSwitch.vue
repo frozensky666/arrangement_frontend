@@ -65,7 +65,7 @@
 			        });
 					setswitch({
 					params: {
-					   project:'0'
+					   projectId:'0'
 					}
 					}).then(res => {
 						          if(res.code === 200) {
@@ -90,7 +90,7 @@
 				         });
 						 setswitch({
 							params: {
-							   project:'1'
+							   projectId:'1'
 							}
 							}).then(res => {
 										  if(res.code === 200) {
@@ -138,7 +138,7 @@ text-align:left;
 	.project-formbody{
 		margin-top: 2rem;
 		margin-left: 1rem;
-		margin: 0 32px;
+		width: 90%;
 		border-radius: 4px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
 	}

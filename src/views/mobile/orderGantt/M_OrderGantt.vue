@@ -15,39 +15,38 @@
       </div>
     </div>
     <el-table :data="orderList" style="width: 100%">
-      <el-table-column fixed="left" label="订单号" prop="orderId" width="80rem">
+		
+      <el-table-column label="订单号" prop="orderId">
       </el-table-column>
-      <el-table-column>
-        <template slot="header">
-          订单过程详情
-        </template>
-        <template slot-scope="scope">
-          <el-table :data="scope.row.process" border style="width: 100%">
-            <el-table-column prop="name" label="过程" width="60rem">
-            </el-table-column>
-            <el-table-column label="完成百分比" width="100rem">
-              <template slot-scope="scope">
-                {{ parseInt(scope.row.percent * 100) }}%
-              </template>
-            </el-table-column>
-            <el-table-column label="是否延期" width="100rem">
-              <template slot-scope="scope">
-                {{ isdelaye(scope.row.isdelayed) }}
-              </template>
-            </el-table-column>
-            <el-table-column label="交期" width="100rem">
-              <template slot-scope="scope">
-                {{ scope.row.ddl }}
-              </template>
-            </el-table-column>
-            <el-table-column label="预计完成百分比" width="120rem">
-              <template slot-scope="scope">
-                {{ parseInt(scope.row.theline * 100) }}%
-              </template>
-            </el-table-column>
-          </el-table>
-        </template>
-      </el-table-column>
+	  
+	  <el-table-column
+	        label="交期"
+	        >
+	        <template slot-scope="scope">
+	          {{ scope.row.process[0].ddl }}
+	        </template>
+	  </el-table-column>
+		<el-table-column type="expand">
+			<template slot-scope="props">
+			  <div class="table-row-header">
+				<span class="table-row-item">过程</span>
+			    <span class="table-row-item">完成百分比</span>
+			    <span class="table-row-item">是否延期</span>
+				<span class="table-row-item">预计完成百分比</span>
+			  </div>
+			  <div
+			    v-for="item in props.row.process"
+			    :key="item.name"
+			    class="table-row"
+			  >
+			    <span class="table-row-item">{{ item.name }}</span>
+			    <span class="table-row-item">{{ parseInt(item.percent * 100) }}%</span>
+				<span class="table-row-item">{{ isdelaye(item.isdelayed) }}</span>
+				<span class="table-row-item">{{ parseInt(item.theline * 100) }}%</span>
+			  </div>
+			</template>
+		     
+		</el-table-column>
     </el-table>
     <!-- <el-popover placement="bottom" width="200" trigger="hover">
       <div class="gantt-tips2">
@@ -264,6 +263,7 @@ export default {
 </script>
 
 <style scoped>
+
 .rates {
   line-height: 1.25rem;
   font-size: 0.875rem;
@@ -299,5 +299,23 @@ export default {
   height: 10px;
   width: 10px;
   background-color: #ff0000;
+}
+.table-row-header {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  line-height: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.table-row-item {
+  display: inline-block;
+  width: 5rem;
+}
+.table-row {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  line-height: 1.25rem;
 }
 </style>
