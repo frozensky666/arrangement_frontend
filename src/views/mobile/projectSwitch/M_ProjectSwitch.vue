@@ -138,7 +138,7 @@ text-align:left;
 	.project-formbody{
 		margin-top: 2rem;
 		margin-left: 1rem;
-		width: 90%;
+		margin: 0 32px;
 		border-radius: 4px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
 	}

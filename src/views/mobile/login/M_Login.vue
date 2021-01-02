@@ -86,7 +86,7 @@
     .login-page {
         margin: 0 auto;
         padding-top: 40%;
-        width: 80%;
+        margin: 0 32px;
         background: #fff;
     }
     .login-title {

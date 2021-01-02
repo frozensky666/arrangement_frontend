@@ -261,9 +261,9 @@ export default {
 <style scoped>
 /* wrap all */
 .gantt-wrap {
-  width: 80%;
+  margin: 0 32px;
   min-width: 600px;
-  margin-left: 10%;
+  
 
   -webkit-user-select: none;
   -moz-user-select: none;

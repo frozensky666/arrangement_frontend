@@ -140,8 +140,8 @@
 
 <style scoped>
 	.time-wrap {
-	    width: 80%;
-	    margin-left: 10%;
+	    margin: 0 32px;
+	    
 	}
 	.time-header {
 	    /* margin-top: 50px; */

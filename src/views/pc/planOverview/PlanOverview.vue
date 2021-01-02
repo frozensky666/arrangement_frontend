@@ -3,7 +3,7 @@
     <div class="plan-overview-wrap">
       <div class="plan-overview-header">
         <div class="plan-overview-header-left">
-          <h2>排程概览</h2>
+          <h2>排程概况</h2>
         </div>
         <div class="plan-overview-header-middle">
           <div class="grid-content bg-purple">
@@ -47,24 +47,25 @@
       </div>
       <div class="plan-overview-body">
         <el-table
+        width="100%"
           :data="overview.orderPlans"
           stripe
           style="width: 100%"
           header-cell-style="text-align: center;"
           cell-style="text-align: center;"
         >
-          <el-table-column prop="orderId" label="订单编号" width="180">
+          <el-table-column prop="orderId" label="订单编号" width="120">
           </el-table-column>
-          <el-table-column prop="orderNum" label="订单数量" width="180">
+          <el-table-column prop="orderNum" label="订单数量" width="120">
           </el-table-column>
-          <el-table-column prop="orderDeadline" label="订单交期" width="180">
+          <el-table-column prop="orderDeadline" label="订单交期">
           </el-table-column>
-          <el-table-column prop="planDeadline" label="预计交期" width="180">
+          <el-table-column prop="planDeadline" label="预计交期">
           </el-table-column>
-          <el-table-column label="生产安排">
+          <el-table-column label="生产安排" width="440">
             <template slot-scope="scope">
               <planOverviewChart
-                width="400px"
+                width="440px"
                 height="160px"
                 :option="getChartOption(scope.row.plans)"
               ></planOverviewChart>
@@ -202,16 +203,18 @@ export default {
 
 <style scoped>
 .plan-overview-wrap {
-  width: 80%;
-  margin-left: 10%;
+  margin: 0 32px;
+  
 }
 .plan-overview-header {
   margin-bottom: 50px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
 }
-.plan-overview-body {
-  width: 90%;
+.plan-overview-header-middle {
+  display: flex;
+  justify-content: center;
 }
 .bg-purple {
   border: 1px solid #dcdfe6;

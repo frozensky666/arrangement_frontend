@@ -282,7 +282,7 @@
 
 <style scoped>
     .btn-wrap{
-        width: 90%;
+        margin: 0 32px;
         display: flex;
         justify-content: flex-end;
     }
@@ -290,7 +290,7 @@
         margin-left: 10px;
     }
     .layout-main {
-        width: 80%;
-        margin-left: 10%;
+        margin: 0 32px;
+        
     }
 </style>

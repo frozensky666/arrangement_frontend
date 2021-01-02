@@ -22,6 +22,10 @@
                     <i class="el-icon-s-marketing"></i>
                     <span slot="title">排程概况</span>
                 </el-menu-item>
+				<el-menu-item index="/pc/analyze" v-if="permit(['0','1','2'])">
+				    <i class="el-icon-files"></i>
+				    <span slot="title">延期分析</span>
+				</el-menu-item>
                 <el-menu-item index="/pc/outputOfOrderPlan" v-if="permit(['0','1','2'])">
                     <i class="el-icon-notebook-2"></i>
                     <span slot="title">订单计划表</span>
@@ -38,10 +42,6 @@
                     <i class="el-icon-data-analysis"></i>
                     <span slot="title">订单甘特图</span>
                 </el-menu-item>
-<!--                <el-menu-item index="/pc/timeManage" v-if="permit(['0'])">-->
-<!--                    <i class="el-icon-alarm-clock"></i>-->
-<!--                    <span slot="title">模拟时间</span>-->
-<!--                </el-menu-item>-->
 				<el-menu-item index="/pc/orderManage" v-if="permit(['0'])">
 				    <i class="el-icon-document"></i>
 				    <span slot="title">订单管理</span>
@@ -54,10 +54,6 @@
                     <i class="el-icon-setting"></i>
                     <span slot="title">设备管理</span>
                 </el-menu-item>
-				<el-menu-item index="/pc/analyze" v-if="permit(['0','1','2'])">
-				    <i class="el-icon-files"></i>
-				    <span slot="title">延期分析</span>
-				</el-menu-item>
             </el-menu>
         </el-aside>
 

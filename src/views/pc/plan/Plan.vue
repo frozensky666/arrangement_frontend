@@ -139,14 +139,14 @@
     .plan .btn-wrap{
         display: flex;
         justify-content: flex-end;
-        width: 90%;
+        margin: 0 32px;
     }
     .plan .btn-wrap > * {
         margin-left: 10px;
     }
     .plan.layout-main {
-        width: 80%;
-        margin-left: 10%;
+        margin: 0 32px;
+        
     }
     .plan .not-plan-row {
         background-color: rgb(49, 204, 119);

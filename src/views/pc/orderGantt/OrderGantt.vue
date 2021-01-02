@@ -498,9 +498,9 @@ export default {
 
 <style scoped>
 .gantt-wrap {
-  width: 80%;
+  margin: 0 32px;
   min-width: 600px;
-  margin-left: 10%;
+  
 }
 /* gantt header */
 .gantt-header {

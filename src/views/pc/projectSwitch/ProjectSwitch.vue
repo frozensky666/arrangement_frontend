@@ -118,8 +118,8 @@
 	margin-left: 0;
 }
 	.project-wrap {
-	    width: 80%;
-	    margin-left: 10%;
+	    margin: 0 32px;
+	    
 	}
 	.project-header {
 	    /* margin-top: 50px; */
@@ -141,7 +141,7 @@
 	.project-formbody{
 		margin-top: 50px;
 		
-		width: 90%;
+		margin: 0 32px;
 		border-radius: 4px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
 	}

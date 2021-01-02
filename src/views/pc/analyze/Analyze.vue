@@ -14,10 +14,11 @@
 						</div>
 				    </template>
 				    <div v-for="dela in item.delays" :key="dela.date">
+							<el-divider/>
 						<div class="delay-title" >{{dela.date}}</div>
 						<div class="delay-progress">
-							<div  style="font-size: 20px;">平均生产进度：{{item.avgProgress}}</div>
-							<div  style="font-size: 20px;">实际生产进度：{{dela.progress}}</div>
+							<div  style="font-size: 18px;">平均生产进度：{{(item.avgProgress * 100).toFixed(0)}}%</div>
+							<div  style="font-size: 18px;">实际生产进度：{{(dela.progress * 100).toFixed(0)}}%</div>
 							<div></div>
 							<div></div>
 							<div></div>
@@ -63,7 +64,7 @@
 							      >
 							      <template slot-scope="scope" style="display: flex;">
 							        <div v-for="occupation in scope.row.occupations" :key="occupation.orderId" >
-										<div>{{occupation.orderId}} ({{occupation.time}}小时)</div>
+										<div>{{occupation.orderId}} （{{occupation.time}} 小时）</div>
 									</div>
 							      </template>
 							    </el-table-column>
@@ -110,7 +111,7 @@
 							      >
 							      <template slot-scope="scope" style="display: flex;">
 							        <div v-for="occupation in scope.row.occupations" :key="occupation.orderId" >
-										<div>{{occupation.orderId}} ({{occupation.time}}小时)</div>
+										<div>{{occupation.orderId}} （{{occupation.time}} 小时）</div>
 									</div>
 							      </template>
 							    </el-table-column>
@@ -157,7 +158,7 @@
 							      >
 							      <template slot-scope="scope" style="display: flex;">
 							        <div v-for="occupation in scope.row.occupations" :key="occupation.orderId" >
-										<div>{{occupation.orderId}} ({{occupation.time}}小时)</div>
+										<div>{{occupation.orderId}} （{{occupation.time}} 小时）</div>
 									</div>
 							      </template>
 							    </el-table-column>
@@ -344,8 +345,8 @@
 	margin-left: 0;
 }
 	.project-wrap {
-	    width: 80%;
-	    margin-left: 10%;
+	    margin: 0 32px;
+	    
 	}
 	.project-header {
 	    /* margin-top: 50px; */
@@ -366,13 +367,14 @@
 	.delay-title{
 		 font-size: 24px;
 		 font-weight: bold;
+		 margin-bottom: 16px;
 	}
 	.delay-human{
 		
 		display: flex;
 	}
 	.delay-need{
-		font-size: 20px;
+		font-size: 16px;
 		margin-top: 20px;
 		margin-bottom: 20px;
 	}

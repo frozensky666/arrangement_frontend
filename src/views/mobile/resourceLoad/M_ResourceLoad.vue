@@ -609,7 +609,7 @@
 
 <style scoped>
     .gantt-wrap {
-        width: 90%;
+        margin: 0 32px;
         margin-left: 5%;
     }
     .fontofright{
