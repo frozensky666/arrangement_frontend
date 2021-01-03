@@ -29,7 +29,7 @@ const M_ResourceLoad = () => import("@/views/mobile/resourceLoad/M_ResourceLoad"
 const M_OrderGantt =()=>import("@/views/mobile/orderGantt/M_OrderGantt");
 const M_ProjectSwitch = () => import("@/views/mobile/projectSwitch/M_ProjectSwitch");
 const M_Login = () => import("@/views/mobile/login/M_Login");
-
+const M_Analyze = () => import("@/views/mobile/analyze/M_Analyze");
 
 
 
@@ -172,6 +172,12 @@ const routes = [
     path: "/m/orderGantt",
     name: "M_OrderGantt",
     component: M_OrderGantt,
+    meta:{ requiresAuth: [0,1,2] }
+  },
+  {
+    path: "/m/analyze",
+    name: "M_Analyze",
+    component: M_Analyze,
     meta:{ requiresAuth: [0,1,2] }
   },
 

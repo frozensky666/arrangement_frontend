@@ -25,6 +25,10 @@
                 <i class="el-icon-data-analysis"></i>
                 <div>订单甘特图</div>
             </mt-tab-item>
+			<mt-tab-item id="/m/analyze" v-if="permit(['0','1','2'])">
+			    <i class="el-icon-files"></i>
+			    <div>延期分析</div>
+			</mt-tab-item>
         </mt-tabbar>
     </div>
 </template>
