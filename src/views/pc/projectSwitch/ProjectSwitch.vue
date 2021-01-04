@@ -4,7 +4,7 @@
       <div class="project-header">
         <h2>工程切换</h2>
       </div>
-      <el-button :plain="true" @click="open" class="project-formbody">
+      <el-button :plain="true" @click="open" class="project-formbody" >
         <div class="inbutton">
           <div class="project-header-right">
             <div class="project-title">工程A</div>
@@ -17,7 +17,7 @@
           ></i>
         </div>
       </el-button>
-      <el-button :plain="true" @click="open2" class="project-formbody">
+      <el-button :plain="true" @click="open2" class="project-formbody" >
         <div class="inbutton">
           <div class="project-header-right">
             <div class="project-title">工程B</div>
@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     open() {
-      this.projectid = 0;
+      this.projectid = "0";
       this.$message({
         message: "工程切换成功",
         type: "success"
@@ -88,10 +88,11 @@ export default {
             message: "工程切换失败"
           });
         });
+		
     },
 
     open2() {
-      this.projectid = 1;
+      this.projectid = "1";
       this.$message({
         message: "工程切换成功",
         type: "success"
@@ -112,7 +113,9 @@ export default {
             message: "工程切换失败"
           });
         });
-    }
+		
+    },
+	
   }
 };
 </script>
@@ -131,6 +134,7 @@ export default {
 	    justify-content: space-between; */
 }
 .project-title {
+	text-align: left;
   font-family: "SourceHanSansSC-regular";
   font-size: 38px;
 }
