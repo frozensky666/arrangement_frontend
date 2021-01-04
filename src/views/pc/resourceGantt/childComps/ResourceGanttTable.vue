@@ -161,6 +161,13 @@ export default {
       let transformedData = {};
       queryData.forEach((obj, idx) => {
         obj.plan.forEach(p => {
+
+          if(typeof p.value === 'number') { //將 p.value 轉換爲 string
+            p.value = p.value.toString();
+          } else if(typeof p.value === 'object') {
+            p.value = JSON.stringify(p.value);
+          }
+
           if (p.delay) {
             this.$set(p, "bg", "hsl(0,100%,50%)");
           } else {

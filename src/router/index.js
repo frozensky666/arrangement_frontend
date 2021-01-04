@@ -6,7 +6,7 @@ const Error = () => import("@/components/content/Error");
 
 // ----------------- PC --------------------------
 const Login = () => import("@/views/pc/login/Login");
-const ResourceGantt_v2 = () => import("@/views/pc/resourceGantt/ResourceGantt_v2");
+// const ResourceGantt_v2 = () => import("@/views/pc/resourceGantt/ResourceGantt_v2");
 const ResourceGantt = () => import("@/views/pc/resourceGantt/ResourceGantt");
 const ResourceLoad = () => import("@/views/pc/resourceLoad/ResourceLoad");
 const OrderGantt =()=>import("@/views/pc/orderGantt/OrderGantt");
@@ -85,12 +85,12 @@ const routes = [
     component: ResourceGantt,
     meta:{ requiresAuth: [0,1,2] }
   },
-  {
-    path: "/pc/resourceGantt_v2",
-    name: "TestGantt_v2",
-    component: ResourceGantt_v2,
-    meta:{ requiresAuth: [0,1,2] }
-  },
+  // {
+  //   path: "/pc/resourceGantt_v2",
+  //   name: "TestGantt_v2",
+  //   component: ResourceGantt_v2,
+  //   meta:{ requiresAuth: [0,1,2] }
+  // },
   {
     path: "/pc/testResourceLoad",
     name: "TestResourceLoad",

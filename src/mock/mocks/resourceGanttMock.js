@@ -50,7 +50,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 0:00',
                         end: '2018/10/04 16:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -64,7 +64,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 15:00',
                         end: '2018/10/04 16:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -78,7 +78,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 15:00',
                         end: '2018/10/04 17:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -92,7 +92,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 7:00',
                         end: '2018/10/04 9:50',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -133,7 +133,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 15:00',
                         end: '2018/10/04 19:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -190,7 +190,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 7:00',
                         end: '2018/10/04 16:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -204,7 +204,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 15:00',
                         end: '2018/10/04 16:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -218,7 +218,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 15:00',
                         end: '2018/10/04 17:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -232,7 +232,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 7:00',
                         end: '2018/10/04 9:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -264,7 +264,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 15:00',
                         end: '2018/10/04 19:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -321,7 +321,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 7:00',
                         end: '2018/10/04 16:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -335,7 +335,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 15:00',
                         end: '2018/10/04 16:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
@@ -349,7 +349,7 @@ const resourceGanttVO = {
                     {
                         start: '2018/10/04 15:00',
                         end: '2018/10/04 17:00',
-                        value: '554979844',
+                        value: 554979844,
                         orderId: 0,
                         materialId: 0,
                         delay :false
