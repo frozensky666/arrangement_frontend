@@ -121,7 +121,8 @@ export default {
   margin-left: 0;
 }
 .project-wrap {
-  margin: 0 32px;
+  width: 80%;
+  margin-left: 10%;
 }
 .project-header {
   /* margin-top: 50px; */
@@ -143,7 +144,7 @@ export default {
 .project-formbody {
   margin-top: 50px;
 
-  margin: 0 32px;
+  width: 80%;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
